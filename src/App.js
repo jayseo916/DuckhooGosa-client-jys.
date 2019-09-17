@@ -1,26 +1,27 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Route } from 'react-router-dom';
+import Main from './components/Main';
+import SelectGenre from './components/SelectGenre';
+import SelectTheme from './components/SelectTheme';
+import SelectProblemType from './components/SelectProblemType';
+import CreateProblem from './components/CreateProblem';
+import MyProblem from './components/MyProblem';
+import MySolved from './components/MySolved';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  render() {
+    return (
+      <div>
+        <Route path="/problem/main" component={Main} />
+        <Route path="/1" component={SelectGenre} />
+        <Route path="/2" component={SelectTheme} />
+        <Route path="/3" component={SelectProblemType} />
+        <Route path="/4" component={CreateProblem} />
+        <Route path="/5" component={MyProblem} />
+        <Route path="/6" component={MySolved} />
+      </div>
+    );
+  }
 }
 
 export default App;
