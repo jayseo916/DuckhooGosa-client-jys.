@@ -5,8 +5,8 @@ import SelectGenre from "../components/SelectGenre";
 import SelectTheme from "../components/SelectTheme";
 import SelectProblemType from "../components/SelectProblemType";
 import CreateProblem from "../components/CreateProblem";
-import MyProblem from "../components/MyProblem";
-import MySolved from "../components/MySolved";
+import MyProblem from "../pages/MyProblem";
+import MySolved from "../pages/MySolved";
 
 class App extends React.Component {
   render() {
