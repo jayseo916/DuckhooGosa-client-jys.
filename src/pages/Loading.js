@@ -6,6 +6,7 @@ import ReactLoading from "react-loading";
 import * as legoData from "../loading/fuckuman.json";
 import * as doneData from "../loading/check.json";
 import "bootstrap/dist/css/bootstrap.css";
+import "../shared/App.css";
 class Loading extends React.Component {
   constructor(props) {
     super(props);
@@ -47,7 +48,7 @@ class Loading extends React.Component {
       }
     };
     return (
-      <div>
+      <div className="App-header">
         {!this.state.done ? (
           <FadeIn>
             <div class="d-flex justify-content-center align-items-center">
