@@ -7,11 +7,16 @@ import SelectProblemType from "../components/SelectProblemType";
 import CreateProblem from "../components/CreateProblem";
 import MyProblem from "../pages/MyProblem";
 import MySolved from "../pages/MySolved";
+import Loading from "../pages/Loading";
+import "./App.css";
 
 class App extends React.Component {
   render() {
     return (
-      <div>
+      <div className="App">
+        <header className="App-header">
+          <Loading />
+        </header>
         <Route path="/problem/main" component={Main} />
         <Route path="/1" component={SelectGenre} />
         <Route path="/2" component={SelectTheme} />
