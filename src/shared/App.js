@@ -1,12 +1,12 @@
-import React from 'react';
-import { Route } from 'react-router-dom';
-import Main from './components/Main';
-import SelectGenre from './components/SelectGenre';
-import SelectTheme from './components/SelectTheme';
-import SelectProblemType from './components/SelectProblemType';
-import CreateProblem from './components/CreateProblem';
-import MyProblem from './components/MyProblem';
-import MySolved from './components/MySolved';
+import React from "react";
+import { Route } from "react-router-dom";
+import Main from "../pages/Main";
+import SelectGenre from "../components/SelectGenre";
+import SelectTheme from "../components/SelectTheme";
+import SelectProblemType from "../components/SelectProblemType";
+import CreateProblem from "../components/CreateProblem";
+import MyProblem from "../components/MyProblem";
+import MySolved from "../components/MySolved";
 
 class App extends React.Component {
   render() {
