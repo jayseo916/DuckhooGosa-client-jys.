@@ -23,6 +23,7 @@ class App extends React.Component {
           <Route path="/4" component={CreateProblem} />
           <Route path="/5" component={MyProblem} />
           <Route path="/6" component={MySolved} />
+          <Route path="/main" component={Main} />
         </Switch>
       </div>
     );
