@@ -30,9 +30,7 @@ class Main extends React.Component {
     });
   }
   search() {
-    fetch(
-      `http://localhost:8000/?word=${this.state.input}&genre=${this.state.currentOption}`
-    )
+    fetch(`http://localhost:8000/?word=${this.state.input}`)
       .then(res => res.json())
       .then(data => this.setState({ problems: data }))
       .catch(err => console.log(err));
