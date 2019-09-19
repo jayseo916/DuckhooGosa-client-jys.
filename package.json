@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^4.3.1",
+    "jquery": "^3.4.1",
     "lint-staged": "^9.2.5",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
