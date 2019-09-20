@@ -6,16 +6,7 @@ import Joi from "joi-browser";
 
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
-var Scroll = require("react-scroll");
 
-var Element = Scroll.Element;
-var scroll = Scroll.animateScroll;
-var scrollSpy = Scroll.scrollSpy;
-
-const styles = {
-  fontFamily: "sans-serif",
-  textAlign: "center"
-};
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
 class CreateProblem extends Component {
@@ -30,10 +21,10 @@ class CreateProblem extends Component {
       tags: Array,
       Genre: String,
       title: String,
+      date: new Date(),
       background: String,
       representImg: String,
       Problems: [], //문제 객체의 목록
-      date: new Date(),
       problemText: "", //현재 문제의 지문
       problemTextErrors: {},
       choiceInitialValue: "none",
@@ -57,9 +48,44 @@ class CreateProblem extends Component {
     });
   };
 
+  removeProblem = () => {
+    //고려사항 1. 현재 삭제할 문제가 저장되어있지 않은 경우. 2.0번을 삭제시 오른쪽으로 이동 3. 마지막 삭제시 왼쪽으로 이동 4. 중간 삭제시 오른쪽걸 땡겨옴
+    let { Problems } = this.state;
+    const { curProblem } = this.state;
+    if (curProblem === 0 && Problems.length === 1) {
+      this.viewProblem(1, 1);
+      Problems.pop();
+      this.setState({
+        Problems: Problems,
+        curProblem: 0
+      });
+      return;
+    }
+
+    if (Problems[curProblem] === undefined) {
+      alert("저장부터하세요");
+      return;
+    } else if (curProblem === Problems.length - 1) {
+      this.viewProblem(curProblem - 1);
+      Problems.pop();
+      this.setState({ Problems });
+    } else {
+      this.viewProblem(curProblem + 1);
+      Problems.shift();
+      this.setState({ Problems });
+    }
+  };
+  answerHandler = (e, v) => {
+    let answer = [...this.state.choice];
+    answer[v].answer = e.target.value;
+    this.setState({
+      choice: answer
+    });
+  };
+
   handleChoiceAnswer = (e, v) => {
     //답안지 별 텍스트 수정
-    console.log("v", v);
+
     if (e.target.type === "checkbox") {
       let answer = [...this.state.choice];
       answer[v].answer = !answer[v].answer;
@@ -103,13 +129,24 @@ class CreateProblem extends Component {
               defaultValue={this.state.choice[num].text} //
             />
             정답{"                 "}
-            <input
-              type="checkbox"
-              defaultChecked={this.state.choice[num].answer}
-              onChange={e => {
-                this.handleChoiceAnswer(e, num);
-              }}
-            />
+            {this.state.choice[1] === undefined ? ( //주관답 렌더
+              <textarea
+                onChange={e => {
+                  this.answerHandler(e, num);
+                }}
+                type="text"
+                className="form-control"
+                defaultValue={this.state.choice[num].answer}
+              />
+            ) : (
+              <input
+                type="checkbox"
+                defaultChecked={this.state.choice[num].answer}
+                onChange={e => {
+                  this.handleChoiceAnswer(e, num);
+                }}
+              />
+            )}
           </span>
         </div>
       </React.Fragment>
@@ -129,8 +166,8 @@ class CreateProblem extends Component {
     });
   };
 
-  veiwProblem = ProblemNum => {
-    if (ProblemNum < 0) {
+  viewProblem = (ProblemNum, dis) => {
+    if (ProblemNum < 0 && dis !== 1) {
       alert("이전 문제가 없습니다");
       return;
     }
@@ -189,7 +226,7 @@ class CreateProblem extends Component {
     alert("저장완료");
   };
   viewFunction = a => {
-    this.veiwProblem(this.state.curProblem + a);
+    this.viewProblem(this.state.curProblem + a);
   };
 
   render() {
@@ -234,24 +271,25 @@ class CreateProblem extends Component {
             />
           </div>
           <div>
-            <span>답안</span>
-
-            <select
-              value={this.state.choiceInitialValue}
-              onChange={this.selectHandleChange}
-            >
-              <option value="none">선택</option>
-              <option value="1">주관식</option>
-              <option value="2">보기 두개</option>
-              <option value="3">보기 세개</option>
-              <option value="4">보기 네개</option>
-              <option value="5">보기 다섯개</option>
-            </select>
-            {this.state.choice[0] && this.formTag(0, "1번")}
-            {this.state.choice[1] && this.formTag(1, "2번")}
-            {this.state.choice[2] && this.formTag(2, "3번")}
-            {this.state.choice[3] && this.formTag(3, "4번")}
-            {this.state.choice[4] && this.formTag(4, "5번")}
+            <div>
+              답안 :
+              <select
+                value={this.state.choiceInitialValue}
+                onChange={this.selectHandleChange}
+              >
+                <option value="none">선택</option>
+                <option value="1">주관식</option>
+                <option value="2">보기 두개</option>
+                <option value="3">보기 세개</option>
+                <option value="4">보기 네개</option>
+                <option value="5">보기 다섯개</option>
+              </select>
+              {this.state.choice[0] && this.formTag(0, "1번")}
+              {this.state.choice[1] && this.formTag(1, "2번")}
+              {this.state.choice[2] && this.formTag(2, "3번")}
+              {this.state.choice[3] && this.formTag(3, "4번")}
+              {this.state.choice[4] && this.formTag(4, "5번")}
+            </div>
           </div>
           <div
             className="btn-group btn-group-lg"
@@ -261,7 +299,11 @@ class CreateProblem extends Component {
             <button type="button" className="btn btn-secondary">
               제출
             </button>
-            <button type="button" className="btn btn-secondary">
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={this.removeProblem}
+            >
               삭제
             </button>
             <button

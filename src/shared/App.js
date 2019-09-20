@@ -8,8 +8,6 @@ import CreateProblem from "../components/CreateProblem";
 import MyProblem from "../pages/MyProblem";
 import MySolved from "../pages/MySolved";
 import Loading from "../pages/Loading";
-import { transitions, positions, Provider as AlertProvider } from "react-alert";
-import AlertTemplate from "react-alert-template-basic";
 import "./App.css";
 
 class App extends React.Component {
