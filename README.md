@@ -1,3 +1,14 @@
+# READ ME!
+export NODE_ENV=development
+자신의 노트북에선 터미널에서 입력후 개발 (윈도우는 다름)
+
+# Github
+FixBug.LoadingError
+Feat.CreaetProblem
+과 같이 알아먹기 성격과 동작을 반영한 브랜치 이름 및 커밋하세요. 잘못하는 사람을 지적하면 양쪽다 실력이 올라갑니다.
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
