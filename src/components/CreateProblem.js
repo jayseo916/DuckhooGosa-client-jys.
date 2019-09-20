@@ -2,14 +2,16 @@ import React, { Component } from "react";
 import { FilePond, registerPlugin } from "react-filepond";
 import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+import Joi from "joi-browser";
+
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
-import Joi from "joi-browser";
 var Scroll = require("react-scroll");
 
 var Element = Scroll.Element;
 var scroll = Scroll.animateScroll;
 var scrollSpy = Scroll.scrollSpy;
+
 const styles = {
   fontFamily: "sans-serif",
   textAlign: "center"
@@ -32,11 +34,10 @@ class CreateProblem extends Component {
       representImg: String,
       Problems: [], //문제 객체의 목록
       date: new Date(),
-      savedFiles: [], //현재 문제 파일 저장
       problemText: "", //현재 문제의 지문
       problemTextErrors: {},
       choiceInitialValue: "none",
-      choice: [{}], //문제객체 배열  => {text:,answer:} 객체 저장
+      choice: [], //문제객체 배열  => {text:,answer:} 객체 저장
       curProblem: 0 //현재 문제 번호 0~
     };
   }
@@ -99,11 +100,12 @@ class CreateProblem extends Component {
               }}
               type="text"
               className="form-control"
-              defaultValue=""
+              defaultValue={this.state.choice[num].text} //
             />
             정답{"                 "}
             <input
               type="checkbox"
+              defaultChecked={this.state.choice[num].answer}
               onChange={e => {
                 this.handleChoiceAnswer(e, num);
               }}
@@ -126,46 +128,77 @@ class CreateProblem extends Component {
       choice: arr
     });
   };
-  selectChoice = value => {};
 
-  prevButton = () => {
-    let prevProblem = this.state.curProblem - 1;
+  veiwProblem = ProblemNum => {
+    if (ProblemNum < 0) {
+      alert("이전 문제가 없습니다");
+      return;
+    }
+    if (!this.state.Problems[ProblemNum]) {
+      let newProblem = {
+        fileLink1: (this.state.files && this.state.files[0]) || null,
+        fileLink2: (this.state.files && this.state.files[1]) || null,
+        problemText: this.state.problemText,
+        choice: this.state.choice
+      };
+      let Problems = [...this.state.Problems];
+      Problems[this.state.curProblem] = newProblem;
+      this.setState({
+        ...this.state,
+        Problems: Problems,
+        curProblem: ProblemNum,
+        date: new Date(),
+        problemText: "",
+        problemTextErrors: {},
+        choiceInitialValue: "none",
+        choice: [],
+        files: []
+      });
+    } else {
+      let curProblemSet = { ...this.state.Problems[ProblemNum] };
+      let files = [];
+
+      if (curProblemSet.fileLink1) {
+        files.push(curProblemSet.fileLink1);
+      }
+      if (curProblemSet.fileLink2) {
+        files.push(curProblemSet.fileLink2);
+      }
+
+      this.setState({
+        problemText: curProblemSet.problemText,
+        choiceInitialValue: "none",
+        choice: [...curProblemSet.choice],
+        curProblem: ProblemNum,
+        files: files
+      });
+    }
   };
-
-  nextButton = () => {
-    console.log(this);
+  saveProblem = () => {
     let newProblem = {
-      fileLink1: this.state.files[0],
-      fileLink2: this.state.files[1],
+      fileLink1: (this.state.files && this.state.files[0]) || null,
+      fileLink2: (this.state.files && this.state.files[1]) || null,
       problemText: this.state.problemText,
       choice: this.state.choice
     };
     let Problems = [...this.state.Problems];
     Problems[this.state.curProblem] = newProblem;
     this.setState({
-      ...this.state,
-      Problems: Problems,
-      curProblem: this.state.curProblem + 1,
-      date: new Date(),
-      savedFiles: [],
-      problemText: "",
-      problemTextErrors: {},
-      choiceInitialValue: "none",
-      choice: [{}],
-      files: []
+      Problems
     });
-
-    console.log("넥스트", this.state);
+    alert("저장완료");
+  };
+  viewFunction = a => {
+    this.veiwProblem(this.state.curProblem + a);
   };
 
-  removefile = () => {};
   render() {
     return (
       <div>
         <form>
           <label>
             <span>
-              <div class="d-inline p-2 bg-primary text-white">
+              <div className="d-inline p-2 bg-primary text-white">
                 {this.state.curProblem + 1}번
               </div>
             </span>
@@ -173,7 +206,7 @@ class CreateProblem extends Component {
           </label>
           <FilePond
             ref={ref => (this.pond = ref)}
-            files={this.state.files}
+            files={this.state.files ? this.state.files : []}
             allowMultiple={true}
             maxFiles={2}
             server={null}
@@ -181,8 +214,11 @@ class CreateProblem extends Component {
             oninit={() => this.handleInit()}
             onupdatefiles={fileItems => {
               // Set current file objects to this.state
+
               this.setState({
-                files: fileItems.map(fileItem => fileItem.file)
+                files: fileItems.map(fileItem =>
+                  fileItem.file ? fileItem.file : []
+                )
               });
             }}
           ></FilePond>
@@ -194,28 +230,29 @@ class CreateProblem extends Component {
               onChange={this.handleChange}
               type="text"
               className="form-control"
-              defaultValue=""
+              defaultValue={this.state.problemText}
             />
           </div>
+          <div>
+            <span>답안</span>
 
-          <h2>답안 형태</h2>
-          <select
-            value={this.state.choiceInitialValue}
-            onChange={this.selectHandleChange}
-          >
-            <option value="none">선택</option>
-            <option value="1">주관식</option>
-            <option value="2">보기 두개</option>
-            <option value="3">보기 세개</option>
-            <option value="4">보기 네개</option>
-            <option value="5">보기 다섯개</option>
-          </select>
-          {this.state.choice[0] && this.formTag(0, "1번")}
-          {this.state.choice[1] && this.formTag(1, "2번")}
-          {this.state.choice[2] && this.formTag(2, "3번")}
-          {this.state.choice[3] && this.formTag(3, "4번")}
-          {this.state.choice[4] && this.formTag(4, "5번")}
-
+            <select
+              value={this.state.choiceInitialValue}
+              onChange={this.selectHandleChange}
+            >
+              <option value="none">선택</option>
+              <option value="1">주관식</option>
+              <option value="2">보기 두개</option>
+              <option value="3">보기 세개</option>
+              <option value="4">보기 네개</option>
+              <option value="5">보기 다섯개</option>
+            </select>
+            {this.state.choice[0] && this.formTag(0, "1번")}
+            {this.state.choice[1] && this.formTag(1, "2번")}
+            {this.state.choice[2] && this.formTag(2, "3번")}
+            {this.state.choice[3] && this.formTag(3, "4번")}
+            {this.state.choice[4] && this.formTag(4, "5번")}
+          </div>
           <div
             className="btn-group btn-group-lg"
             role="group"
@@ -229,15 +266,26 @@ class CreateProblem extends Component {
             </button>
             <button
               type="button"
+              className="btn btn-primary"
+              onClick={this.saveProblem}
+            >
+              저장
+            </button>
+            <button
+              type="reset"
               className="btn btn-secondary"
-              onClick={this.prevButton}
+              onClick={() => {
+                this.viewFunction(-1);
+              }}
             >
               이전문제
             </button>
             <button
               type="reset"
               className="btn btn-secondary"
-              onClick={this.nextButton}
+              onClick={() => {
+                this.viewFunction(1);
+              }}
             >
               다음문제
             </button>
