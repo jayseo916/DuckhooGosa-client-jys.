@@ -117,19 +117,3 @@ class CompleteProblem extends React.Component {
 }
 
 export default CompleteProblem;
-
-// Problems:
-//       [
-//         {
-//           "type": String,
-//           "fileLink1": String,
-//           "fileLink2": String,
-//           "problemText": String,
-//           "choice": [
-//             {
-//               "text": String,
-//               "answer": Boolean    //주관식인 경우에 불리언이 아니고 주관식의 답변인 string 저장
-//             }
-//           ]
-//         }
-//       ],
