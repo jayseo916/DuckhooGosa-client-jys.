@@ -1,14 +1,19 @@
 import React, { Component } from "react";
-import { FilePond, registerPlugin } from "react-filepond";
+import { FilePond, registerPlugin, File } from "react-filepond";
 import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+import FilePondPluginMediaPreview from "filepond-plugin-media-preview";
 import Joi from "joi-browser";
 import CompleteProblem from "./CompleteProblem";
 
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 
-registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
+registerPlugin(
+  FilePondPluginImageExifOrientation,
+  FilePondPluginImagePreview,
+  FilePondPluginMediaPreview
+);
 
 class CreateProblem extends Component {
   constructor(props) {
@@ -143,14 +148,17 @@ class CreateProblem extends Component {
               } //
             />
             {"                 "}
-            {this.state.choice[1] === undefined ? null : ( // /> //   defaultValue={this.state.choice[num].answer} //   className="form-control" //   type="text" //   }} //     this.answerHandler(e, num); //   onChange={e => { // <textarea //주관답 렌더
-              <input
-                type="checkbox"
-                defaultChecked={this.state.choice[num].answer}
-                onChange={e => {
-                  this.handleChoiceAnswer(e, num);
-                }}
-              />
+            {this.state.choice[1] === undefined ? null : (
+              <React.Fragment>
+                정답:
+                <input
+                  type="checkbox"
+                  defaultChecked={this.state.choice[num].answer}
+                  onChange={e => {
+                    this.handleChoiceAnswer(e, num);
+                  }}
+                />
+              </React.Fragment>
             )}
           </span>
         </div>
@@ -173,18 +181,21 @@ class CreateProblem extends Component {
 
   viewProblem = (ProblemNum, dis) => {
     if (ProblemNum < 0 && dis !== 1) {
+      //0번문제 에서 왼쪽으로 이동 못하게
       alert("이전 문제가 없습니다");
       return;
     }
     if (!this.state.Problems[ProblemNum]) {
+      //새로운 문제를 생성하는 경우
       let newProblem = {
         fileLink1: (this.state.files && this.state.files[0]) || null,
-        fileLink2: (this.state.files && this.state.files[1]) || null,
+
         problemText: this.state.problemText,
         choice: this.state.choice
       };
       let Problems = [...this.state.Problems];
       Problems[this.state.curProblem] = newProblem;
+
       this.setState({
         ...this.state,
         Problems: Problems,
@@ -203,9 +214,6 @@ class CreateProblem extends Component {
       if (curProblemSet.fileLink1) {
         files.push(curProblemSet.fileLink1);
       }
-      if (curProblemSet.fileLink2) {
-        files.push(curProblemSet.fileLink2);
-      }
 
       this.setState({
         problemText: curProblemSet.problemText,
@@ -219,7 +227,7 @@ class CreateProblem extends Component {
   saveProblem = () => {
     let newProblem = {
       fileLink1: (this.state.files && this.state.files[0]) || null,
-      fileLink2: (this.state.files && this.state.files[1]) || null,
+
       problemText: this.state.problemText,
       choice: this.state.choice
     };
@@ -237,7 +245,8 @@ class CreateProblem extends Component {
   //컴플릿 프로블럼 1. 완료스테이트를 추가하여 렌더링한다. 2. Problems를 인자로 받아 화면에 출력 3.수정 버튼 클릭시 마지막 문제로 돌아감
 
   complete = Problems => {
-    this.setState({ complete: true });
+    let allFiles = Problems.map(v => v.fileLink1);
+    this.setState({ complete: true, files: allFiles });
   };
   render() {
     return this.state.complete === false ? (
@@ -255,7 +264,7 @@ class CreateProblem extends Component {
             ref={ref => (this.pond = ref)}
             files={this.state.files ? this.state.files : []}
             allowMultiple={true}
-            maxFiles={2}
+            maxFiles={1}
             server={null}
             // onremovefile={this.removefile}
             oninit={() => this.handleInit()}
@@ -351,7 +360,7 @@ class CreateProblem extends Component {
         </form>
       </div>
     ) : (
-      CompleteProblem(this.state.Problems)
+      <CompleteProblem Problems={this.state.Problems} />
     );
   }
 }
