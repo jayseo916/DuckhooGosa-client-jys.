@@ -24,7 +24,10 @@ class CompleteProblem extends React.Component {
   //수정 = ViewProblems 를 이용하여 마지막 문제로 이동
 
   handleInit = () => {};
-
+  modifyProblem = () => {
+    console.log("hi");
+    this.props.changeComplete();
+  };
   render() {
     console.log("프롭스파일", this.props.imgs);
     let Problems = this.props.Problems;
@@ -81,7 +84,35 @@ class CompleteProblem extends React.Component {
       );
     });
 
-    return problems;
+    return (
+      <React.Fragment>
+        {problems}
+        <div
+          className="btn-group btn-group-lg"
+          role="group"
+          aria-label="Basic example"
+        >
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={() => {
+              this.modifyProblem();
+            }}
+          >
+            수정
+          </button>
+          <button
+            type="reset"
+            className="btn btn-primary"
+            onClick={() => {
+              this.viewFunction(1);
+            }}
+          >
+            완료
+          </button>
+        </div>
+      </React.Fragment>
+    );
   }
 }
 

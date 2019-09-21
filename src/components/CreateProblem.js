@@ -244,9 +244,20 @@ class CreateProblem extends Component {
   };
   //컴플릿 프로블럼 1. 완료스테이트를 추가하여 렌더링한다. 2. Problems를 인자로 받아 화면에 출력 3.수정 버튼 클릭시 마지막 문제로 돌아감
 
-  complete = Problems => {
-    let allFiles = Problems.map(v => v.fileLink1);
-    this.setState({ complete: true, files: allFiles });
+  changeComplete = () => {
+    this.setState({
+      complete: false
+    });
+  };
+  completeFun = Problems => {
+    console.log("hi");
+    if (Problems.length === 0) {
+      alert("제출할 문제가 없습니다");
+      return;
+    }
+
+    // let allFiles = Problems.map(v => v.fileLink1);
+    this.setState({ complete: true });
   };
   render() {
     return this.state.complete === false ? (
@@ -319,7 +330,7 @@ class CreateProblem extends Component {
               type="button"
               className="btn btn-secondary"
               onClick={() => {
-                this.complete(this.state.Problems);
+                this.completeFun(this.state.Problems);
               }}
             >
               제출
@@ -360,7 +371,11 @@ class CreateProblem extends Component {
         </form>
       </div>
     ) : (
-      <CompleteProblem Problems={this.state.Problems} />
+      <CompleteProblem
+        Problems={this.state.Problems}
+        complete={this.state.complete}
+        changeComplete={this.changeComplete}
+      />
     );
   }
 }
