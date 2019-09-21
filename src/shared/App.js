@@ -8,6 +8,7 @@ import MyProblem from "../pages/MyProblem";
 import MySolved from "../pages/MySolved";
 import Loading from "../pages/Loading";
 import Login from "../pages/Login";
+import Complete from "../components/CompleteProblem";
 import "./App.css";
 
 class App extends React.Component {

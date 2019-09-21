@@ -3,6 +3,7 @@ import { FilePond, registerPlugin } from "react-filepond";
 import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import Joi from "joi-browser";
+import CompleteProblem from "./CompleteProblem";
 
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
@@ -27,14 +28,15 @@ class CreateProblem extends Component {
       Problems: [], //문제 객체의 목록
       problemText: "", //현재 문제의 지문
       problemTextErrors: {},
+      complete: false,
       choiceInitialValue: "none",
       choice: [], //문제객체 배열  => {text:,answer:} 객체 저장
       curProblem: 0 //현재 문제 번호 0~
     };
   }
-  problemTextSchema = {
-    Problemtext: Joi.string().required()
-  };
+  // problemTextSchema = {
+  //   Problemtext: Joi.string().required()
+  // };
 
   componentDidMount() {}
   handleInit() {
@@ -76,6 +78,7 @@ class CreateProblem extends Component {
     }
   };
   answerHandler = (e, v) => {
+    //주관식 답변 저장
     let answer = [...this.state.choice];
     answer[v].answer = e.target.value;
     this.setState({
@@ -86,14 +89,23 @@ class CreateProblem extends Component {
   handleChoiceAnswer = (e, v) => {
     //답안지 별 텍스트 수정
 
+    let answer = [...this.state.choice];
+    console.log("hi", e.target.type, answer.length);
     if (e.target.type === "checkbox") {
-      let answer = [...this.state.choice];
       answer[v].answer = !answer[v].answer;
       this.setState({
         choice: answer
       });
+    } else if (e.target.type === "textarea" && answer.length === 1) {
+      // let answer = [...this.state.choice];
+
+      answer[v].answer = e.target.value;
+      this.setState({
+        choice: answer
+      });
+      console.log("hi", answer);
     } else {
-      let answer = [...this.state.choice];
+      // let answer = [...this.state.choice];
       answer[v].text = e.target.value;
       this.setState({
         choice: answer
@@ -117,7 +129,7 @@ class CreateProblem extends Component {
       <React.Fragment>
         <div className="form-group">
           <label htmlFor="" className="htmlFor">
-            {this.state.choice[1] === undefined ? "주관식" : label}
+            {this.state.choice[1] === undefined ? "주관식정답" : label}
           </label>
           <span>
             <textarea
@@ -126,19 +138,12 @@ class CreateProblem extends Component {
               }}
               type="text"
               className="form-control"
-              defaultValue={this.state.choice[num].text} //
+              defaultValue={
+                this.state.choice[num].text || this.state.choice[num].answer
+              } //
             />
-            정답{"                 "}
-            {this.state.choice[1] === undefined ? ( //주관답 렌더
-              <textarea
-                onChange={e => {
-                  this.answerHandler(e, num);
-                }}
-                type="text"
-                className="form-control"
-                defaultValue={this.state.choice[num].answer}
-              />
-            ) : (
+            {"                 "}
+            {this.state.choice[1] === undefined ? null : ( // /> //   defaultValue={this.state.choice[num].answer} //   className="form-control" //   type="text" //   }} //     this.answerHandler(e, num); //   onChange={e => { // <textarea //주관답 렌더
               <input
                 type="checkbox"
                 defaultChecked={this.state.choice[num].answer}
@@ -225,12 +230,17 @@ class CreateProblem extends Component {
     });
     alert("저장완료");
   };
+
   viewFunction = a => {
     this.viewProblem(this.state.curProblem + a);
   };
+  //컴플릿 프로블럼 1. 완료스테이트를 추가하여 렌더링한다. 2. Problems를 인자로 받아 화면에 출력 3.수정 버튼 클릭시 마지막 문제로 돌아감
 
+  complete = Problems => {
+    this.setState({ complete: true });
+  };
   render() {
-    return (
+    return this.state.complete === false ? (
       <div>
         <form>
           <label>
@@ -296,7 +306,13 @@ class CreateProblem extends Component {
             role="group"
             aria-label="Basic example"
           >
-            <button type="button" className="btn btn-secondary">
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => {
+                this.complete(this.state.Problems);
+              }}
+            >
               제출
             </button>
             <button
@@ -334,6 +350,8 @@ class CreateProblem extends Component {
           </div>
         </form>
       </div>
+    ) : (
+      CompleteProblem(this.state.Problems)
     );
   }
 }
