@@ -8,6 +8,7 @@ import MyProblem from "../pages/MyProblem";
 import MySolved from "../pages/MySolved";
 import Loading from "../pages/Loading";
 import Login from "../pages/Login";
+import FooterMenubar from "../components/FooterMenubar";
 import "./App.css";
 
 class App extends React.Component {
@@ -27,13 +28,14 @@ class App extends React.Component {
   };
 
   render() {
+    const { email, expires_at } = this.state;
     return (
       <div className="App">
         <Switch>
           <Route path="/" exact component={Loading} />
           <Route path="/problem/main" component={CreateProblem} />
-          <Route path="/1" component={SelectGenre} />
-          <Route path="/2" component={SelectTheme} />
+          <Route path="/SelectGenre" component={SelectGenre} />
+          <Route path="/SelectTheme" component={SelectTheme} />
           <Route path="/4" component={CreateProblem} />
           <Route path="/5" component={MyProblem} />
           <Route path="/6" component={MySolved} />
@@ -45,6 +47,7 @@ class App extends React.Component {
             )}
           />
         </Switch>
+        <FooterMenubar email={email} expires={expires_at}/>
       </div>
     );
   }

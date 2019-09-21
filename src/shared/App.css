@@ -31,3 +31,34 @@
     transform: rotate(360deg);
   }
 }
+@media screen and (max-width: 767px) {
+  #footer-menubar1 {
+    display: none;
+  }
+}
+@media screen and (min-width: 768px) {
+  #footer-menubar1 ul li {
+    list-style: none;
+    color: white;
+    background-color: #222222;
+    float: left;
+    line-height: 30px;
+    vertical-align: middle;
+    text-align: center;
+    position: relative;
+    bottom: 0;
+  }
+  #footer-menubar1 .menuLink {
+    text-decoration: none;
+    color: white;
+    display: block;
+    width: 230px;
+    font-size: 12px;
+    font-weight: bold;
+    font-family: 'Trebuchet MS', Dotum, Arial;
+  }
+  #footer-menubar1 .menuLink:hover {
+    color: rgb(255, 136, 0);
+    background-color: #f0d4d4;
+  }
+}
