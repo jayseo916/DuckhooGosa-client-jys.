@@ -57,7 +57,7 @@ class Main extends React.Component {
     return (
       <div className="container">
         <div className="top-search-bar">
-          장르(동작안함)
+          장르
           <select
             id="currentGenre"
             className="form-control"
@@ -87,12 +87,11 @@ class Main extends React.Component {
           문제 모음집
           {this.state.problems.map(item =>
             this.state.input === "" && this.state.currentOption === "" ? (
-              <div key={item._id} className="">
+              <div key={item._id} className="problems">
                 <a href="/#">
                   <img
                     src={item.representImg}
-                    className="img-responsive"
-                    alt="Responsive image"
+                    alt="Responsive"
                     height="200"
                     width="300"
                     onClick={e => this.solvedProblem(e, item._id)}
@@ -104,13 +103,13 @@ class Main extends React.Component {
                 </a>
               </div>
             ) : item.title.indexOf(this.state.input) > -1 ||
-              item.tags[0].replace(/\#/g, "").indexOf(this.state.input) > -1 ? (
-              <div key={item._id}>
+              (item.tags[0].replace(/\#/g, "").indexOf(this.state.input) > -1 &&
+                this.state.currentOption === item.genre) ? (
+              <div key={item._id} className="problems">
                 <a href="/#">
                   <img
                     src={item.representImg}
-                    className="img-responsive"
-                    alt="Responsive image"
+                    alt="Responsive"
                     height="200"
                     width="300"
                     onClick={e => this.solvedProblem(e, item._id)}

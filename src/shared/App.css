@@ -45,14 +45,40 @@
     line-height: 30px;
     vertical-align: middle;
     text-align: center;
-    position: relative;
+    position: fixed;
     bottom: 0;
+    margin-bottom: 0px;
+  }
+  .menuLink1 {
+    position: fixed;
+    left: 0%;
+    width: 20%;
+  }
+  .menuLink2 {
+    position: fixed;
+    left: 20%;
+    width: 20%;
+  }
+  .menuLink3 {
+    position: fixed;
+    left: 40%;
+    width: 20%;
+  }
+  .menuLink4 {
+    position: fixed;
+    left: 60%;
+    width: 20%;
+  }
+  .menuLink5 {
+    position: fixed;
+    left: 80%;
+    width: 20%;
   }
   #footer-menubar1 .menuLink {
     text-decoration: none;
     color: white;
     display: block;
-    width: 230px;
+    /* width: 260px; */
     font-size: 12px;
     font-weight: bold;
     font-family: 'Trebuchet MS', Dotum, Arial;
