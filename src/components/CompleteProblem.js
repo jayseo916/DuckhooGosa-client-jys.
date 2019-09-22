@@ -70,7 +70,7 @@ class CompleteProblem extends React.Component {
     });
 
     let problems = Problems.map((problem, num) => {
-      let curFile = (
+      let curFile = problem.fileLink1 ? (
         <FilePond
           ref={ref => (this.pond = ref)}
           files={problem.fileLink1 ? [problem.fileLink1] : undefined}
@@ -82,7 +82,7 @@ class CompleteProblem extends React.Component {
           // onremovefile={this.removefile}
           oninit={() => this.handleInit()}
         ></FilePond>
-      );
+      ) : null;
 
       let choices;
       if (problem.choice.length === 1) {
