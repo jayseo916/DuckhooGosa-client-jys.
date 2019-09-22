@@ -3,7 +3,7 @@ import React from "react";
 class SelectGenre extends React.Component {
   genreSubmit(paramGenre) {
     localStorage.setItem("genre", paramGenre);
-    this.props.history.push("/2"); // 테마선택하는 페이지로 넘기기
+    this.props.history.push("/SelectTheme"); // 테마선택하는 페이지로 넘기기
   }
   render() {
     return (
