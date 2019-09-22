@@ -8,6 +8,7 @@ import MyProblem from "../pages/MyProblem";
 import MySolved from "../pages/MySolved";
 import Loading from "../pages/Loading";
 import Login from "../pages/Login";
+import Profile from "../pages/Profile";
 import FooterMenubar from "../components/FooterMenubar";
 import "./App.css";
 
@@ -39,6 +40,7 @@ class App extends React.Component {
           <Route path="/4" component={CreateProblem} />
           <Route path="/5" component={MyProblem} />
           <Route path="/6" component={MySolved} />
+          <Route path="/Profile" component={Profile}/>
           <Route path="/main" render={props => <Main {...props} />} />
           <Route
             path="/login"
