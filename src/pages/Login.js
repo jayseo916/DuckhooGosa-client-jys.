@@ -12,32 +12,30 @@ class Login extends React.Component {
     };
   }
 
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
   responseGoogle = res => {
     let data = {
       email: res.profileObj.email,
-      expires_at: res.tokenObj.expires_at+ res.tokenObj.expires_in
+      expires_at: res.tokenObj.expires_at + res.tokenObj.expires_in
     };
     this.props.setUserInfo(data);
-    localStorage.setItem("loginToken", JSON.stringify(res));
+    localStorage.setItem("authData", JSON.stringify(res));
     this.props.history.push("/main");
   };
-  responseFail = err => {
-  };
+  responseFail = err => {};
 
   render() {
     return (
-        <div className="Login-page">
-          <h1> 로그인 </h1>
-          <GoogleLogin
-              clientId={process.env.REACT_APP_Google}
-              buttonText="Google"
-              onSuccess={this.responseGoogle}
-              onFailure={this.responseFail}
-          />
-        </div>
+      <div className="Login-page">
+        <h1> 로그인 </h1>
+        <GoogleLogin
+          clientId={process.env.REACT_APP_Google}
+          buttonText="Google"
+          onSuccess={this.responseGoogle}
+          onFailure={this.responseFail}
+        />
+      </div>
     );
   }
 }

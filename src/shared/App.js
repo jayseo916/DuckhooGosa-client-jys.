@@ -49,7 +49,7 @@ class App extends React.Component {
             )}
           />
         </Switch>
-        <FooterMenubar email={email} expires={expires_at}/>
+        <FooterMenubar email={email} expires={expires_at} />
       </div>
     );
   }
