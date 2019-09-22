@@ -1,6 +1,6 @@
 import React from "react";
-import {Redirect} from "react-router-dom";
-import {GoogleLogin} from "react-google-login";
+import { Redirect } from "react-router-dom";
+import { GoogleLogin } from "react-google-login";
 import "bootstrap/dist/css/bootstrap.css";
 import "../shared/App.css";
 
