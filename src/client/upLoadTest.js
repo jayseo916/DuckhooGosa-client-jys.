@@ -9,7 +9,6 @@ class UpLoadTest extends Component {
     let result = UploadToS3(dir, files.files[0], link => {
       console.log("이건 받아온 링크", link);
     });
-    console.log(result);
   };
 
   render() {
