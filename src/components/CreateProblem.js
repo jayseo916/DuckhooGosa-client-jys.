@@ -3,6 +3,7 @@ import { FilePond, registerPlugin, File } from "react-filepond";
 import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import FilePondPluginMediaPreview from "filepond-plugin-media-preview";
+import FilePondPluginImageValidateSize from "filepond-plugin-image-validate-size";
 import Joi from "joi-browser";
 import CompleteProblem from "./CompleteProblem";
 
@@ -12,7 +13,8 @@ import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 registerPlugin(
   FilePondPluginImageExifOrientation,
   FilePondPluginImagePreview,
-  FilePondPluginMediaPreview
+  FilePondPluginMediaPreview,
+  FilePondPluginImageValidateSize
 );
 
 class CreateProblem extends Component {
@@ -25,7 +27,7 @@ class CreateProblem extends Component {
       _id: String,
       email: String,
       tags: Array,
-      Genre: String,
+      genre: String,
       title: String,
       date: new Date(),
       background: String,
@@ -373,7 +375,7 @@ class CreateProblem extends Component {
     ) : (
       <CompleteProblem
         Problems={this.state.Problems}
-        complete={this.state.complete}
+        problemState={this.state}
         changeComplete={this.changeComplete}
       />
     );

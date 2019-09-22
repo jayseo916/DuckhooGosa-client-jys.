@@ -4,12 +4,16 @@ import FilePondPluginFilePoster from "filepond-plugin-file-poster";
 import "filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import FilePondPluginMediaPreview from "filepond-plugin-media-preview";
+import FilePondPluginImageValidateSize from "filepond-plugin-image-validate-size";
 
+import axios from "axios";
+let endPoint = "http://localhost:8000/problem";
 // Register the plugin
 registerPlugin(
   FilePondPluginFilePoster,
   FilePondPluginImagePreview,
-  FilePondPluginMediaPreview
+  FilePondPluginMediaPreview,
+  FilePondPluginImageValidateSize
 );
 
 class CompleteProblem extends React.Component {
@@ -28,6 +32,35 @@ class CompleteProblem extends React.Component {
     console.log("hi");
     this.props.changeComplete();
   };
+  postProblems = async () => {
+    const {
+      email,
+      tags,
+      genre,
+      title,
+      date,
+      background,
+      representImg,
+      Problems
+    } = this.props.problemState;
+    const obj = {
+      email: email,
+      tags: tags,
+      genre: genre,
+      title: title,
+      date: date,
+      background: background,
+      representImg: representImg,
+      Problems: Problems
+    };
+    // let testApi = "https://jsonplaceholder.typicode.com/posts";
+
+    const { data: problemId } = await axios
+      .post(endPoint, obj)
+      .catch(err => console.error(err));
+    console.log("data", problemId);
+  };
+
   render() {
     console.log("프롭스파일", this.props.imgs);
     let Problems = this.props.Problems;
@@ -43,7 +76,7 @@ class CompleteProblem extends React.Component {
           files={problem.fileLink1 ? [problem.fileLink1] : undefined}
           disabled="true"
           allowMultiple={true}
-          maxFiles={31}
+          maxFiles={1}
           labelldle=""
           server={null}
           // onremovefile={this.removefile}
@@ -105,7 +138,7 @@ class CompleteProblem extends React.Component {
             type="reset"
             className="btn btn-primary"
             onClick={() => {
-              this.viewFunction(1);
+              this.postProblems();
             }}
           >
             완료
