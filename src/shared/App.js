@@ -10,6 +10,7 @@ import Loading from "../pages/Loading";
 import Login from "../pages/Login";
 import Complete from "../components/CompleteProblem";
 import FooterMenubar from "../components/FooterMenubar";
+import UpLoadTest from "../client/upLoadTest";
 import "./App.css";
 
 class App extends React.Component {
@@ -40,6 +41,7 @@ class App extends React.Component {
           <Route path="/4" component={CreateProblem} />
           <Route path="/5" component={MyProblem} />
           <Route path="/6" component={MySolved} />
+          <Route path="/UpLoadTest" component={UpLoadTest} />
           <Route path="/main" render={props => <Main {...props} />} />
           <Route
             path="/login"
@@ -48,7 +50,7 @@ class App extends React.Component {
             )}
           />
         </Switch>
-        <FooterMenubar email={email} expires={expires_at}/>
+        <FooterMenubar email={email} expires={expires_at} />
       </div>
     );
   }
