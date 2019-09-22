@@ -51,7 +51,7 @@ class Loading extends React.Component {
       <div className="App-header">
         {!this.state.done ? (
           <FadeIn>
-            <div class="d-flex justify-content-center align-items-center">
+            <div className="d-flex justify-content-center align-items-center">
               <h1>Welcome ^^</h1>
               {!this.state.loading ? (
                 <Lottie options={defaultOptions} height={120} width={120} />
