@@ -18,7 +18,7 @@ class UpLoadTest extends Component {
         <button
           id="uploadButton"
           onClick={() => {
-            this.uploadAndGetLink("problem_1");
+            this.uploadAndGetLink("problem_2");
           }}
         >
           누르면 업로드 합니다
