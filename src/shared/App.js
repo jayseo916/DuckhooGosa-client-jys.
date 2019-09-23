@@ -8,7 +8,7 @@ import MyProblem from "../pages/MyProblem";
 import MySolved from "../pages/MySolved";
 import Loading from "../pages/Loading";
 import Login from "../pages/Login";
-import Profile from "../pages/profile";
+import Profile from "../pages/Profile";
 import Complete from "../components/CompleteProblem";
 import FooterMenubar from "../components/FooterMenubar";
 import UpLoadTest from "../client/upLoadTest";
@@ -40,8 +40,8 @@ class App extends React.Component {
           <Route path="/SelectGenre" component={SelectGenre} />
           <Route path="/SelectTheme" component={SelectTheme} />
           <Route path="/4" component={CreateProblem} />
-          <Route path="/5" component={MyProblem} />
-          <Route path="/6" component={MySolved} />
+          <Route path="/MyProblem" component={MyProblem} />
+          <Route path="/MySolved" component={MySolved} />
           <Route path="/Profile" component={Profile}/>
           <Route path="/UpLoadTest" component={UpLoadTest} />
           <Route path="/main" render={props => <Main {...props} />} />
