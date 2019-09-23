@@ -5,7 +5,12 @@ const bucketRegion = "ap-northeast-2";
 const IdentityPoolId = "ap-northeast-2:ba805140-83ec-4793-8736-0641dd7d6f71";
 
 export function UploadToS3(problemTitle, file, callback) {
-  let authData = JSON.parse(localStorage.getItem("authData"));
+  let authData;
+  if (localStorage["authData"] !== undefined) {
+    authData = JSON.parse(localStorage.getItem("authData"));
+  } else {
+    throw Error("로그인 필요함");
+  }
   console.log("자격증명 토큰", { "accounts.google.com": authData.tokenId });
   AWS.config.update({
     region: bucketRegion,
