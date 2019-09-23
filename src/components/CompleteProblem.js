@@ -1,20 +1,37 @@
 import React from "react";
-import { FilePond, File, registerPlugin } from "react-filepond";
+import AWS from "aws-sdk";
+import { Link } from "react-router-dom";
+import {
+  FilePond,
+  File,
+  registerPlugin,
+  create,
+  setOptions
+} from "react-filepond";
 import FilePondPluginFilePoster from "filepond-plugin-file-poster";
 import "filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css";
+import "filepond/dist/filepond.min.css";
+
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import FilePondPluginMediaPreview from "filepond-plugin-media-preview";
 import FilePondPluginImageValidateSize from "filepond-plugin-image-validate-size";
-
+import FilePondPluginFileEncode from "filepond-plugin-file-encode";
 import axios from "axios";
+import { UploadToS3 } from "../client/upLoad";
+import { nullLiteral } from "@babel/types";
 let endPoint = "http://localhost:8000/problem";
 // Register the plugin
 registerPlugin(
   FilePondPluginFilePoster,
   FilePondPluginImagePreview,
   FilePondPluginMediaPreview,
-  FilePondPluginImageValidateSize
+  FilePondPluginImageValidateSize,
+  FilePondPluginFileEncode
 );
+
+const albumBucketName = "duckhoogosa";
+const bucketRegion = "ap-northeast-2";
+const IdentityPoolId = "ap-northeast-2:ba805140-83ec-4793-8736-0641dd7d6f71";
 
 class CompleteProblem extends React.Component {
   constructor(props) {
@@ -27,48 +44,82 @@ class CompleteProblem extends React.Component {
   //제출 = Problems 를 이용하여 쭉 출력 => 완료버튼 : POST 하고 main으로 이동
   //수정 = ViewProblems 를 이용하여 마지막 문제로 이동
 
+  componentDidMount() {
+    let Problems = this.props.Problems;
+
+    this.setState({
+      allFiles: Problems
+    });
+  }
+
   handleInit = () => {};
   modifyProblem = () => {
     console.log("hi");
     this.props.changeComplete();
   };
-  postProblems = async () => {
-    const {
-      email,
-      tags,
-      genre,
-      title,
-      date,
-      background,
-      representImg,
-      Problems
-    } = this.props.problemState;
-    const obj = {
-      email: email,
-      tags: tags,
-      genre: genre,
-      title: title,
-      date: date,
-      background: background,
-      representImg: representImg,
-      Problems: Problems
-    };
-    // let testApi = "https://jsonplaceholder.typicode.com/posts";
-
-    const { data: problemId } = await axios
-      .post(endPoint, obj)
-      .catch(err => console.error(err));
-    console.log("data", problemId);
-  };
-
-  render() {
-    console.log("프롭스파일", this.props.imgs);
-    let Problems = this.props.Problems;
-
-    let imgs = Problems.map(problem => {
-      return problem.fileLink1 ? problem.fileLink1 : [];
+  uploadAndGetLink = dir => {
+    let promise = [];
+    this.props.Problems.forEach((problem, num) => {
+      if (problem.fileLink1) {
+        promise.push(
+          new Promise((resolve, reject) => {
+            try {
+              UploadToS3(dir, problem.fileLink1, link => {
+                resolve(link);
+              });
+            } catch (ex) {
+              reject(ex);
+            }
+          })
+        );
+      } else {
+        return null;
+      }
     });
 
+    Promise.all(promise)
+      .then(v => {
+        let problems = this.props.Problems.map((problem, num) => {
+          problem.fileLink1 = promise[num];
+          return problem;
+        });
+
+        const {
+          email,
+          tags,
+          genre,
+          title,
+          date,
+          representImg,
+          background
+        } = this.props;
+
+        let obj = {
+          email: email,
+          tags: tags,
+          genre: genre,
+          title: title,
+          date: date,
+          representImg: representImg,
+          background: background,
+          problems: problems
+        };
+        // await axios.post("http://localhost:8000/problem", obj).catch(err => {
+        //   console.log(err);
+        // });
+
+        console.log("보내는 객체", obj);
+      })
+      .catch(ex => {
+        console.error(ex);
+      });
+  };
+  postProblems = async () => {
+    this.uploadAndGetLink("file1");
+  };
+
+  loadProblems = () => {
+    let Problems = this.props.Problems;
     let problems = Problems.map((problem, num) => {
       let curFile = problem.fileLink1 ? (
         <FilePond
@@ -117,6 +168,12 @@ class CompleteProblem extends React.Component {
       );
     });
 
+    return problems;
+  };
+
+  render() {
+    const problems = this.loadProblems();
+
     return (
       <React.Fragment>
         {problems}
@@ -134,7 +191,9 @@ class CompleteProblem extends React.Component {
           >
             수정
           </button>
-          <button
+
+          <Link
+            to="problem/main"
             type="reset"
             className="btn btn-primary"
             onClick={() => {
@@ -142,7 +201,7 @@ class CompleteProblem extends React.Component {
             }}
           >
             완료
-          </button>
+          </Link>
         </div>
       </React.Fragment>
     );

@@ -35,10 +35,10 @@ class App extends React.Component {
       <div className="App">
         <Switch>
           <Route path="/" exact component={Loading} />
-          <Route path="/problem/main" component={CreateProblem} />
+          <Route path="/problem/main" component={Main} />
           <Route path="/SelectGenre" component={SelectGenre} />
           <Route path="/SelectTheme" component={SelectTheme} />
-          <Route path="/4" component={CreateProblem} />
+          <Route path="/createProblem" component={CreateProblem} />
           <Route path="/5" component={MyProblem} />
           <Route path="/6" component={MySolved} />
           <Route path="/UpLoadTest" component={UpLoadTest} />
