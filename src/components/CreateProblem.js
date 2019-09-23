@@ -38,7 +38,7 @@ class CreateProblem extends Component {
       complete: false,
       choiceInitialValue: "none",
       choice: [], //문제객체 배열  => {text:,answer:} 객체 저장
-      curProblem: 0 //현재 문제 번호 0~
+      curProblem: 0 //현재 문제 번호 0~,
     };
   }
   // problemTextSchema = {

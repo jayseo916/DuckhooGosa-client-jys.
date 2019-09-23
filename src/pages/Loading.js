@@ -63,7 +63,7 @@ class Loading extends React.Component {
         ) : (
           <div>
             <h1>DuckhooGosad</h1>
-            <Redirect to="/problem/main" />
+            <Redirect to="/login" />
           </div>
         )}
       </div>
