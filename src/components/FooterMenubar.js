@@ -22,12 +22,12 @@ class FooterMenubar extends React.Component {
             </Link>
           </li>
           <li className="menuLink4">
-            <Link className="menuLink" to="/CreateProblem">
+            <Link className="menuLink" to="/createProblem">
               만들기
             </Link>
           </li>
           <li className="menuLink5">
-            <Link className="menuLink" to="/Profile">
+            <Link className="menuLink" to="/profile">
               프로필
             </Link>
           </li>

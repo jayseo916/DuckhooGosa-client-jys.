@@ -40,13 +40,13 @@ class SelectTheme extends React.Component {
         // const formData = new FormData();
         // formData.append("file", this.state.selectedFile);
         localStorage.setItem("title", this.state.title);
-        this.props.history.push("/4");
+        this.props.history.push("/createProblem");
       } else {
         console.log("state.selectedFile있음");
         // const formData = new FormData();
         // formData.append("file", this.state.selectedFile);
         localStorage.setItem("title", this.state.title);
-        this.props.history.push("/4");
+        this.props.history.push("/createProblem");
       }
     }
   }

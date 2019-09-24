@@ -31,7 +31,7 @@ export function UploadToS3(problemTitle, file, callback) {
   let ProblemDirKey = encodeURIComponent(problemTitle) + "/";
   let photoKey = ProblemDirKey + fileName;
   console.log(file, "실전!", ProblemDirKey, photoKey);
-  s3.upload(
+  return s3.upload(
     {
       Key: photoKey,
       Body: file,
@@ -39,10 +39,10 @@ export function UploadToS3(problemTitle, file, callback) {
     },
     (err, data) => {
       if (err) {
-        console.log(err);
+        console.error(err);
         return alert("There was an error uploading your photo: ", err.message);
       }
-      alert("Successfully uploaded photo.");
+      console.log("Successfully uploaded photo.");
       if (callback) {
         callback(data.Location);
       }

@@ -19,6 +19,7 @@ class Login extends React.Component {
       email: res.profileObj.email,
       expires_at: res.tokenObj.expires_at + res.tokenObj.expires_in
     };
+    console.log("로긴함수", this.props);
     this.props.setUserInfo(data);
     localStorage.setItem("authData", JSON.stringify(res));
     this.props.history.push("/main");
