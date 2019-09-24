@@ -66,7 +66,8 @@ class SelectTheme extends React.Component {
     }
   }
   render() {
-    // let count = 0;
+    const bgImg = this.state.selectedBgImg;
+    const repreImg = this.state.selectedRepreFile;
     return (
       <div className="currentGenre">
         <p>현재 선택된 장르:{localStorage.getItem("genre")}</p>
@@ -86,13 +87,16 @@ class SelectTheme extends React.Component {
           name="files[]"
           onChange={e => this.fileUpload1(e)}
         ></input>
+        <div>{repreImg}</div>
         <br></br>
         <div>문제지 배경화면을 골라주세요</div>
         <input
           id="inputFile2"
           type="file"
+          name="files[]"
           onChange={e => this.fileUpload2(e)}
         ></input>
+        <div>{bgImg}</div>
         <button onClick={() => this.clickHandler()}>문제 제작하기</button>
       </div>
     );
