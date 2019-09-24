@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import Main from "../pages/Main";
 import SelectGenre from "../components/SelectGenre";
 import SelectTheme from "../components/SelectTheme";
@@ -8,9 +8,10 @@ import MyProblem from "../pages/MyProblem";
 import MySolved from "../pages/MySolved";
 import Loading from "../pages/Loading";
 import Login from "../pages/Login";
-import Complete from "../components/CompleteProblem";
 import FooterMenubar from "../components/FooterMenubar";
 import UpLoadTest from "../client/upLoadTest";
+import SolvingProblem from "../pages/SolvingProblem";
+import NotFound from "../pages/NotFound";
 import "./App.css";
 
 class App extends React.Component {
@@ -41,6 +42,8 @@ class App extends React.Component {
           <Route path="/createProblem" component={CreateProblem} />
           <Route path="/5" component={MyProblem} />
           <Route path="/6" component={MySolved} />
+          <Route path="/not-found" component={NotFound} />
+          <Route path="/SolvingProblem/:id" component={SolvingProblem} />
           <Route path="/UpLoadTest" component={UpLoadTest} />
           <Route path="/main" render={props => <Main {...props} />} />
           <Route
@@ -49,6 +52,7 @@ class App extends React.Component {
               <Login {...props} setUserInfo={this.setUserInfo} />
             )}
           />
+          <Redirect to="/not-found" />
         </Switch>
         <FooterMenubar email={email} expires={expires_at} />
       </div>
