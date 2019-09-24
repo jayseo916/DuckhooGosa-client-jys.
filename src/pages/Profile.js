@@ -139,7 +139,7 @@ class Profile extends Component {
       alert("사진을 업로드해 주세요.")
     }else{
       // axios.post("http://localhost:8000/account/img",{
-      //   img: this.state.curImg[0].name
+      //   img: this.state.curImg
       // })
       // .then(res => console.log(res))
       // .catch(err => console.log("사진 업로드 요청관련에러:"+err));
@@ -242,7 +242,7 @@ class Profile extends Component {
         </div>
         <div>
           <Link to={{
-            pathname:"/MySolved",
+            pathname:"/mySolved",
             state: {
               userInfo: this.state.userInfo
             }
@@ -252,7 +252,7 @@ class Profile extends Component {
             </button>
           </Link>
           <Link to={{
-            pathname:"/MyProblem",
+            pathname:"/myProblem",
             state:{
               userInfo: this.state.userInfo
             }
