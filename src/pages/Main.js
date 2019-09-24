@@ -1,6 +1,7 @@
 import React from "react";
 //import axios from "axios";
 import { fakeData } from "../fakeData";
+import { Route, Switch, Link, Redirect } from "react-router-dom";
 import "./Main.css";
 
 class Main extends React.Component {
@@ -46,7 +47,8 @@ class Main extends React.Component {
   // }
   solvedProblem(e, id) {
     e.preventDefault();
-    alert("해당문제 id:" + id);
+    this.props.history.push(`/SolvingProblem/${id}`);
+    // alert("해당문제 id:" + id);
     // axios
     //   .get(`http://localhost:8000/problem?id=${id}`)
     //   .then(item => this.props.history.push("/SolvedProblem"))
