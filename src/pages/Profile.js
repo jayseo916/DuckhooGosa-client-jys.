@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 // import axios from "axios";
-import { Link }  from "react-router-dom";
+import { Link } from "react-router-dom";
 
 class Profile extends Component {
   constructor(props) {
@@ -28,7 +28,7 @@ class Profile extends Component {
         solutions: [
           {
             problem_id: "1",
-            solved_date: new Date().toLocaleDateString(),
+            solved_date: new Date()-1000*60*60*24*1000,
             answer: [
               "a",
               "b",
@@ -50,11 +50,15 @@ class Profile extends Component {
               2,
               4,
               1
-            ]
+            ],
+            successRate: 50,
+            title: "바보대전1",
+            img:
+              "https://duckhoogosa.s3.ap-northeast-2.amazonaws.com/practice01/title-image-example.jpg"
           },
           {
             problem_id: "2",
-            solved_date: new Date(),
+            solved_date: new Date()-1000*60*60*24*10000,
             answer: [
               "a",
               "b",
@@ -76,11 +80,15 @@ class Profile extends Component {
               2,
               4,
               1
-            ]
+            ],
+            successRate: 20,
+            title: "바보대전2",
+            img:
+              "https://duckhoogosa.s3.ap-northeast-2.amazonaws.com/practice01/title-image-example.jpg"
           },
           {
             problem_id: "3",
-            solved_date: new Date(),
+            solved_date: new Date()-1000*60*60*24*100000,
             answer: [
               "a",
               "b",
@@ -102,7 +110,11 @@ class Profile extends Component {
               2,
               4,
               1
-            ]
+            ],
+            successRate: 70,
+            title: "바보대전3",
+            img:
+              "https://duckhoogosa.s3.ap-northeast-2.amazonaws.com/practice01/title-image-example.jpg"
           }
         ]
       }
@@ -135,9 +147,9 @@ class Profile extends Component {
     }
   }
   uploadImage2() {
-    if(!this.state.curImg){
-      alert("사진을 업로드해 주세요.")
-    }else{
+    if (!this.state.curImg) {
+      alert("사진을 업로드해 주세요.");
+    } else {
       // axios.post("http://localhost:8000/account/img",{
       //   img: this.state.curImg
       // })
@@ -149,7 +161,7 @@ class Profile extends Component {
           ...this.state.userInfo,
           img: this.state.curImg
         }
-      })
+      });
     }
   }
   changeNick1() {
@@ -160,9 +172,9 @@ class Profile extends Component {
     this.setState({ curNick: notEmpty });
   }
   changeNick2() {
-    if(!this.state.curNick){
-      alert("바꿀 닉네임을 적어주세요")
-    }else{
+    if (!this.state.curNick) {
+      alert("바꿀 닉네임을 적어주세요");
+    } else {
       // axios.post("http://localhost:8000/account/nick", {
       //   nick: this.state.curNick
       // })
@@ -193,7 +205,12 @@ class Profile extends Component {
         <div>
           {!imgBtn && img ? (
             <div>
-              <img src={img} alt="본인계정이미지" height="200" width="300"></img>
+              <img
+                src={img}
+                alt="본인계정이미지"
+                height="200"
+                width="300"
+              ></img>
               <button onClick={() => this.uploadImage1()}>이미지 변경</button>
             </div>
           ) : !imgBtn && !img ? (
@@ -206,7 +223,7 @@ class Profile extends Component {
               <input type="file" onChange={e => this.profileImg(e)}></input>
               <button onClick={() => this.uploadImage2()}>이미지 업로드</button>
             </div>
-          )}         
+          )}
         </div>
         <div>
           <p>My Profile</p>
@@ -218,7 +235,8 @@ class Profile extends Component {
               </div>
             ) : !nickBtn && !nickname ? (
               <div>
-                닉네임: 해당유저는 닉네임이 없습니다 옆의 버튼을 눌러 닉네임을 등록하세요!
+                닉네임: 해당유저는 닉네임이 없습니다 옆의 버튼을 눌러 닉네임을
+                등록하세요!
                 <button onClick={() => this.changeNick1()}>닉네임 등록</button>
               </div>
             ) : (
@@ -241,25 +259,25 @@ class Profile extends Component {
           <p>My Tier:{tier}</p>
         </div>
         <div>
-          <Link to={{
-            pathname:"/mySolved",
-            state: {
-              userInfo: this.state.userInfo
-            }
-          }}>
-            <button>
-              풀었던 문제 History
-            </button>
+          <Link
+            to={{
+              pathname: "/mySolved",
+              state: {
+                userInfo: this.state.userInfo
+              }
+            }}
+          >
+            <button>풀었던 문제 History</button>
           </Link>
-          <Link to={{
-            pathname:"/myProblem",
-            state:{
-              userInfo: this.state.userInfo
-            }
-          }}>
-            <button>
-              만든문제 History
-            </button>
+          <Link
+            to={{
+              pathname: "/myProblem",
+              state: {
+                userInfo: this.state.userInfo
+              }
+            }}
+          >
+            <button>만든문제 History</button>
           </Link>
         </div>
       </div>
