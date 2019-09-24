@@ -1,31 +1,32 @@
-let problems = [
+const problems = [
   {
     type: "TEXT",
-    fileLink1: null,
+    fileLink1:
+      "https://duckhoogosa.s3.ap-northeast-2.amazonaws.com/practice01/Screen+Shot+2019-09-19+at+1.26.59+PM.png",
     problemText:
       "프린세스 커넥트는 애니RPG를 표방하는 모바일게임이자 스트리머 따효니가 사랑하는 게임이다. 다음 중 옳은 문장은?",
     choice: [
       {
         text: "따효니는 2019년 6월에 이 게임을 시작했다.",
         answer: "false"
-      },
-      {
-        text: "따효니는 지금까지 클랜전에서 한번도 빠진적이 없는 모범 유저다.",
-        answer: "false"
-      },
-      {
-        text:
-          "따효니는 이 게임을 하는게 쪽팔려서 누구랑 같이 방송을 한적 없다.",
-        answer: "false"
-      },
-      {
-        text: "따효니는 10연차에서 3성을 3개나 먹은적 있다.",
-        answer: "true"
-      },
-      {
-        text: "스트리머 김도는 너무 운이 없어서 이 게임에 2000만원을 투자했다.",
-        answer: "false"
       }
+      // {
+      //   text: "따효니는 지금까지 클랜전에서 한번도 빠진적이 없는 모범 유저다.",
+      //   answer: "false"
+      // },
+      // {
+      //   text:
+      //     "따효니는 이 게임을 하는게 쪽팔려서 누구랑 같이 방송을 한적 없다.",
+      //   answer: "false"
+      // },
+      // {
+      //   text: "따효니는 10연차에서 3성을 3개나 먹은적 있다.",
+      //   answer: "true"
+      // },
+      // {
+      //   text: "스트리머 김도는 너무 운이 없어서 이 게임에 2000만원을 투자했다.",
+      //   answer: "false"
+      // }
     ]
   },
   {
