@@ -241,12 +241,22 @@ class Profile extends Component {
           <p>My Tier:{tier}</p>
         </div>
         <div>
-          <Link to="/MySolved">
+          <Link to={{
+            pathname:"/MySolved",
+            state: {
+              userInfo: this.state.userInfo
+            }
+          }}>
             <button>
               풀었던 문제 History
             </button>
           </Link>
-          <Link to="/MyProblem">
+          <Link to={{
+            pathname:"/MyProblem",
+            state:{
+              userInfo: this.state.userInfo
+            }
+          }}>
             <button>
               만든문제 History
             </button>
