@@ -2,8 +2,8 @@
   background: rgb(185, 185, 185);
 }
 img:hover {
-  height: 210px;
-  width: 320px;
+  /* height: 210px;
+  width: 320px; */
   border: 2px solid rgb(89, 156, 233);
 }
 .problem-list {
