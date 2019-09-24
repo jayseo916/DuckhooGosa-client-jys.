@@ -81,10 +81,52 @@
     /* width: 260px; */
     font-size: 12px;
     font-weight: bold;
-    font-family: 'Trebuchet MS', Dotum, Arial;
+    font-family: "Trebuchet MS", Dotum, Arial;
   }
   #footer-menubar1 .menuLink:hover {
     color: rgb(255, 136, 0);
     background-color: #f0d4d4;
   }
 }
+
+.flex {
+  display: flex;
+  flex: 1;
+}
+.flex-fixer {
+  display: flex;
+  flex: 0 0 1;
+}
+
+.flex-container-col {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.flex-container-row {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+}
+
+/*썸네일표현*/
+.thumbnail-wrap {
+  width: 300px; /*container-width*/
+  overflow: hidden; /*hide bounds of image */
+  margin: 0; /*reset margin of figure tag*/
+}
+
+.thumbnail{
+  display: block; /*remove inline-block spaces*/
+  width: 100%; /*make image streatch*/
+}
+
+.thumbnail-wrap .thumbnail {
+  /*add to other styles*/
+  /*add to other styles*/
+  margin:-21.875% 0;
+  /*width:177.777%;!**!*/
+}
+
+/*썸네일표현*/
