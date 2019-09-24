@@ -97,33 +97,26 @@ class CreateProblem extends Component {
     //답안지 별 텍스트 수정
 
     let answer = [...this.state.choice];
-    console.log("hi", e.target.type, answer.length);
     if (e.target.type === "checkbox") {
       answer[v].answer = !answer[v].answer;
       this.setState({
         choice: answer
       });
     } else if (e.target.type === "textarea" && answer.length === 1) {
-      // let answer = [...this.state.choice];
-
       answer[v].answer = e.target.value;
       this.setState({
         choice: answer
       });
-      console.log("hi", answer);
     } else {
-      // let answer = [...this.state.choice];
       answer[v].text = e.target.value;
       this.setState({
         choice: answer
       });
     }
-    console.log(this.state);
   };
 
   choiceHandleChange = e => {
     //보기 타입 설정
-    console.log(e.target.value);
     this.setState({
       chiceValue: e.target.value
     });
