@@ -8,6 +8,8 @@ import MyProblem from "../pages/MyProblem";
 import MySolved from "../pages/MySolved";
 import Loading from "../pages/Loading";
 import Login from "../pages/Login";
+import Profile from "../pages/Profile";
+import Complete from "../components/CompleteProblem";
 import FooterMenubar from "../components/FooterMenubar";
 import UpLoadTest from "../client/upLoadTest";
 import SolvingProblem from "../pages/SolvingProblem";
@@ -37,11 +39,12 @@ class App extends React.Component {
         <Switch>
           <Route path="/" exact component={Loading} />
           <Route path="/problem/main" component={Main} />
-          <Route path="/SelectGenre" component={SelectGenre} />
-          <Route path="/SelectTheme" component={SelectTheme} />
+          <Route path="/selectGenre" component={SelectGenre} />
+          <Route path="/selectTheme" component={SelectTheme} />
           <Route path="/createProblem" component={CreateProblem} />
-          <Route path="/5" component={MyProblem} />
-          <Route path="/6" component={MySolved} />
+          <Route path="/myProblem" component={MyProblem} />
+          <Route path="/mySolved" component={MySolved} />
+          <Route path="/profile" component={Profile}  />
           <Route path="/not-found" component={NotFound} />
           <Route path="/SolvingProblem/:id" component={SolvingProblem} />
           <Route path="/UpLoadTest" component={UpLoadTest} />

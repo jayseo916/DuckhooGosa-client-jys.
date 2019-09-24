@@ -5,7 +5,8 @@ class SelectTheme extends React.Component {
     super(props);
     this.state = {
       title: "",
-      selectedFile: null
+      selectedRepreFile: null,
+      selectedBgImg: null
     };
   }
   handleTitleChange(e) {
@@ -13,7 +14,7 @@ class SelectTheme extends React.Component {
       title: e.target.value
     });
   }
-  fileUpload(e) {
+  fileUpload1(e) {
     // this.setState({
     //   selectedFile: e.target.files[0]
     // });
@@ -22,11 +23,25 @@ class SelectTheme extends React.Component {
     if (FileReader && files && files.length) {
       let fr = new FileReader();
       fr.onload = () => {
-        localStorage["image"] = fr.result; // localStorage에 image를 키값으로 갖고 value값이 data:경로
+        localStorage["repreImg"] = fr.result; // localStorage에 image를 키값으로 갖고 value값이 data:경로
         // console.log(localStorage);
       };
       this.setState({
-        selectedFile: localStorage["image"]
+        selectedRepreFile: localStorage["repreImg"]
+      });
+      fr.readAsDataURL(files[0]);
+    }
+  }
+  fileUpload2(e) {
+    let target = e.target || window.event.srcElement,
+      files = target.files;
+    if (FileReader && files && files.length) {
+      let fr = new FileReader();
+      fr.onload = () => {
+        localStorage["bgImg"] = fr.result;
+      };
+      this.setState({
+        selectedBgImg: localStorage["bgImg"]
       });
       fr.readAsDataURL(files[0]);
     }
@@ -40,18 +55,19 @@ class SelectTheme extends React.Component {
         // const formData = new FormData();
         // formData.append("file", this.state.selectedFile);
         localStorage.setItem("title", this.state.title);
-        this.props.history.push("/4");
+        this.props.history.push("/createProblem");
       } else {
         console.log("state.selectedFile있음");
         // const formData = new FormData();
         // formData.append("file", this.state.selectedFile);
         localStorage.setItem("title", this.state.title);
-        this.props.history.push("/4");
+        this.props.history.push("/createProblem");
       }
     }
   }
   render() {
-    // let count = 0;
+    const bgImg = this.state.selectedBgImg;
+    const repreImg = this.state.selectedRepreFile;
     return (
       <div className="currentGenre">
         <p>현재 선택된 장르:{localStorage.getItem("genre")}</p>
@@ -62,16 +78,25 @@ class SelectTheme extends React.Component {
           onChange={e => this.handleTitleChange(e)}
         ></input>
         <br></br>
-        <p>
+        <div>
           문제표시에 사용될 이미지를 골라주셈(고르지않을시 기본이미지가 선택됨)
-        </p>
+        </div>
         <input
-          id="inputFile"
+          id="inputFile1"
           type="file"
           name="files[]"
-          onChange={e => this.fileUpload(e)}
+          onChange={e => this.fileUpload1(e)}
         ></input>
+        <div>{repreImg}</div>
         <br></br>
+        <div>문제지 배경화면을 골라주세요</div>
+        <input
+          id="inputFile2"
+          type="file"
+          name="files[]"
+          onChange={e => this.fileUpload2(e)}
+        ></input>
+        <div>{bgImg}</div>
         <button onClick={() => this.clickHandler()}>문제 제작하기</button>
       </div>
     );
