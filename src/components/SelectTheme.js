@@ -14,7 +14,7 @@ class SelectTheme extends React.Component {
       title: e.target.value
     });
   }
-  fileUpload1(e) {
+  fileUpload(e) {
     // this.setState({
     //   selectedFile: e.target.files[0]
     // });
@@ -32,41 +32,15 @@ class SelectTheme extends React.Component {
       fr.readAsDataURL(files[0]);
     }
   }
-  fileUpload2(e) {
-    let target = e.target || window.event.srcElement,
-      files = target.files;
-    if (FileReader && files && files.length) {
-      let fr = new FileReader();
-      fr.onload = () => {
-        localStorage["bgImg"] = fr.result;
-      };
-      this.setState({
-        selectedBgImg: localStorage["bgImg"]
-      });
-      fr.readAsDataURL(files[0]);
-    }
-  }
   clickHandler() {
     if (this.state.title === "") {
       alert("문제 제목을 적어주세요");
     } else {
-      if (this.state.selectedFile === null) {
-        console.log("state.selectedfile없음");
-        // const formData = new FormData();
-        // formData.append("file", this.state.selectedFile);
-        localStorage.setItem("title", this.state.title);
-        this.props.history.push("/createProblem");
-      } else {
-        console.log("state.selectedFile있음");
-        // const formData = new FormData();
-        // formData.append("file", this.state.selectedFile);
-        localStorage.setItem("title", this.state.title);
-        this.props.history.push("/createProblem");
-      }
+      localStorage.setItem("title", this.state.title);
+      this.props.history.push("/createProblem");
     }
   }
   render() {
-    const bgImg = this.state.selectedBgImg;
     const repreImg = this.state.selectedRepreFile;
     return (
       <div className="currentGenre">
@@ -85,18 +59,12 @@ class SelectTheme extends React.Component {
           id="inputFile1"
           type="file"
           name="files[]"
-          onChange={e => this.fileUpload1(e)}
+          onChange={e => this.fileUpload(e)}
         ></input>
-        <div>{repreImg}</div>
+        {repreImg ? <div><img src={repreImg} alt="대표이미지" height="200" width="300"></img></div> : <div></div>}
+
         <br></br>
-        <div>문제지 배경화면을 골라주세요</div>
-        <input
-          id="inputFile2"
-          type="file"
-          name="files[]"
-          onChange={e => this.fileUpload2(e)}
-        ></input>
-        <div>{bgImg}</div>
+
         <button onClick={() => this.clickHandler()}>문제 제작하기</button>
       </div>
     );
