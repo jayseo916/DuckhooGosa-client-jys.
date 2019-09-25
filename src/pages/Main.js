@@ -92,43 +92,8 @@ class Main extends React.Component {
         <hr></hr>
         <div className="problem-list">
           문제 모음집
-          {problems.map(items => {
+          {this.state.problems.map(item =>
             this.state.currentOption === "" ? (
-              <div key={items._id} className="problems">
-                <a href="#">
-                  <img
-                    src={items.representImg}
-                    alt="대표이미지"
-                    height="200"
-                    width="300"
-                    onClick={e => this.solvedProblem(e, items._id)}
-                  ></img>
-                </a>
-                <br></br>
-                <a href="#" onClick={e => this.solvedProblem(e, items._id)}></a>
-                <br></br>
-              </div>
-            ) : this.state.currentOption === problems.genre ? (
-              <div key={items._id} className="problems">
-                <a href="#">
-                  <img
-                    src={items.representImg}
-                    alt="대표이미지"
-                    height="200"
-                    width="300"
-                    onClick={e => this.solvedProblem(e, items._id)}
-                  ></img>
-                </a>
-                <br></br>
-                <a href="#" onClick={e => this.solvedProblem(e, items._id)}></a>
-                <br></br>
-              </div>
-            ) : (
-              <div></div>
-            );
-          })}
-          {/* {this.state.problems.map(item =>
-            this.state.input === "" && this.state.currentOption === "" ? (
               <div key={item._id} className="problems">
                 <a href="/#">
                   <img
@@ -144,9 +109,7 @@ class Main extends React.Component {
                   {item.title}
                 </a>
               </div>
-            ) : item.title.indexOf(this.state.input) > -1 ||
-              (item.tags[0].replace(/\#/g, "").indexOf(this.state.input) > -1 &&
-                this.state.currentOption === item.genre) ? (
+            ) : this.state.currentOption === item.genre ? (
               <div key={item._id} className="problems">
                 <a href="/#">
                   <img
@@ -167,7 +130,7 @@ class Main extends React.Component {
             ) : (
               <div></div>
             )
-          )} */}
+          )}
         </div>
       </div>
     );
