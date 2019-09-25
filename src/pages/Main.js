@@ -36,15 +36,19 @@ class Main extends React.Component {
   }
   handleInput(e) {
     this.setState({
-      input: e.target.value
+      input: e.target.value.trim()
     });
   }
-  // search() {
-  //   axios
-  //     .get(`http://localhost:8000/?word=${this.state.input}`)
-  //     .then(data => this.setState({ problems: data }))
-  //     .catch(err => console.log(err));
-  // }
+  search() {
+    if (this.state.input === "") {
+      alert("단어를 입력하고 검색해주세요");
+    } else {
+      //  axios
+      //   .get(`http://localhost:8000/?word=${this.state.input}`)
+      //   .then(data => this.setState({ problems: data }))
+      //   .catch(err => console.log(err));
+    }
+  }
   solvedProblem(e, id) {
     e.preventDefault();
     this.props.history.push(`/SolvingProblem/${id}`);
@@ -56,10 +60,11 @@ class Main extends React.Component {
   }
   render() {
     // const { img, title, problem_id } = this.state.problems;
+    const problems = this.state.problems;
     return (
       <div className="container">
         <div className="top-search-bar">
-          장르
+          장르(검색시에는 적용되지않음)
           <select
             id="currentGenre"
             className="form-control"
@@ -82,12 +87,47 @@ class Main extends React.Component {
             size="40"
             onChange={e => this.handleInput(e)}
           ></input>
-          {/* <button onClick={() => this.search()}>찾기</button> */}
+          <button onClick={() => this.search()}>찾기</button>
         </div>
         <hr></hr>
         <div className="problem-list">
           문제 모음집
-          {this.state.problems.map(item =>
+          {problems.map(items => {
+            this.state.currentOption === "" ? (
+              <div key={items._id} className="problems">
+                <a href="#">
+                  <img
+                    src={items.representImg}
+                    alt="대표이미지"
+                    height="200"
+                    width="300"
+                    onClick={e => this.solvedProblem(e, items._id)}
+                  ></img>
+                </a>
+                <br></br>
+                <a href="#" onClick={e => this.solvedProblem(e, items._id)}></a>
+                <br></br>
+              </div>
+            ) : this.state.currentOption === problems.genre ? (
+              <div key={items._id} className="problems">
+                <a href="#">
+                  <img
+                    src={items.representImg}
+                    alt="대표이미지"
+                    height="200"
+                    width="300"
+                    onClick={e => this.solvedProblem(e, items._id)}
+                  ></img>
+                </a>
+                <br></br>
+                <a href="#" onClick={e => this.solvedProblem(e, items._id)}></a>
+                <br></br>
+              </div>
+            ) : (
+              <div></div>
+            );
+          })}
+          {/* {this.state.problems.map(item =>
             this.state.input === "" && this.state.currentOption === "" ? (
               <div key={item._id} className="problems">
                 <a href="/#">
@@ -127,7 +167,7 @@ class Main extends React.Component {
             ) : (
               <div></div>
             )
-          )}
+          )} */}
         </div>
       </div>
     );
