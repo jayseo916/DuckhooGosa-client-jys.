@@ -18,7 +18,7 @@ class MyProblem extends React.Component {
   }
   openPop(e, img) {
     e.preventDefault();
-    let win = window.open("/viewProblem", "viewProb", "width=400,height=300");
+    let win = window.open("/problemImg", "viewProb", "width=400,height=300");
     win.document.write(`<div><img 
     src=${img} height="150" width="120"></img>
     <button></button></div>`);
