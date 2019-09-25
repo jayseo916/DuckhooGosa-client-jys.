@@ -42,9 +42,10 @@ class App extends React.Component {
           <Route path="/selectGenre" component={SelectGenre} />
           <Route path="/selectTheme" component={SelectTheme} />
           <Route path="/createProblem" component={CreateProblem} />
+          <Route path="/comment/:id" component={Comment} />
           <Route path="/myProblem" component={MyProblem} />
           <Route path="/mySolved" component={MySolved} />
-          <Route path="/profile" component={Profile}  />
+          <Route path="/profile" component={Profile} />
           <Route path="/not-found" component={NotFound} />
           <Route path="/SolvingProblem/:id" component={SolvingProblem} />
           <Route path="/UpLoadTest" component={UpLoadTest} />
@@ -55,7 +56,7 @@ class App extends React.Component {
               <Login {...props} setUserInfo={this.setUserInfo} />
             )}
           />
-          <Redirect to="/not-found" />
+          {/* <Redirect to="/not-found" /> */}
         </Switch>
         <FooterMenubar email={email} expires={expires_at} />
       </div>
