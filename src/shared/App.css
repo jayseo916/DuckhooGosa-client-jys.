@@ -1,3 +1,6 @@
+@import '~antd/dist/antd.css';
+/* ANTD */
+
 .App {
   text-align: center;
 }
@@ -130,3 +133,4 @@
 }
 
 /*썸네일표현*/
+
