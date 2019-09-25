@@ -5,6 +5,19 @@
   text-align: center;
 }
 
+@font-face {
+  font-family: "DungGeunMo";
+  src: url("../font/DungGeunMo.eot") format("embedded-opentype"),
+  url("../font/DungGeunMo.woff2") format("woff2"),
+  url("../font/DungGeunMo.woff") format("woff"),
+  url("../font/DungGeunMo.ttf") format("truetype"),
+  url("../font/DungGeunMo.otf") format("otf");
+}
+
+* {
+  font-family: DungGeunMo, serif !important;
+}
+
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 40vmin;
