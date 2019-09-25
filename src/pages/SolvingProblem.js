@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
 import Img from "react-image";
+import Scoring from "../components/Scoring";
+import "../../node_modules/nes.css/css/nes.css";
 import { problems } from "./fake";
 import {
   Player,
@@ -13,6 +15,7 @@ import {
   VolumeMenuButton
 } from "video-react";
 import "../../node_modules/video-react/dist/video-react.css";
+
 export default class SolvingProblem extends Component {
   constructor(props) {
     super(props);
@@ -26,7 +29,8 @@ export default class SolvingProblem extends Component {
       nickname: "",
       email: "",
       solved: 0,
-      total: problems.length //
+      total: problems.length, //,
+      scoring: false
     };
   }
 
@@ -62,18 +66,24 @@ export default class SolvingProblem extends Component {
     // } catch (ex) {
     //   console.error(ex);
     // }
+
+    this.setState({
+      scoring: true
+    });
   };
 
   handleChoice = (e, num, choiceNum) => {
+    let answer = [...this.state.answer];
     if (e.target.type !== "checkbox") {
       //주관식인경우
-      let answer = [...this.state.answer];
+      console.log("타입", e.target.type);
       answer[num] = e.target.value;
       this.setState({
         answer
       });
     } else {
-      let answer = [...this.state.answer];
+      console.log("타입", e.target.type);
+      // let answer = [...this.state.answer];
       let select = [];
       if (answer[num]) {
         select = [...answer[num]];
@@ -91,20 +101,22 @@ export default class SolvingProblem extends Component {
         ];
       }
       answer[num] = select;
-      this.setState({ answer }, () => {
-        let solved = 0;
-        this.state.answer.forEach(v => {
-          if (v && v.length !== 0) {
-            solved++;
-          }
-        });
-        this.setState({
-          solved
-        });
-      }); ///////////////done
-
-      // console.log("답안지", this.state.answer);
     }
+    let solved = 0;
+    this.setState({ answer }, () => {
+      this.state.answer.forEach(v => {
+        if (v && v.length !== 0) {
+          solved++;
+          console.log("실시간솔브드값", solved);
+        }
+        console.log("v값", v);
+      });
+      this.setState({
+        solved
+      });
+    }); ///////////////done
+
+    // console.log("답안지", this.state.answer);
   };
   viewProblem = () => {
     // const { problems } = this.state.problems;
@@ -159,16 +171,26 @@ export default class SolvingProblem extends Component {
         viewChoice = choice.map((v, choiceNum) => {
           //v= 보기 객체 ,choiceNum = 보기의 번호
           return (
-            <div key={choiceNum}>
-              <label>
-                {choiceNum + 1}번. {v.text}
-              </label>
+            <div key={choiceNum} className="nes-container is-rounded">
+              {/* <button
+                type="button"
+                className="nes-text is-primary"
+                style={{ padding: "0 0 0 0", margin: "0 0 0 0" }}
+                onClick={e => {
+                  this.handleChoice(e, num, choiceNum);
+                }}
+              > */}
+              {/* </button> */}
+              <span>
+                {choiceNum + 1}번.{v.text}
+              </span>
               <input
                 type="checkbox"
                 onChange={e => {
                   this.handleChoice(e, num, choiceNum);
                 }}
               />
+              <span>정답</span>
             </div>
           );
         });
@@ -204,18 +226,35 @@ export default class SolvingProblem extends Component {
 
     return (
       <div>
-        {this.viewProblem()}
-        <label style={{ padding: "0 0 40px 0" }}>
-          남은문제 {this.state.total - this.state.solved} / {this.state.total}
-        </label>
-        <button
-          type="button"
-          className="btn btn-secondary"
-          onClick={this.submit}
-          style={{ marginLeft: "50px" }}
-        >
-          제출
-        </button>
+        {this.state.scoring === false ? (
+          <React.Fragment>
+            {this.viewProblem()}
+            <label style={{ padding: "0 0 40px 0" }}>
+              남은문제 {this.state.total - this.state.solved} /{" "}
+              {this.state.total}
+            </label>
+            <button
+              type="button"
+              className="nes-btn is-success"
+              onClick={this.submit}
+              style={{ marginLeft: "50px" }}
+            >
+              제출
+            </button>
+          </React.Fragment>
+        ) : (
+          <Scoring
+            data={{
+              okCount: 10,
+              tryCount: 20,
+              commentCount: 11,
+              problemId: "abcd",
+              checkProblem: [],
+              totalProblem: 20
+            }}
+            history={this.props.history}
+          /> //페이크 데이타 넘김
+        )}
       </div>
     );
   }
