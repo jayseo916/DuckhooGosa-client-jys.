@@ -26,11 +26,9 @@ export function UploadToS3(problemTitle, file, callback) {
       Bucket: albumBucketName
     }
   });
-  console.log(file, "파일 바디체크");
   let fileName = file.name;
   let ProblemDirKey = encodeURIComponent(problemTitle) + "/";
   let photoKey = ProblemDirKey + fileName;
-  console.log(file, "실전!", ProblemDirKey, photoKey);
   return s3.upload(
     {
       Key: photoKey,
