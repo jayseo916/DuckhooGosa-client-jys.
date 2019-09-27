@@ -4,6 +4,7 @@ import { Popconfirm } from "antd";
 import "../shared/App.css";
 import { formatRelative } from "date-fns";
 import styled from "styled-components";
+import { config } from "../config";
 
 class MyProblem extends React.Component {
   constructor(props) {
@@ -42,12 +43,12 @@ class MyProblem extends React.Component {
     };
   }
   componentDidMount() {
-    // axios
-    //   .get(
-    //     `http://localhost:8000/?email=${this.props.location.state.userInfo.email}`
-    //   )
-    //   .then(res => this.setState({ problems: res })) // 응답으로 problemSchema의 제목,날짜,대표이미지를 받아
-    //   .catch(err => console.log("본인이 낸 문제 가져오기err:" + err));
+    axios
+      .get(
+        `http://localhost:8000/?email=${this.props.location.state.userInfo.email}`,
+        config)
+      .then(res => this.setState({ problems: res })) // 응답으로 problemSchema의 제목,날짜,대표이미지를 받아
+      .catch(err => console.log("본인이 낸 문제 가져오기err:" + err));
   }
   solving(id) {
     this.props.history.push(`/SolvingProblem/${id}`);

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import Img from "react-image";
+import { config } from "../config";
 import Scoring from "../components/Scoring";
 import "../../node_modules/nes.css/css/nes.css";
 import { problems } from "./fake";
@@ -42,7 +43,7 @@ export default class SolvingProblem extends Component {
     try {
       const problem = await axios.get(
         `http://localhost:8000/problem/${this.state.problemId}`
-      );
+      , config);
       this.setState({
         titleImg: problem.img,
         backImg: problem.title,
@@ -55,17 +56,17 @@ export default class SolvingProblem extends Component {
   };
 
   submit = async () => {
-    // const { nickname, answer, problemId, email } = this.state;
-    // let obj = { nickname, answer, problemId, email };
-    // try {
-    //   const { data } = await axios.post(
-    //     "http://localhost:8000/problem/solution",
-    //     obj
-    //   );
-    //   /////data 가지고 이제 처리하믄 뎀
-    // } catch (ex) {
-    //   console.error(ex);
-    // }
+    const { nickname, answer, problemId, email } = this.state;
+    let obj = { nickname, answer, problemId, email };
+    try {
+      const { data } = await axios.post(
+        "http://localhost:8000/problem/solution",
+        obj, config
+      );
+      /////data 가지고 이제 처리하믄 뎀
+    } catch (ex) {
+      console.error(ex);
+    }
 
     this.setState({
       scoring: true

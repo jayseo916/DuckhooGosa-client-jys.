@@ -1,5 +1,6 @@
 import React from "react";
 import AWS from "aws-sdk";
+import { config } from "../config";
 import { Link } from "react-router-dom";
 import {
   FilePond,
@@ -104,9 +105,9 @@ class CompleteProblem extends React.Component {
           background: background,
           problems: problems
         };
-        // await axios.post("http://localhost:8000/problem", obj).catch(err => {
-        //   console.log(err);
-        // });
+        axios.post("http://localhost:8000/problem", obj, config).catch(err => {
+          console.log(err);
+        });
 
         console.log("보내는 객체", obj);
       })

@@ -1,5 +1,6 @@
 import React from "react";
-//import axios from "axios";
+import axios from "axios";
+import { config } from "../config";
 import { fakeData } from "../fakeData";
 import { Route, Switch, Link, Redirect } from "react-router-dom";
 import "./Main.css";
@@ -20,10 +21,10 @@ class Main extends React.Component {
     };
   }
   componentDidMount() {
-    // axios
-    //   .get("http://localhost:8000/problem/main")
-    //   .then(data => this.setState({ problems: data }))
-    //   .catch(err => console.log("통신에러:", err));
+    axios
+      .get("http://localhost:8000/problem/main", config)
+      .then(data => this.setState({ problems: data }))
+      .catch(err => console.log("통신에러:", err));
   }
   handleSelect() {
     let curr = document.getElementById("currentGenre");
