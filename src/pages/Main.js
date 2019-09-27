@@ -1,5 +1,5 @@
 import React from "react";
-//import axios from "axios";
+import axios from "axios";
 import { fakeData } from "../fakeData";
 import { Route, Switch, Link, Redirect } from "react-router-dom";
 import "./Main.css";
@@ -14,17 +14,51 @@ class Main extends React.Component {
     // };
     this.state = {
       // 서버가 완성되기 전까지 가짜데이터로 임시로 설정
-      problems: fakeData,
+      problems: [],
       currentOption: "",
-      input: ""
+      input: "",
+      numberLoadingProblem: 3,
+      countLoading: 0
     };
   }
-  componentDidMount() {
+  componentDidMount = async () => {
     // axios
     //   .get("http://localhost:8000/problem/main")
     //   .then(data => this.setState({ problems: data }))
     //   .catch(err => console.log("통신에러:", err));
+    window.addEventListener("scroll", this.handleScroll);
+
+    const { data } = await axios.post("http://localhost:8000/problem/main", {
+      next_problem: this.state.numberLoadingProblem * this.state.countLoading
+    });
+    this.setState({
+      problems: data
+    });
+  };
+  componentWillUnmount() {
+    // 언마운트 될때에, 스크롤링 이벤트 제거
+    window.removeEventListener("scroll", this.handleScroll);
   }
+
+  handleScroll = async () => {
+    const { innerHeight } = window;
+    const { scrollHeight } = document.body;
+
+    const scrollTop =
+      (document.documentElement && document.documentElement.scrollTop) ||
+      document.body.scrollTop;
+
+    if (scrollHeight - innerHeight - scrollTop < 30) {
+      let { data } = await axios.post("http://localhost:8000/problem/main", {
+        next_problem: this.state.numberLoadingProblem * this.state.countLoading
+      });
+      let problems = [...this.state.problems, ...data];
+      this.setState({
+        problems
+      });
+    }
+  };
+
   handleSelect() {
     let curr = document.getElementById("currentGenre");
     let choiceOpt =
@@ -60,6 +94,10 @@ class Main extends React.Component {
   }
   render() {
     // const { img, title, problem_id } = this.state.problems;
+    console.log("도큐먼트scrollHeight", document.documentElement.scrollHeight);
+    console.log("바디scrollHeight", document.body.scrollHeight);
+    console.log("도큐면트scrollTop", document.documentElement.scrollTop);
+    console.log("바디scrollTop", document.body.scrollTop);
     const problems = this.state.problems;
     return (
       <div className="container">
