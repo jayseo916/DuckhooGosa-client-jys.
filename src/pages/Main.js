@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import { config } from "../config";
 import { fakeData } from "../fakeData";
 import { Route, Switch, Link, Redirect } from "react-router-dom";
 import "./Main.css";

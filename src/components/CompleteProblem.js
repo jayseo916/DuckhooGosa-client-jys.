@@ -1,5 +1,6 @@
 import React from "react";
 import AWS from "aws-sdk";
+import { config } from "../config";
 import { Link } from "react-router-dom";
 import {
   FilePond,
@@ -107,15 +108,6 @@ class CompleteProblem extends React.Component {
           representImg: representImg,
           problems: problems
         };
-        console.log("준비가 되어있긴하니??", obj);
-        let config = {
-          headers: {
-            access_token: JSON.parse(localStorage.getItem("authData")).Zi
-              .access_token,
-            "Access-Control-Allow-Origin": "*"
-          },
-          withCredentials: true
-        };
         axios
           .post("http://localhost:8000/problem", obj, config)
           .then(res => {
@@ -124,6 +116,7 @@ class CompleteProblem extends React.Component {
           .catch(err => {
             console.log(err);
           });
+
       })
       .catch(ex => {
         console.error(ex);

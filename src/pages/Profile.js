@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-// import axios from "axios";
+import axios from "axios";
+import { config } from "../config";
 import { Link } from "react-router-dom";
 
 class Profile extends Component {
@@ -122,11 +123,11 @@ class Profile extends Component {
   }
   componentDidMount() {
     // 실제서버 db와 연동되면 사용
-    // const id = localStorage.getItem("");
-    // axios
-    //   .get(`http://localhost:8000/account/info`)
-    //   .then(res => this.setState({ userInfo: res }))
-    //   .catch(err => console.log("프로필가져오기에러:" + err));
+    const id = localStorage.getItem("");
+    axios
+      .get(`http://localhost:8000/account/info`, config)
+      .then(res => this.setState({ userInfo: res }))
+      .catch(err => console.log("프로필가져오기에러:" + err));
   }
   uploadImage1() {
     this.setState({ imageBtn: !this.state.imageBtn });
@@ -150,11 +151,11 @@ class Profile extends Component {
     if (!this.state.curImg) {
       alert("사진을 업로드해 주세요.");
     } else {
-      // axios.post("http://localhost:8000/account/img",{
-      //   img: this.state.curImg
-      // })
-      // .then(res => console.log(res))
-      // .catch(err => console.log("사진 업로드 요청관련에러:"+err));
+      axios.post("http://localhost:8000/account/img",{
+        img: this.state.curImg
+      }, config)
+      .then(res => console.log(res))
+      .catch(err => console.log("사진 업로드 요청관련에러:"+err));
       this.setState({ imageBtn: !this.state.imageBtn });
       this.setState({
         userInfo: {
@@ -175,11 +176,11 @@ class Profile extends Component {
     if (!this.state.curNick) {
       alert("바꿀 닉네임을 적어주세요");
     } else {
-      // axios.post("http://localhost:8000/account/nick", {
-      //   nick: this.state.curNick
-      // })
-      // .then(res => console.log(res))
-      // .catch(err => console.log("닉 변경 요청 관련 에러:"+err));
+      axios.post("http://localhost:8000/account/nick", {
+        nick: this.state.curNick
+      }, config)
+      .then(res => console.log(res))
+      .catch(err => console.log("닉 변경 요청 관련 에러:"+err));
       this.setState({ nickChangeBtn: !this.state.nickChangeBtn });
       this.setState({
         userInfo: {
