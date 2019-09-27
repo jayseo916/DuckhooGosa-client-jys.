@@ -24,14 +24,11 @@ class CreateProblem extends Component {
     this.state = {
       // Set initial files, type 'local' means this is a file
       // that has already been uploaded to the server (see docs)
-      _id: String,
-      email: String,
-      tags: Array,
-      genre: String,
-      title: String,
+      email: this.props.email,
+      tags: null,
+      genre: localStorage.getItem("genre"),
+      title: localStorage.getItem("title"),
       date: new Date(),
-      background: String,
-      representImg: String,
       Problems: [], //문제 객체의 목록
       problemText: "", //현재 문제의 지문
       problemTextErrors: {},
@@ -45,7 +42,9 @@ class CreateProblem extends Component {
   //   Problemtext: Joi.string().required()
   // };
 
-  componentDidMount() {}
+  componentDidMount() {
+    console.log(this.state)
+  }
   handleInit() {
     console.log("FilePond instance has initialised", this.pond);
   }
@@ -370,6 +369,7 @@ class CreateProblem extends Component {
         Problems={this.state.Problems}
         problemState={this.state}
         changeComplete={this.changeComplete}
+        repreImg={this.props.repreImg}
       />
     );
   }
