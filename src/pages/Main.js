@@ -19,7 +19,7 @@ class Main extends React.Component {
       currentOption: "",
       input: "",
       numberLoadingProblem: 3,
-      countLoading: 0
+      countLoading: 0 //문제 받아온 횟수
     };
   }
   componentDidMount = async () => {
@@ -29,12 +29,15 @@ class Main extends React.Component {
     //   .catch(err => console.log("통신에러:", err));
     window.addEventListener("scroll", this.handleScroll);
 
-    const { data } = await axios.post("http://localhost:8000/problem/main", {
-      next_problem: this.state.numberLoadingProblem * this.state.countLoading
-    });
-    this.setState({
-      problems: data
-    });
+    if (this.state.countLoading === 0) {
+      const { data } = await axios.post("http://localhost:8000/problem/main", {
+        next_problem: 0
+      });
+      console.log("데이타", typeof JSON.parse(data));
+      this.setState({
+        problems: JSON.parse(data)
+      });
+    }
   };
   componentWillUnmount() {
     // 언마운트 될때에, 스크롤링 이벤트 제거
@@ -48,15 +51,28 @@ class Main extends React.Component {
     const scrollTop =
       (document.documentElement && document.documentElement.scrollTop) ||
       document.body.scrollTop;
-
     if (scrollHeight - innerHeight - scrollTop < 30) {
+      let countLoading = this.state.countLoading + 1;
+      console.log(countLoading);
+
       let { data } = await axios.post("http://localhost:8000/problem/main", {
-        next_problem: this.state.numberLoadingProblem * this.state.countLoading
+        next_problem: this.state.numberLoadingProblem * countLoading
       });
-      let problems = [...this.state.problems, ...data];
-      this.setState({
-        problems
+      data = JSON.parse(data);
+      let origin = this.state.problems.map(v => JSON.stringify(v));
+      let newData = data.filter(v => {
+        if (!origin.includes(JSON.stringify(v))) {
+          return v;
+        }
       });
+      if (newData.length === 3) {
+        let problems = [...this.state.problems, ...newData];
+
+        this.setState({
+          problems: problems,
+          countLoading: countLoading
+        });
+      }
     }
   };
 
@@ -131,9 +147,9 @@ class Main extends React.Component {
         <hr></hr>
         <div className="problem-list">
           문제 모음집
-          {this.state.problems.map(item =>
+          {this.state.problems.map((item, i) =>
             this.state.currentOption === "" ? (
-              <div key={item._id} className="problems">
+              <div key={i} className="problems">
                 <a href="/#">
                   <img
                     src={item.representImg}
