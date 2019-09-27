@@ -11,10 +11,14 @@ class FooterMenubar extends React.Component {
       <nav id="footer-menubar1">
         <ul>
           <li className="menuLink1">
-            <Link className="menuLink">전적</Link>
+            <Link className="menuLink" to="/tttt3">
+              전적
+            </Link>
           </li>
           <li className="menuLink2">
-            <Link className="menuLink">추천</Link>
+            <Link className="menuLink" to="/tttt4">
+              추천
+            </Link>
           </li>
           <li className="menuLink3">
             <Link className="menuLink" to="/main">

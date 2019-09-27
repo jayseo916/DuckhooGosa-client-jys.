@@ -20,8 +20,9 @@ class App extends React.Component {
   constructor(prop) {
     super(prop);
     this.state = {
-      email: null,
-      expires_at: null
+      email: JSON.parse(localStorage.getItem("authData")).profileObj.email,
+      expires_at: null,
+      repreImg: null,
     };
   }
 
@@ -29,6 +30,12 @@ class App extends React.Component {
     this.setState({ email: data.email, expires_at: data.expires_at }, () => {
       let { email, expires_at } = this.state;
       console.log(`${email}님 로그인 ${expires_at}에 토큰 만료`);
+    });
+  };
+
+  setRepreImg = repreImg => {
+    this.setState({repreImg: repreImg}, () => {
+      console.log("이미지 설정 완료");
     });
   };
 
@@ -40,8 +47,18 @@ class App extends React.Component {
           <Route path="/" exact component={Loading} />
           <Route path="/problem/main" component={Main} />
           <Route path="/selectGenre" component={SelectGenre} />
-          <Route path="/selectTheme" component={SelectTheme} />
-          <Route path="/createProblem" component={CreateProblem} />
+          <Route
+              path="/selectTheme"
+              render={props => (
+                  <SelectTheme {...props} setRepreImg={this.setRepreImg}/>
+              )}
+          />
+          <Route
+              path="/createProblem"
+              render={props => (
+                  <CreateProblem {...props} email={this.state.email} repreImg={this.state.repreImg}/>
+              )}
+          />
           <Route path="/comment/:id" component={Comment} />
           <Route path="/myProblem" component={MyProblem} />
           <Route path="/mySolved" component={MySolved} />

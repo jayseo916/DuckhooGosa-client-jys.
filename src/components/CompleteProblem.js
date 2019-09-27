@@ -4,10 +4,10 @@ import { config } from "../config";
 import { Link } from "react-router-dom";
 import {
   FilePond,
-  File,
+  // File,
   registerPlugin,
   create,
-  setOptions
+  // setOptions
 } from "react-filepond";
 import FilePondPluginFilePoster from "filepond-plugin-file-poster";
 import "filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css";
@@ -19,7 +19,10 @@ import FilePondPluginImageValidateSize from "filepond-plugin-image-validate-size
 import FilePondPluginFileEncode from "filepond-plugin-file-encode";
 import axios from "axios";
 import { UploadToS3 } from "../client/upLoad";
-import { nullLiteral } from "@babel/types";
+// import { nullLiteral } from "@babel/types";
+
+var uniqid = require("uniqid");
+
 let endPoint = "http://localhost:8000/problem";
 // Register the plugin
 registerPlugin(
@@ -58,7 +61,7 @@ class CompleteProblem extends React.Component {
     console.log("hi");
     this.props.changeComplete();
   };
-  uploadAndGetLink = dir => {
+  uploadAndGetLink = async dir => {
     let promise = [];
     this.props.Problems.forEach((problem, num) => {
       if (problem.fileLink1) {
@@ -77,23 +80,24 @@ class CompleteProblem extends React.Component {
         return null;
       }
     });
+    let representImg = await new Promise((resolve, reject) => {
+      try {
+        UploadToS3(dir, this.props.repreImg, link => {
+          resolve(link);
+        });
+      } catch (ex) {
+        reject(ex);
+      }
+    });
 
     Promise.all(promise)
       .then(v => {
         let problems = this.props.Problems.map((problem, num) => {
-          problem.fileLink1 = promise[num];
+          problem.fileLink1 = v[num];
           return problem;
         });
 
-        const {
-          email,
-          tags,
-          genre,
-          title,
-          date,
-          representImg,
-          background
-        } = this.props;
+        const { email, tags, genre, title, date } = this.props.problemState;
 
         let obj = {
           email: email,
@@ -102,21 +106,24 @@ class CompleteProblem extends React.Component {
           title: title,
           date: date,
           representImg: representImg,
-          background: background,
           problems: problems
         };
-        axios.post("http://localhost:8000/problem", obj, config).catch(err => {
-          console.log(err);
-        });
+        axios
+          .post("http://localhost:8000/problem", obj, config)
+          .then(res => {
+            console.log(res, "업로드결과");
+          })
+          .catch(err => {
+            console.log(err);
+          });
 
-        console.log("보내는 객체", obj);
       })
       .catch(ex => {
         console.error(ex);
       });
   };
   postProblems = async () => {
-    this.uploadAndGetLink("file1");
+    this.uploadAndGetLink(this.props.problemState.email + uniqid("-id-"));
   };
 
   loadProblems = () => {

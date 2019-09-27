@@ -5,8 +5,7 @@ class SelectTheme extends React.Component {
     super(props);
     this.state = {
       title: "",
-      selectedRepreFile: null,
-      selectedBgImg: null
+      selectedRepreFile: null
     };
   }
   handleTitleChange(e) {
@@ -15,22 +14,10 @@ class SelectTheme extends React.Component {
     });
   }
   fileUpload(e) {
-    // this.setState({
-    //   selectedFile: e.target.files[0]
-    // });
-    let target = e.target || window.event.srcElement,
-      files = target.files;
-    if (FileReader && files && files.length) {
-      let fr = new FileReader();
-      fr.onload = () => {
-        localStorage["repreImg"] = fr.result; // localStorage에 image를 키값으로 갖고 value값이 data:경로
-        // console.log(localStorage);
-      };
-      this.setState({
-        selectedRepreFile: localStorage["repreImg"]
-      });
-      fr.readAsDataURL(files[0]);
-    }
+    this.setState({
+      selectedFile: e.target.files[0]
+    });
+    this.props.setRepreImg(e.target.files[0]);
   }
   clickHandler() {
     if (this.state.title === "") {
@@ -61,7 +48,13 @@ class SelectTheme extends React.Component {
           name="files[]"
           onChange={e => this.fileUpload(e)}
         ></input>
-        {repreImg ? <div><img src={repreImg} alt="대표이미지" height="200" width="300"></img></div> : <div></div>}
+        {repreImg ? (
+          <div>
+            <img src={repreImg} alt="대표이미지" height="200" width="300"></img>
+          </div>
+        ) : (
+          <div></div>
+        )}
 
         <br></br>
 
