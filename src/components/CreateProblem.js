@@ -43,10 +43,10 @@ class CreateProblem extends Component {
   // };
 
   componentDidMount() {
-    console.log(this.state)
+    // console.log(this.state)
   }
   handleInit() {
-    console.log("FilePond instance has initialised", this.pond);
+    // console.log("FilePond instance has initialised", this.pond);
   }
 
   handleChange = e => {
@@ -229,6 +229,8 @@ class CreateProblem extends Component {
     Problems[this.state.curProblem] = newProblem;
     this.setState({
       Problems
+    },()=>{
+      // console.log(this.state.Problems,"현재 프로블럼 객체 상태 ")
     });
     alert("저장완료");
   };
@@ -244,7 +246,7 @@ class CreateProblem extends Component {
     });
   };
   completeFun = Problems => {
-    console.log("hi");
+    // console.log("hi");
     if (Problems.length === 0) {
       alert("제출할 문제가 없습니다");
       return;

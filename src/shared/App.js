@@ -64,7 +64,11 @@ class App extends React.Component {
           <Route path="/mySolved" component={MySolved} />
           <Route path="/profile" component={Profile} />
           <Route path="/not-found" component={NotFound} />
-          <Route path="/SolvingProblem/:id" component={SolvingProblem} />
+          <Route path="/SolvingProblem/:id"
+                 render={props => (
+                     <SolvingProblem {...props} email={this.state.email}/>
+                 )}
+          />
           <Route path="/UpLoadTest" component={UpLoadTest} />
           <Route path="/main" render={props => <Main {...props} />} />
           <Route
