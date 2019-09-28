@@ -4,7 +4,9 @@ import { config } from "../config";
 import { fakeData } from "../fakeData";
 import { Route, Switch, Link, Redirect } from "react-router-dom";
 import "./Main.css";
-
+let mainApi = "http://localhost:8000/problem/main";
+let searchApi = "http://localhost:8000/problem/search";
+let genreApi = "http://localhost:8000/problem/genre";
 class Main extends React.Component {
   constructor(props) {
     super(props);
@@ -16,25 +18,39 @@ class Main extends React.Component {
     this.state = {
       // 서버가 완성되기 전까지 가짜데이터로 임시로 설정
       problems: [],
+      searchProblems: [],
+      numberLoadingSearchProblem: 5, //
+      countSearchLoading: 0,
+      search: false,
       currentOption: "",
       input: "",
-      numberLoadingProblem: 3,
-      countLoading: 0
+      numberLoadingProblem: 5, //한번에 로딩 되는 문제 수
+      countLoading: 0, //문제 받아온 횟수
+      genreOn: false
     };
   }
   componentDidMount = async () => {
-    // axios
-    //   .get("http://localhost:8000/problem/main")
-    //   .then(data => this.setState({ problems: data }))
-    //   .catch(err => console.log("통신에러:", err));
-    window.addEventListener("scroll", this.handleScroll);
+    let countLoading = 0;
+    this.state.search
+      ? (countLoading = this.state.countSearchLoading)
+      : (countLoading = this.state.countLoading);
 
-    const { data } = await axios.post("http://localhost:8000/problem/main", {
-      next_problem: this.state.numberLoadingProblem * this.state.countLoading
-    });
-    this.setState({
-      problems: JSON.parse(data)
-    });
+    console.log("카운트로딩", countLoading);
+    if (countLoading === 0 && this.state.search === false) {
+      console.log("초기검색어", this.state.input);
+      const { data } = await axios.post(
+        this.state.search ? searchApi : mainApi,
+        {
+          next_problem: 0,
+          word: this.state.input
+        }
+      );
+      console.log("데이타", JSON.parse(data));
+      this.state.search
+        ? this.setState({ searchProblems: JSON.parse(data) })
+        : this.setState({ problems: JSON.parse(data) });
+    }
+    window.addEventListener("scroll", this.handleScroll);
   };
   componentWillUnmount() {
     // 언마운트 될때에, 스크롤링 이벤트 제거
@@ -48,40 +64,173 @@ class Main extends React.Component {
     const scrollTop =
       (document.documentElement && document.documentElement.scrollTop) ||
       document.body.scrollTop;
-
     if (scrollHeight - innerHeight - scrollTop < 30) {
-      let { data } = await axios.post("http://localhost:8000/problem/main", {
-        next_problem: this.state.numberLoadingProblem * this.state.countLoading
-      });
-      let problems = [...this.state.problems, ...data];
+      let countLoading = 0;
+      let loadingProblem = 0;
+      if (this.state.search) {
+        countLoading = this.state.countSearchLoading + 1;
+        loadingProblem = this.state.numberLoadingSearchProblem;
+      } else {
+        countLoading = this.state.countLoading + 1;
+        loadingProblem = this.state.numberLoadingProblem;
+      }
+      if (!this.state.genreOn) {
+        let { data } = await axios.post(
+          this.state.search ? searchApi : mainApi,
+          {
+            next_problem: loadingProblem * countLoading,
+            word: this.state.input
+          }
+        );
+
+        data = JSON.parse(data);
+        let origin = [];
+        this.state.search
+          ? (origin = this.state.searchProblems.map(v => JSON.stringify(v)))
+          : (origin = this.state.problems.map(v => JSON.stringify(v)));
+
+        let newData = data.filter(v => {
+          if (!origin.includes(JSON.stringify(v))) {
+            return v;
+          }
+        });
+
+        if (!this.state.search) {
+          let problems = [...this.state.problems, ...newData];
+
+          this.setState({
+            problems: problems,
+            countLoading: countLoading
+          });
+        } else {
+          let problems = [...this.state.searchProblems, ...newData];
+
+          this.setState({
+            searchProblems: problems,
+            countSearchLoading: countLoading
+          });
+        }
+      } else {
+        let { data } = await axios.post(genreApi, {
+          next_problem: loadingProblem * countLoading,
+          genre: this.state.currentOption
+        });
+
+        data = JSON.parse(data);
+        let origin = [];
+        this.state.search
+          ? (origin = this.state.searchProblems.map(v => JSON.stringify(v)))
+          : (origin = this.state.problems.map(v => JSON.stringify(v)));
+
+        let newData = data.filter(v => {
+          if (!origin.includes(JSON.stringify(v))) {
+            return v;
+          }
+        });
+
+        if (!this.state.search) {
+          let problems = [...this.state.problems, ...newData];
+
+          this.setState({
+            problems: problems,
+            countLoading: countLoading
+          });
+        } else {
+          let problems = [...this.state.searchProblems, ...newData];
+
+          this.setState({
+            searchProblems: problems,
+            countSearchLoading: countLoading
+          });
+        }
+      }
+    }
+  };
+
+  handleSelect = async e => {
+    // if(this.state.)////
+    if (e.target.value !== "") {
+      let curr = document.getElementById("currentGenre");
+      let choiceOpt =
+        curr.options[document.getElementById("currentGenre").selectedIndex]
+          .value;
+      // console.log(choiceOpt);
+      this.setState(
+        {
+          currentOption: choiceOpt
+        },
+        async () => {
+          let { data } = await axios.post(genreApi, {
+            next_problem: 4,
+            genre: this.state.currentOption
+          });
+
+          data = JSON.parse(data);
+
+          let origin = [];
+          this.state.search
+            ? (origin = this.state.searchProblems.map(v => JSON.stringify(v)))
+            : (origin = this.state.problems.map(v => JSON.stringify(v)));
+
+          let newData = data.filter(v => {
+            if (!origin.includes(JSON.stringify(v))) {
+              return v;
+            }
+          });
+
+          this.setState({
+            problems: [...this.state.problems, ...newData],
+            genreOn: true
+          });
+        }
+      );
+    } else {
+      let problems = [...this.state.problems];
       this.setState({
-        problems
+        genreOn: false,
+        problems: problems,
+        currentOption: ""
       });
     }
   };
 
-  handleSelect() {
-    let curr = document.getElementById("currentGenre");
-    let choiceOpt =
-      curr.options[document.getElementById("currentGenre").selectedIndex].value;
-    // console.log(choiceOpt);
-    this.setState({
-      currentOption: choiceOpt
-    });
-  }
   handleInput(e) {
     this.setState({
-      input: e.target.value.trim()
+      input: e.target.value
     });
   }
   search() {
-    if (this.state.input === "") {
-      alert("단어를 입력하고 검색해주세요");
+    if (this.state.input.length < 2) {
+      alert("두글자 이상 입력해주세요");
     } else {
-      //  axios
-      //   .get(`http://localhost:8000/?word=${this.state.input}`)
-      //   .then(data => this.setState({ problems: data }))
-      //   .catch(err => console.log(err));
+      this.setState(
+        {
+          search: true,
+          countSearchLoading: 0
+        },
+        async () => {
+          let countLoading = 0;
+          this.state.search
+            ? (countLoading = this.state.countSearchLoading)
+            : (countLoading = this.state.countLoading);
+
+          console.log("카운트로딩", countLoading);
+          if (countLoading === 0) {
+            console.log("초기검색어", this.state.input);
+            const { data } = await axios.post(searchApi, {
+              next_problem: 0,
+              word: this.state.input
+            });
+            console.log("데이타", JSON.parse(data));
+            this.state.search
+              ? this.setState({
+                  searchProblems: JSON.parse(data),
+                  countSearchLoading: 0
+                })
+              : this.setState({ problems: JSON.parse(data) });
+          }
+        }
+      );
     }
   }
   solvedProblem(e, id) {
@@ -95,11 +244,9 @@ class Main extends React.Component {
   }
   render() {
     // const { img, title, problem_id } = this.state.problems;
-    console.log("도큐먼트scrollHeight", document.documentElement.scrollHeight);
-    console.log("바디scrollHeight", document.body.scrollHeight);
-    console.log("도큐면트scrollTop", document.documentElement.scrollTop);
-    console.log("바디scrollTop", document.body.scrollTop);
-    const problems = this.state.problems;
+    const problems = this.state.search
+      ? this.state.searchProblems
+      : this.state.problems;
     return (
       <div className="container">
         <div className="top-search-bar">
@@ -107,7 +254,9 @@ class Main extends React.Component {
           <select
             id="currentGenre"
             className="form-control"
-            onChange={() => this.handleSelect()}
+            onChange={e => {
+              this.handleSelect(e);
+            }}
           >
             <option value="">모두</option>
             <option value="movie">영화</option>
@@ -121,7 +270,7 @@ class Main extends React.Component {
             type="text"
             id="inputTag"
             className="form-control"
-            placeholder="이름 또는 태그로 검색"
+            placeholder="제목 검색"
             value={this.state.input}
             size="40"
             onChange={e => this.handleInput(e)}
@@ -131,9 +280,9 @@ class Main extends React.Component {
         <hr></hr>
         <div className="problem-list">
           문제 모음집
-          {this.state.problems.map(item =>
+          {problems.map((item, i) =>
             this.state.currentOption === "" ? (
-              <div key={item._id} className="problems">
+              <div key={i} className="problems">
                 <a href="/#">
                   <img
                     src={item.representImg}
@@ -163,12 +312,10 @@ class Main extends React.Component {
                 <a href="/#" onClick={e => this.solvedProblem(e, item._id)}>
                   {item.title}
                   <br></br>
-                  {item.tags}
+                  {/* {item.tags} */}
                 </a>
               </div>
-            ) : (
-              <div></div>
-            )
+            ) : null
           )}
         </div>
       </div>
