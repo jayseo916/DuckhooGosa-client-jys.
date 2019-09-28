@@ -28,7 +28,8 @@ export class Scoring extends Component {
       _id: this.props.data.problem_id, 
       evalQ: this.state.evalQ,
       evalD: this.state.evalD,
-      comments: this.state.comment
+      comments: this.state.comment,
+      email: this.props.email
     }, config)
     .then(res => console.log(res))
     .catch(err => console.log(err));

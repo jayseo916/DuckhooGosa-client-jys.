@@ -42,8 +42,9 @@ export default class SolvingProblem extends Component {
   loadProblem = async () => {
     try {
       const problem = await axios.get(
-        `http://localhost:8000/problem/${this.state.problemId}`
-      , config);
+        `http://localhost:8000/problem/${this.state.problemId}`,
+        config
+      );
       this.setState({
         titleImg: problem.img,
         backImg: problem.title,
@@ -61,7 +62,8 @@ export default class SolvingProblem extends Component {
     try {
       const { data } = await axios.post(
         "http://localhost:8000/problem/solution",
-        obj, config
+        obj,
+        config
       );
       /////data 가지고 이제 처리하믄 뎀
     } catch (ex) {
@@ -251,7 +253,8 @@ export default class SolvingProblem extends Component {
               commentCount: 11,
               problemId: "abcd",
               checkProblem: [],
-              totalProblem: 20
+              totalProblem: 20,
+              email: this.props.email
             }}
             history={this.props.history}
           /> //페이크 데이타 넘김

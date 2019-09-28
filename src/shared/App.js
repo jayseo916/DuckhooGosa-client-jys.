@@ -22,7 +22,7 @@ class App extends React.Component {
     this.state = {
       email: JSON.parse(localStorage.getItem("authData")).profileObj.email,
       expires_at: null,
-      repreImg: null,
+      repreImg: null
     };
   }
 
@@ -34,7 +34,7 @@ class App extends React.Component {
   };
 
   setRepreImg = repreImg => {
-    this.setState({repreImg: repreImg}, () => {
+    this.setState({ repreImg: repreImg }, () => {
       console.log("이미지 설정 완료");
     });
   };
@@ -48,23 +48,32 @@ class App extends React.Component {
           <Route path="/problem/main" component={Main} />
           <Route path="/selectGenre" component={SelectGenre} />
           <Route
-              path="/selectTheme"
-              render={props => (
-                  <SelectTheme {...props} setRepreImg={this.setRepreImg}/>
-              )}
+            path="/selectTheme"
+            render={props => (
+              <SelectTheme {...props} setRepreImg={this.setRepreImg} />
+            )}
           />
           <Route
-              path="/createProblem"
-              render={props => (
-                  <CreateProblem {...props} email={this.state.email} repreImg={this.state.repreImg}/>
-              )}
+            path="/createProblem"
+            render={props => (
+              <CreateProblem
+                {...props}
+                email={this.state.email}
+                repreImg={this.state.repreImg}
+              />
+            )}
           />
           <Route path="/comment/:id" component={Comment} />
           <Route path="/myProblem" component={MyProblem} />
           <Route path="/mySolved" component={MySolved} />
           <Route path="/profile" component={Profile} />
           <Route path="/not-found" component={NotFound} />
-          <Route path="/SolvingProblem/:id" component={SolvingProblem} />
+          <Route
+            path="/SolvingProblem/:id"
+            render={props => (
+              <SolvingProblem {...props} email={this.state.email} />
+            )}
+          />
           <Route path="/UpLoadTest" component={UpLoadTest} />
           <Route path="/main" render={props => <Main {...props} />} />
           <Route
