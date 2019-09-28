@@ -33,7 +33,7 @@ class Main extends React.Component {
       next_problem: this.state.numberLoadingProblem * this.state.countLoading
     });
     this.setState({
-      problems: data
+      problems: JSON.parse(data)
     });
   };
   componentWillUnmount() {
