@@ -209,7 +209,6 @@ class Main extends React.Component {
           countSearchLoading: 0
         },
         async () => {
-          window.addEventListener("scroll", this.handleScroll);
           let countLoading = 0;
           this.state.search
             ? (countLoading = this.state.countSearchLoading)
