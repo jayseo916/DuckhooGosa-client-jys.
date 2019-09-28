@@ -6,6 +6,7 @@ import { Route, Switch, Link, Redirect } from "react-router-dom";
 import "./Main.css";
 let mainApi = "http://localhost:8000/problem/main";
 let searchApi = "http://localhost:8000/problem/search";
+let genreApi = "http://localhost:8000/problem/genre";
 class Main extends React.Component {
   constructor(props) {
     super(props);
@@ -18,13 +19,14 @@ class Main extends React.Component {
       // 서버가 완성되기 전까지 가짜데이터로 임시로 설정
       problems: [],
       searchProblems: [],
-      numberLoadingSearchProblem: 3, //
+      numberLoadingSearchProblem: 5, //
       countSearchLoading: 0,
       search: false,
       currentOption: "",
       input: "",
-      numberLoadingProblem: 3, //한번에 로딩 되는 문제 수
-      countLoading: 0 //문제 받아온 횟수
+      numberLoadingProblem: 5, //한번에 로딩 되는 문제 수
+      countLoading: 0, //문제 받아온 횟수
+      genreOn: false
     };
   }
   componentDidMount = async () => {
@@ -72,54 +74,126 @@ class Main extends React.Component {
         countLoading = this.state.countLoading + 1;
         loadingProblem = this.state.numberLoadingProblem;
       }
-      console.log("서치온", this.state.search);
-      console.log("countLoading", countLoading);
-      console.log("loadingProblem", loadingProblem);
-      let { data } = await axios.post(this.state.search ? searchApi : mainApi, {
-        next_problem: loadingProblem * countLoading,
-        word: this.state.input
-      });
+      if (!this.state.genreOn) {
+        let { data } = await axios.post(
+          this.state.search ? searchApi : mainApi,
+          {
+            next_problem: loadingProblem * countLoading,
+            word: this.state.input
+          }
+        );
 
-      data = JSON.parse(data);
-      let origin = [];
-      this.state.search
-        ? (origin = this.state.searchProblems.map(v => JSON.stringify(v)))
-        : (origin = this.state.problems.map(v => JSON.stringify(v)));
+        data = JSON.parse(data);
+        let origin = [];
+        this.state.search
+          ? (origin = this.state.searchProblems.map(v => JSON.stringify(v)))
+          : (origin = this.state.problems.map(v => JSON.stringify(v)));
 
-      let newData = data.filter(v => {
-        if (!origin.includes(JSON.stringify(v))) {
-          return v;
+        let newData = data.filter(v => {
+          if (!origin.includes(JSON.stringify(v))) {
+            return v;
+          }
+        });
+
+        if (!this.state.search) {
+          let problems = [...this.state.problems, ...newData];
+
+          this.setState({
+            problems: problems,
+            countLoading: countLoading
+          });
+        } else {
+          let problems = [...this.state.searchProblems, ...newData];
+
+          this.setState({
+            searchProblems: problems,
+            countSearchLoading: countLoading
+          });
         }
-      });
-      console.log("뉴데이타", newData);
-
-      if (!this.state.search) {
-        let problems = [...this.state.problems, ...newData];
-
-        this.setState({
-          problems: problems,
-          countLoading: countLoading
-        });
       } else {
-        let problems = [...this.state.searchProblems, ...newData];
-
-        this.setState({
-          searchProblems: problems,
-          countSearchLoading: countLoading
+        let { data } = await axios.post(genreApi, {
+          next_problem: loadingProblem * countLoading,
+          genre: this.state.currentOption
         });
+
+        data = JSON.parse(data);
+        let origin = [];
+        this.state.search
+          ? (origin = this.state.searchProblems.map(v => JSON.stringify(v)))
+          : (origin = this.state.problems.map(v => JSON.stringify(v)));
+
+        let newData = data.filter(v => {
+          if (!origin.includes(JSON.stringify(v))) {
+            return v;
+          }
+        });
+
+        if (!this.state.search) {
+          let problems = [...this.state.problems, ...newData];
+
+          this.setState({
+            problems: problems,
+            countLoading: countLoading
+          });
+        } else {
+          let problems = [...this.state.searchProblems, ...newData];
+
+          this.setState({
+            searchProblems: problems,
+            countSearchLoading: countLoading
+          });
+        }
       }
     }
   };
 
-  handleSelect() {
-    let curr = document.getElementById("currentGenre");
-    let choiceOpt =
-      curr.options[document.getElementById("currentGenre").selectedIndex].value;
-    // console.log(choiceOpt);
-    this.setState({
-      currentOption: choiceOpt
-    });
-  }
+  handleSelect = async e => {
+    // if(this.state.)////
+    if (e.target.value !== "") {
+      let curr = document.getElementById("currentGenre");
+      let choiceOpt =
+        curr.options[document.getElementById("currentGenre").selectedIndex]
+          .value;
+      // console.log(choiceOpt);
+      this.setState(
+        {
+          currentOption: choiceOpt
+        },
+        async () => {
+          let { data } = await axios.post(genreApi, {
+            next_problem: 4,
+            genre: this.state.currentOption
+          });
+
+          data = JSON.parse(data);
+
+          let origin = [];
+          this.state.search
+            ? (origin = this.state.searchProblems.map(v => JSON.stringify(v)))
+            : (origin = this.state.problems.map(v => JSON.stringify(v)));
+
+          let newData = data.filter(v => {
+            if (!origin.includes(JSON.stringify(v))) {
+              return v;
+            }
+          });
+
+          this.setState({
+            problems: [...this.state.problems, ...newData],
+            genreOn: true
+          });
+        }
+      );
+    } else {
+      let problems = [...this.state.problems];
+      this.setState({
+        genreOn: false,
+        problems: problems,
+        currentOption: ""
+      });
+    }
+  };
+
   handleInput(e) {
     this.setState({
       input: e.target.value
@@ -171,10 +245,6 @@ class Main extends React.Component {
   }
   render() {
     // const { img, title, problem_id } = this.state.problems;
-    console.log("도큐먼트scrollHeight", document.documentElement.scrollHeight);
-    console.log("바디scrollHeight", document.body.scrollHeight);
-    console.log("도큐면트scrollTop", document.documentElement.scrollTop);
-    console.log("바디scrollTop", document.body.scrollTop);
     const problems = this.state.search
       ? this.state.searchProblems
       : this.state.problems;
@@ -185,7 +255,9 @@ class Main extends React.Component {
           <select
             id="currentGenre"
             className="form-control"
-            onChange={() => this.handleSelect()}
+            onChange={e => {
+              this.handleSelect(e);
+            }}
           >
             <option value="">모두</option>
             <option value="movie">영화</option>
@@ -241,12 +313,10 @@ class Main extends React.Component {
                 <a href="/#" onClick={e => this.solvedProblem(e, item._id)}>
                   {item.title}
                   <br></br>
-                  {item.tags}
+                  {/* {item.tags} */}
                 </a>
               </div>
-            ) : (
-              <div></div>
-            )
+            ) : null
           )}
         </div>
       </div>
