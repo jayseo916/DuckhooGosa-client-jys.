@@ -146,4 +146,13 @@
 }
 
 /*썸네일표현*/
+.eval-quality{
+  text-align: center;
+}
 
+.eval-difficulty{
+  text-align: center;
+}
+.input-comment{
+  text-align:center;
+}

@@ -4,6 +4,7 @@ import { Modal } from "antd";
 import { config } from "../config";
 import axios from "axios";
 import StarRatingComponent from 'react-star-rating-component';
+import "../shared/App.css";
 export class Scoring extends Component {
   constructor(props){
     super(props);
@@ -56,6 +57,26 @@ export class Scoring extends Component {
       evalD: e
     })
   }
+  starIcon() {
+    return (<section className="icon-list">
+    <span className="nes-icon is-medium star"></span>
+    </section>);
+  }
+  starIcon2() {
+    return (<section className="icon-list">
+    <span className="nes-icon is-medium star"></span>
+    </section>);
+  }
+  starHalfIcon() {
+    return(<section className="icon-list">
+      <span className="nes-icon is-medium star is-half"></span>
+    </section>)
+  }
+  starHalfIcon2() {
+    return(<section className="icon-list">
+      <span className="nes-icon is-medium star is-half"></span>
+    </section>)
+  }
   commentHandle(e) {
     this.setState({ comment: e.target.value })
   }
@@ -92,13 +113,13 @@ export class Scoring extends Component {
       checkProblem,
       totalProblem
     } = this.props.data;
-    checkProblem = [
-      //페이크 데이타
-      { num: 1, okCount: 300, tryCount: 530, ok: true },
-      { num: 2, okCount: 120, tryCount: 530, ok: false },
-      { num: 3, okCount: 160, tryCount: 530, ok: true },
-      { num: 4, okCount: 200, tryCount: 720, ok: false }
-    ];
+    // checkProblem = [
+    //   //페이크 데이타
+    //   { num: 1, okCount: 300, tryCount: 530, ok: true },
+    //   { num: 2, okCount: 120, tryCount: 530, ok: false },
+    //   { num: 3, okCount: 160, tryCount: 530, ok: true },
+    //   { num: 4, okCount: 200, tryCount: 720, ok: false }
+    // ];
     let correctProblem = checkProblem.filter(v => {
       //마자춘 문제수 측정용
       if (v.ok === true) {
@@ -116,30 +137,33 @@ export class Scoring extends Component {
         cancelText="닫기"
         onOk={() => this.evalSubmit()} 
         onCancel={this.cancel}>
-        <div>
+        <div className="eval-quality">
           문제가 어땠나요?(좋았어요:5점,구렸어요:1점)  
           <StarRatingComponent
-            style={{ size: "100%" }}
             name="evalQuality"
             value={this.state.evalQ}
             starCount={5}
+            renderStarIcon={() => this.starIcon()}
+            renderStarIconHalf={() => this.starHalfIcon()}
             onStarClick={nextValue => this.setEvalQ(nextValue)}
-            onStarHover={nextValue => this.setHoverEvalQ(nextValue)}
             starColor="yellow"
           />
         </div>
-        <div>
-          문제가 어려웠나요?(어려웠어요:5점,쉬웠어요:1점)
+        <div className="eval-difficulty">
+          문제의 난이도는 어땠나요?(어려웠어요:5점,쉬웠어요:1점)
           <StarRatingComponent
             name="evalDifficulty"
             value={this.state.evalD}
             starCount={5}
+            renderStarIcon={() => this.starIcon2()}
+            renderStarIconHalf={() => this.starHalfIcon2()}
             onStarClick={nextValue => this.setEvalD(nextValue)}
-            onStarHover={nextValue => this.setHoverEvalD(nextValue)}
             starColor="yellow"
           />
         </div>
-        의견:<textarea onChange={e => this.commentHandle(e)}></textarea>
+        <div className="input-comment">
+          의견:<textarea onChange={e => this.commentHandle(e)}></textarea>
+        </div>
       </Modal>
       <div style={{ padding: "0 0 60px 30px" }}>
         <div className="nes-container with-title is-centered">
