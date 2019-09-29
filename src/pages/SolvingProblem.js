@@ -4,7 +4,6 @@ import Img from "react-image";
 import { config } from "../config";
 import Scoring from "../components/Scoring";
 import "../../node_modules/nes.css/css/nes.css";
-import { problems } from "./fake";
 import {
   Player,
   ControlBar,
@@ -22,58 +21,101 @@ export default class SolvingProblem extends Component {
     super(props);
 
     this.state = {
-      problemId: this.props.match.params.id,
-      titleImg: "",
-      backImg: "",
-      problems: problems,
+      isLoading: false,
+      problem_id: this.props.match.params.id,
+      titleImg: null,
+      problems: null,
       answer: [],
-      nickname: "",
-      email: "",
+      nickname: null,
+      date: new Date(),
+      email: this.props.email,
       solved: 0,
-      total: problems.length, //,
-      scoring: false
+      total: 0,
+      scoring: false,
+      progress: 50,
+      resultData: undefined
     };
   }
 
   componentDidMount() {
     this.loadProblem();
-    console.log("로드돌림")
   }
 
   loadProblem = async () => {
+    let id = setInterval(() => {
+      let nextValue = undefined;
+      if (this.state.progress === 100) {
+        nextValue = 0;
+      } else {
+        nextValue = this.state.progress + Math.floor(Math.random() * 3);
+        if (nextValue > 100) {
+          nextValue = 100;
+        }
+      }
+      this.setState({ progress: nextValue });
+    }, 10);
+
     try {
-      const problem = await axios.get(
-        `http://localhost:8000/problem/${this.state.problemId}`,
-        config
+      const data = await axios
+        .get(`http://localhost:8000/problem/${this.state.problem_id}`, config)
+        .then(res => {
+          return res.data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      this.setState(
+        {
+          isLoading: true,
+          titleImg: data.img,
+          title: data.title,
+          problems: data.problems,
+          total: data.problems.length //추후 실제데이터 시 사용
+        },
+        () => {
+          console.log(this.state, "현재 받아온 데이터");
+          clearInterval(id);
+        }
       );
-      this.setState({
-        titleImg: problem.img,
-        backImg: problem.title,
-        problems: problem.problems,
-        total: problems.problems.length //추후 실제데이터 시 사용
-      });
     } catch (ex) {
       console.error(ex);
     }
   };
 
-  submit = async () => {
-    const { nickname, answer, problemId, email } = this.state;
-    let obj = { nickname, answer, problemId, email };
-    try {
-      const { data } = await axios.post(
-        "http://localhost:8000/problem/solution",
-        obj,
-        config
-      );
-      /////data 가지고 이제 처리하믄 뎀
-    } catch (ex) {
-      console.error(ex);
-    }
-
-    this.setState({
-      scoring: true
-    });
+  submit = () => {
+    this.setState(
+      {
+        isLoading: false
+      },
+      () => {
+        const { nickname, answer, problem_id, email, date } = this.state;
+        let obj = { nickname, answer, problem_id, email, date };
+        console.log("보내는 답", obj);
+        console.log("보내는 답", JSON.stringify(obj));
+        axios
+          .post("http://localhost:8000/problem/solution", obj, config)
+          .then(res => {
+            console.log("답리절트", res);
+            return res.data;
+          })
+          .then(data => {
+            this.setState(
+              {
+                resultData: JSON.parse(data),
+                scoring: true,
+                isLoading: true
+              },
+              () => {
+                console.log(this.state.resultData);
+                console.log(this.state.scoring);
+              }
+            );
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
+    );
   };
 
   handleChoice = (e, num, choiceNum) => {
@@ -113,7 +155,7 @@ export default class SolvingProblem extends Component {
           solved++;
           // console.log("실시간솔브드값", solved);
         }
-        console.log("v값", v);
+        // console.log("v값", v);
       });
       this.setState({
         solved
@@ -123,7 +165,7 @@ export default class SolvingProblem extends Component {
     // console.log("답안지", this.state.answer);
   };
   viewProblem = () => {
-    // const { problems } = this.state.problems;
+    const { problems } = this.state;
     let view = problems.map((problem, num) => {
       let url = problem.fileLink1 || null;
       let fileTag = null;
@@ -224,11 +266,15 @@ export default class SolvingProblem extends Component {
   };
 
   render() {
-    console.log("total:", this.state.total);
-    console.log("solved:", this.state.solved);
-    console.log("답안", this.state.answer);
-
-    return (
+    return !this.state.isLoading ? (
+      <div>
+        <progress
+          className="nes-progress is-success"
+          value={this.state.progress}
+          max="100"
+        />
+      </div>
+    ) : (
       <div>
         {this.state.scoring === false ? (
           <React.Fragment>
@@ -249,13 +295,12 @@ export default class SolvingProblem extends Component {
         ) : (
           <Scoring
             data={{
-              okCount: 10,
-              tryCount: 20,
-              commentCount: 11,
-              problemId: "abcd",
-              checkProblem: [],
-              totalProblem: 20,
-              email: this.props.email
+              okCount: this.state.resultData.okCount,
+              tryCount: this.state.resultData.tryCount,
+              commentCount: this.state.resultData.commentCount,
+              problem_id: this.state.resultData.problem_id,
+              checkProblem: this.state.resultData.checkProblem,
+              totalProblem: this.state.resultData.totalProblem
             }}
             history={this.props.history}
           /> //페이크 데이타 넘김

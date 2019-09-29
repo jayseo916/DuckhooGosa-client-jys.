@@ -50,6 +50,7 @@ class CompleteProblem extends React.Component {
 
   componentDidMount() {
     let Problems = this.props.Problems;
+    // console.log(Problems,'물려받은 상태 확인');
 
     this.setState({
       allFiles: Problems
@@ -58,7 +59,7 @@ class CompleteProblem extends React.Component {
 
   handleInit = () => {};
   modifyProblem = () => {
-    console.log("hi");
+    // console.log("hi");
     this.props.changeComplete();
   };
   uploadAndGetLink = async dir => {
@@ -94,6 +95,10 @@ class CompleteProblem extends React.Component {
       .then(v => {
         let problems = this.props.Problems.map((problem, num) => {
           problem.fileLink1 = v[num];
+          // console.log(problem,"중간작업")
+          if (problem.choice[0].answer !== undefined){
+            problem.subjectAnswer = problem.choice[0].answer
+          }
           return problem;
 
         });
@@ -112,7 +117,7 @@ class CompleteProblem extends React.Component {
         axios
           .post("http://localhost:8000/problem", obj, config)
           .then(res => {
-            console.log(res, "업로드결과");
+            // console.log(res, "업로드결과");
           })
           .catch(err => {
             console.log(err);
