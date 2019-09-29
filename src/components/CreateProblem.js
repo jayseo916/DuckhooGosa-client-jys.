@@ -4,17 +4,31 @@ import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orien
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import FilePondPluginMediaPreview from "filepond-plugin-media-preview";
 import FilePondPluginImageValidateSize from "filepond-plugin-image-validate-size";
+import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
+import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
+import FilePondPluginImageEdit from "filepond-plugin-image-edit";
+import FilePondPluginImageResize from "filepond-plugin-image-resize";
+import FilePondPluginImageCrop from "filepond-plugin-image-crop";
+import FilePondPluginImageTransform from "filepond-plugin-image-transform";
+
 import Joi from "joi-browser";
 import CompleteProblem from "./CompleteProblem";
 
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
+import "filepond-plugin-image-edit/dist/filepond-plugin-image-edit.css";
 
 registerPlugin(
   FilePondPluginImageExifOrientation,
   FilePondPluginImagePreview,
   FilePondPluginMediaPreview,
-  FilePondPluginImageValidateSize
+  FilePondPluginImageValidateSize,
+  FilePondPluginFileValidateSize,
+  FilePondPluginFileValidateType,
+  FilePondPluginImageEdit,
+  FilePondPluginImageResize,
+  FilePondPluginImageCrop,
+  FilePondPluginImageTransform
 );
 
 class CreateProblem extends Component {
@@ -227,11 +241,14 @@ class CreateProblem extends Component {
     };
     let Problems = [...this.state.Problems];
     Problems[this.state.curProblem] = newProblem;
-    this.setState({
-      Problems
-    },()=>{
-      // console.log(this.state.Problems,"현재 프로블럼 객체 상태 ")
-    });
+    this.setState(
+      {
+        Problems
+      },
+      () => {
+        // console.log(this.state.Problems,"현재 프로블럼 객체 상태 ")
+      }
+    );
     alert("저장완료");
   };
 
@@ -265,15 +282,31 @@ class CreateProblem extends Component {
                 {this.state.curProblem + 1}번
               </div>
             </span>
-            문제에 사용할 파일{" "}
+            문제에 사용할 파일 - 최대 2MB / jpg,jpeg,png,mp3,mp4,avi
           </label>
           <FilePond
             ref={ref => (this.pond = ref)}
             files={this.state.files ? this.state.files : []}
             allowMultiple={true}
             maxFiles={1}
+            maxFileSize={"2MB"}
+            labelMaxFileSize={"maximum size 2MB"}
             server={null}
+            allowFileTypeValidation={true}
+            acceptedFileTypes={[
+              "image/png",
+              "image/jpg",
+              "image/jpeg",
+              "audio/mp3",
+              "video/mp4",
+              "video/avi"
+            ]}
             // onremovefile={this.removefile}
+            allowImageTransform={true}
+            imagePreviewHeight="300"
+            imageCropAspectRatio="1:1"
+            imageResizeTargetWidth="300"
+            imageResizeTargetHeight="300"
             oninit={() => this.handleInit()}
             onupdatefiles={fileItems => {
               // Set current file objects to this.state
