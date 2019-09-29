@@ -102,19 +102,15 @@ class Main extends React.Component {
   }
   solvedProblem(e, id) {
     e.preventDefault();
+    console.log(`/SolvingProblem/${id}`, "으로 보내줌");
     this.props.history.push(`/SolvingProblem/${id}`);
-    // alert("해당문제 id:" + id);
-    // axios
-    //   .get(`http://localhost:8000/problem?id=${id}`)
-    //   .then(item => this.props.history.push("/SolvedProblem"))
-    //   .catch(err => console.log(err));
   }
   render() {
     // const { img, title, problem_id } = this.state.problems;
-    console.log("도큐먼트scrollHeight", document.documentElement.scrollHeight);
-    console.log("바디scrollHeight", document.body.scrollHeight);
-    console.log("도큐면트scrollTop", document.documentElement.scrollTop);
-    console.log("바디scrollTop", document.body.scrollTop);
+    // console.log("도큐먼트scrollHeight", document.documentElement.scrollHeight);
+    // console.log("바디scrollHeight", document.body.scrollHeight);
+    // console.log("도큐면트scrollTop", document.documentElement.scrollTop);
+    // console.log("바디scrollTop", document.body.scrollTop);
     const problems = this.state.problems;
     return (
       <div className="container">
@@ -141,7 +137,7 @@ class Main extends React.Component {
             value={this.state.input}
             size="40"
             onChange={e => this.handleInput(e)}
-          ></input>
+          />
           <button onClick={() => this.search()}>찾기</button>
         </div>
         <hr></hr>

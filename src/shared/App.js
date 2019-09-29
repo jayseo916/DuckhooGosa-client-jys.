@@ -66,7 +66,10 @@ class App extends React.Component {
           <Route path="/comment/:id" component={Comment} />
           <Route path="/myProblem" component={MyProblem} />
           <Route path="/mySolved" component={MySolved} />
-          <Route path="/profile" component={Profile} />
+          <Route
+            path="/profile"
+            render={props => <Profile {...props} email={this.state.email} />}
+          />
           <Route path="/not-found" component={NotFound} />
           <Route
             path="/SolvingProblem/:id"

@@ -95,6 +95,7 @@ class CompleteProblem extends React.Component {
         let problems = this.props.Problems.map((problem, num) => {
           problem.fileLink1 = v[num];
           return problem;
+
         });
 
         const { email, tags, genre, title, date } = this.props.problemState;
@@ -140,7 +141,7 @@ class CompleteProblem extends React.Component {
           server={null}
           // onremovefile={this.removefile}
           oninit={() => this.handleInit()}
-        ></FilePond>
+        />
       ) : null;
 
       let choices;

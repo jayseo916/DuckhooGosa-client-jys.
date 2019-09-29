@@ -36,7 +36,8 @@ export default class SolvingProblem extends Component {
   }
 
   componentDidMount() {
-    // this.loadProblem();
+    this.loadProblem();
+    console.log("로드돌림")
   }
 
   loadProblem = async () => {
@@ -110,7 +111,7 @@ export default class SolvingProblem extends Component {
       this.state.answer.forEach(v => {
         if (v && v.length !== 0) {
           solved++;
-          console.log("실시간솔브드값", solved);
+          // console.log("실시간솔브드값", solved);
         }
         console.log("v값", v);
       });
