@@ -100,6 +100,7 @@ class CompleteProblem extends React.Component {
             problem.subjectAnswer = problem.choice[0].answer
           }
           return problem;
+
         });
 
         const { email, tags, genre, title, date } = this.props.problemState;
@@ -145,7 +146,7 @@ class CompleteProblem extends React.Component {
           server={null}
           // onremovefile={this.removefile}
           oninit={() => this.handleInit()}
-        ></FilePond>
+        />
       ) : null;
 
       let choices;
