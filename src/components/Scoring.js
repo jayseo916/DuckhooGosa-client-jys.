@@ -10,9 +10,7 @@ export class Scoring extends Component {
     super(props);
     this.state = {
       visible: true,
-      hovEvalQ: 3,
       evalQ: 3,
-      hovEvalD: 3,
       evalD: 3,
       comment: "",
       email: this.props.data.email
@@ -52,16 +50,6 @@ export class Scoring extends Component {
   cancel = e => {
     this.setState({ visible: false });
   };
-  setHoverEvalQ(e) {
-    this.setState({
-      hovEvalQ: e
-    });
-  }
-  setHoverEvalD(e) {
-    this.setState({
-      hovEvalD: e
-    });
-  }
   setEvalQ(e) {
     this.setState({
       evalQ: e
@@ -71,23 +59,6 @@ export class Scoring extends Component {
     this.setState({
       evalD: e
     })
-  }
-  starIcon() {
-    return '!@#';
-  }
-  starIcon2() {
-    return <span className="nes-icon is-medium star is-empty"></span>;
-  }
-  starHalfIcon() {
-    return <span className="nes-icon is-medium star is-half"></span>
-  }
-  starHalfIcon2() {
-    return(<section className="icon-list">
-      <span className="nes-icon is-medium star is-half"></span>
-    </section>)
-  }
-  commentHandle = (e) => {
-    this.setState({ comment: e.target.value })
   }
   commentHandle = e => {
     this.setState({ comment: e.target.value });
@@ -144,25 +115,21 @@ export class Scoring extends Component {
         onOk={() => this.evalSubmit()} 
         onCancel={() => this.cancel()}>
         <div className="eval-quality">
-          문제가 어땠나요?(좋았어요:5점,구렸어요:1점)  
+          <div className="eval-question">문제의 퀄리티가 어땠나요?(좋았어요:5점,구렸어요:1점)</div>  
           <StarRatingComponent
             name="evalQuality"
             value={this.state.evalQ}
             starCount={5}
-            renderStarIcon={() => this.starIcon()}
-            renderStarIconHalf={() => this.starHalfIcon()}
             onStarClick={nextValue => this.setEvalQ(nextValue)}
             starColor="yellow"
-          />
+          />  
         </div>
         <div className="eval-difficulty">
-          문제의 난이도는 어땠나요?(어려웠어요:5점,쉬웠어요:1점)
+          <div className="eval-question">문제의 난이도는 어땠나요?(어려웠어요:5점,쉬웠어요:1점)</div>
           <StarRatingComponent
             name="evalDifficulty"
             value={this.state.evalD}
-            starCount={5}
-            renderStarIcon={() => this.starIcon2()}
-            renderStarIconHalf={() => this.starHalfIcon2()}
+            starCount={5}         
             onStarClick={nextValue => this.setEvalD(nextValue)}
             starColor="yellow"
           />
