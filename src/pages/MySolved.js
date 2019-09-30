@@ -40,9 +40,8 @@ class MySolved extends React.Component {
       width: 70%;
     `;
 
-    console.log(this.props.history.location.state.userInfo);
-    const { solutions } = this.props.history.location.state.userInfo;
-    const historyList = solutions.map(el => {
+    const { solution } = this.props.history.location.state.userInfo;
+    const historyList = solution.map(el => {
       return (
         <Popconfirm
           title="다시 풀어 볼래요?"
@@ -65,7 +64,7 @@ class MySolved extends React.Component {
                   님 정답률!{el.successRate}%
                 </span>
                 <span className="nes-text is-primary flex">
-                  언제 풀었어? {formatRelative(el.solved_date, new Date())}
+                  언제 풀었어? {formatRelative(new Date(el.solved_date), new Date())}
                 </span>
               </div>
               <ImageBox className="flex-fixer thumbnail-wrap">

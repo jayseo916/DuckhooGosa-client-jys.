@@ -13,7 +13,8 @@ export class Scoring extends Component {
       evalQ: 3,
       hovEvalD: 3,
       evalD: 3,
-      comment: ""
+      comment: "",
+      email: this.props.data.email
     };
   }
 
@@ -39,7 +40,8 @@ export class Scoring extends Component {
           _id: this.props.data.problem_id,
           evalQ: this.state.evalQ,
           evalD: this.state.evalD,
-          comments: this.state.comment
+          comments: this.state.comment,
+          email: this.state.email
         },
         config
       )
@@ -105,13 +107,14 @@ export class Scoring extends Component {
       checkProblem,
       totalProblem
     } = this.props.data;
-    checkProblem = [
-      //페이크 데이타
-      { num: 1, okCount: 300, tryCount: 530, ok: true },
-      { num: 2, okCount: 120, tryCount: 530, ok: false },
-      { num: 3, okCount: 160, tryCount: 530, ok: true },
-      { num: 4, okCount: 200, tryCount: 720, ok: false }
-    ];
+    // checkProblem = [
+    //   //페이크 데이타
+    //   { num: 1, okCount: 300, tryCount: 530, ok: true },
+    //   { num: 2, okCount: 120, tryCount: 530, ok: false },
+    //   { num: 3, okCount: 160, tryCount: 530, ok: true },
+    //   { num: 4, okCount: 200, tryCount: 720, ok: false }
+    // ];
+    console.log("data받아온 rj", this.props.data);
     let correctProblem = checkProblem.filter(v => {
       //마자춘 문제수 측정용
       if (v.ok === true) {
@@ -120,7 +123,7 @@ export class Scoring extends Component {
     });
     let viewProblem = this.viewScoring(checkProblem); //만춘문제 틀린문제 뷰
     const { evalQ, evalD, comment } = this.state;
-
+    
     return (
       <div>
         <Modal
