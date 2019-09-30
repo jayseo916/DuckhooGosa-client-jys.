@@ -49,7 +49,8 @@ class CreateProblem extends Component {
       complete: false,
       choiceInitialValue: "none",
       choice: [], //문제객체 배열  => {text:,answer:} 객체 저장
-      curProblem: 0 //현재 문제 번호 0~,
+      curProblem: 0, //현재 문제 번호 0~,
+      subjectAnswer: ""
     };
   }
   // problemTextSchema = {
@@ -118,7 +119,8 @@ class CreateProblem extends Component {
     } else if (e.target.type === "textarea" && answer.length === 1) {
       answer[v].answer = e.target.value;
       this.setState({
-        choice: answer
+        choice: answer,
+        subjectAnswer: e.target.value
       });
     } else {
       answer[v].text = e.target.value;
@@ -201,7 +203,8 @@ class CreateProblem extends Component {
       //새로운 문제를 생성하는 경우
       let newProblem = {
         fileLink1: (this.state.files && this.state.files[0]) || null,
-
+        subjectAnswer:
+          this.state.choice.length === 1 ? this.state.subjectAnswer : "",
         problemText: this.state.problemText,
         choice: this.state.choice
       };
@@ -239,7 +242,8 @@ class CreateProblem extends Component {
   saveProblem = () => {
     let newProblem = {
       fileLink1: (this.state.files && this.state.files[0]) || null,
-
+      subjectAnswer:
+        this.state.choice.length === 1 ? this.state.subjectAnswer : "",
       problemText: this.state.problemText,
       choice: this.state.choice
     };
