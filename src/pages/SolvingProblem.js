@@ -99,6 +99,7 @@ export default class SolvingProblem extends Component {
             return res.data;
           })
           .then(data => {
+            console.log("아이디", JSON.parse(data));
             this.setState(
               {
                 resultData: JSON.parse(data),
@@ -298,9 +299,10 @@ export default class SolvingProblem extends Component {
               okCount: this.state.resultData.okCount,
               tryCount: this.state.resultData.tryCount,
               commentCount: this.state.resultData.commentCount,
-              problem_id: this.state.resultData.problem_id,
+              problem_id: this.state.problem_id,
               checkProblem: this.state.resultData.checkProblem,
-              totalProblem: this.state.resultData.totalProblem
+              totalProblem: this.state.resultData.totalProblem,
+              email: this.state.email
             }}
             history={this.props.history}
           /> //페이크 데이타 넘김
