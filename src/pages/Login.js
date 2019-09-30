@@ -68,6 +68,9 @@ class Login extends React.Component {
       .catch(err => {
         console.log(err, "ERROR in logout SEQ");
       });
+    console.log("로그아웃");
+    this.props.emptyEmail();
+    localStorage.removeItem("authData");
   };
 
   render() {

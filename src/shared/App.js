@@ -20,11 +20,19 @@ class App extends React.Component {
   constructor(prop) {
     super(prop);
     this.state = {
-      email: JSON.parse(localStorage.getItem("authData")).profileObj.email,
+      email: localStorage.getItem("authData")
+        ? JSON.parse(localStorage.getItem("authData")).profileObj.email
+        : null,
       expires_at: null,
       repreImg: null
     };
   }
+
+  emptyEmail = () => {
+    this.setState({
+      email: null
+    });
+  };
 
   setUserInfo = data => {
     this.setState({ email: data.email, expires_at: data.expires_at }, () => {
@@ -46,42 +54,80 @@ class App extends React.Component {
         <Switch>
           <Route path="/" exact component={Loading} />
           <Route path="/problem/main" component={Main} />
-          <Route path="/selectGenre" component={SelectGenre} />
+          <Route
+            path="/selectGenre"
+            render={props => {
+              if (!email) return <Redirect to="/login"></Redirect>;
+              return <SelectGenre {...props} />;
+            }}
+          />
           <Route
             path="/selectTheme"
-            render={props => (
-              <SelectTheme {...props} setRepreImg={this.setRepreImg} />
-            )}
+            render={props => {
+              if (!email) return <Redirect to="/login"></Redirect>;
+              return <SelectTheme setRepreImg={this.setRepreImg} {...props} />;
+            }}
           />
           <Route
             path="/createProblem"
-            render={props => (
-              <CreateProblem
-                {...props}
-                email={this.state.email}
-                repreImg={this.state.repreImg}
-              />
-            )}
+            render={props => {
+              if (!email) return <Redirect to="/login"></Redirect>;
+              return (
+                <CreateProblem
+                  email={this.state.email}
+                  repreImg={this.state.repreImg}
+                  {...props}
+                />
+              );
+            }}
           />
-          <Route path="/comment/:id" component={Comment} />
-          <Route path="/myProblem" component={MyProblem} />
-          <Route path="/mySolved" component={MySolved} />
+          {/* <Route
+            path="/comment/:id"
+            render={props => {
+              if (!email) return <Redirect to="/login"></Redirect>;
+              return <Comment {...props} />;
+            }}
+          /> */}
+          <Route
+            path="/myProblem"
+            render={props => {
+              if (!email) return <Redirect to="/login"></Redirect>;
+              return <MyProblem {...props} />;
+            }}
+          />
+
+          <Route
+            path="/mySolved"
+            render={props => {
+              if (!email) return <Redirect to="/login"></Redirect>;
+              return <MySolved {...props} />;
+            }}
+          />
           <Route
             path="/profile"
-            render={props => <Profile {...props} email={this.state.email} />}
+            render={props => {
+              if (!email) return <Redirect to="/login"></Redirect>;
+              return <Profile email={this.state.email} {...props} />;
+            }}
           />
           <Route path="/not-found" component={NotFound} />
-          <Route path="/SolvingProblem/:id"
-                 render={props => (
-                     <SolvingProblem {...props} email={this.state.email}/>
-                 )}
+          <Route
+            path="/SolvingProblem/:id"
+            render={props => {
+              if (!email) return <Redirect to="/login"></Redirect>;
+              return <SolvingProblem email={this.state.email} {...props} />;
+            }}
           />
           <Route path="/UpLoadTest" component={UpLoadTest} />
           <Route path="/main" render={props => <Main {...props} />} />
           <Route
             path="/login"
             render={props => (
-              <Login {...props} setUserInfo={this.setUserInfo} />
+              <Login
+                setUserInfo={this.setUserInfo}
+                emptyEmail={this.emptyEmail}
+                {...props}
+              />
             )}
           />
           {/* <Redirect to="/not-found" /> */}
