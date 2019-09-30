@@ -186,7 +186,7 @@ export default class SolvingProblem extends Component {
                   rates={[5, 2, 1, 0.5, 0.1]}
                   order={7.1}
                 />
-                <VolumeMenuButton disabled />
+                <VolumeMenuButton />
               </ControlBar>
             </Player>
           );
