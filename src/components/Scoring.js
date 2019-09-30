@@ -10,9 +10,7 @@ export class Scoring extends Component {
     super(props);
     this.state = {
       visible: true,
-      hovEvalQ:3,
       evalQ:3,
-      hovEvalD:3,
       evalD:3,
       comment:""
     }
@@ -25,7 +23,7 @@ export class Scoring extends Component {
   evalSubmit() {
     alert("프롭스로 넘어온 문제아이디:"+this.props.data.problem_id+ "퀄리티평점:"+this.state.evalQ+ "난이도평점:"+this.state.evalD+ "댓글:"+this.state.comment);
     this.setState({ visible: false })
-    axios.post(`http://localhost:8000/problem/evaluation`,{
+    axios.post(`http://localhost:8000/problem/evaluation`, {
       _id: this.props.data.problem_id, 
       evalQ: this.state.evalQ,
       evalD: this.state.evalD,
@@ -36,16 +34,6 @@ export class Scoring extends Component {
   }
   cancel(e) {
     this.setState({ visible: false })
-  }
-  setHoverEvalQ(e){
-    this.setState({
-      hovEvalQ: e
-    })
-  }
-  setHoverEvalD(e){
-    this.setState({
-      hovEvalD: e
-    })
   }
   setEvalQ(e){
     this.setState({
@@ -58,26 +46,20 @@ export class Scoring extends Component {
     })
   }
   starIcon() {
-    return (<section className="icon-list">
-    <span className="nes-icon is-medium star"></span>
-    </section>);
+    return '!@#';
   }
   starIcon2() {
-    return (<section className="icon-list">
-    <span className="nes-icon is-medium star"></span>
-    </section>);
+    return <span className="nes-icon is-medium star is-empty"></span>;
   }
   starHalfIcon() {
-    return(<section className="icon-list">
-      <span className="nes-icon is-medium star is-half"></span>
-    </section>)
+    return <span className="nes-icon is-medium star is-half"></span>
   }
   starHalfIcon2() {
     return(<section className="icon-list">
       <span className="nes-icon is-medium star is-half"></span>
     </section>)
   }
-  commentHandle(e) {
+  commentHandle = (e) => {
     this.setState({ comment: e.target.value })
   }
   viewScoring = checkProblem => {
@@ -136,7 +118,7 @@ export class Scoring extends Component {
         okText="평가 완료"
         cancelText="닫기"
         onOk={() => this.evalSubmit()} 
-        onCancel={this.cancel}>
+        onCancel={() => this.cancel()}>
         <div className="eval-quality">
           문제가 어땠나요?(좋았어요:5점,구렸어요:1점)  
           <StarRatingComponent
