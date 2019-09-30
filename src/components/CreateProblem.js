@@ -141,19 +141,23 @@ class CreateProblem extends Component {
     return (
       <React.Fragment>
         <div className="form-group">
-          <label htmlFor="" className="htmlFor">
+          <label htmlFor="choiceName">
             {this.state.choice[1] === undefined ? "주관식정답" : label}
           </label>
           <span>
             <textarea
+              id="choiceName"
               onChange={e => {
                 this.handleChoiceAnswer(e, num);
               }}
               type="text"
               className="form-control"
               defaultValue={
-                this.state.choice[num].text || this.state.choice[num].answer
-              } //
+                this.state.choice.length === 1 &&
+                this.state.choice[0].answer !== false
+                  ? this.state.choice[num].answer
+                  : this.state.choice[num].text
+              }
             />
             {"                 "}
             {this.state.choice[1] === undefined ? null : (
@@ -180,7 +184,7 @@ class CreateProblem extends Component {
     let type = parseInt(event.target.value);
     let arr = [];
     for (let i = 0; i < type; i++) {
-      arr.push([{ text: "", answer: false }]);
+      arr.push({ text: "", answer: false });
     }
     this.setState({
       choice: arr
