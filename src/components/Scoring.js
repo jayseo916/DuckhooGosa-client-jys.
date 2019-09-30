@@ -13,7 +13,8 @@ export class Scoring extends Component {
       evalQ: 3,
       hovEvalD: 3,
       evalD: 3,
-      comment: ""
+      comment: "",
+      email: this.props.data.email
     };
   }
 
@@ -39,7 +40,8 @@ export class Scoring extends Component {
           _id: this.props.data.problem_id,
           evalQ: this.state.evalQ,
           evalD: this.state.evalD,
-          comments: this.state.comment
+          comments: this.state.comment,
+          email: this.state.email
         },
         config
       )
@@ -158,6 +160,7 @@ export class Scoring extends Component {
           <div className="nes-container is-dark with-title">
             <p className="title">correct!!</p>
             <p>
+
               {correctProblem.length} / {checkProblem.length}
             </p>
             <p>
