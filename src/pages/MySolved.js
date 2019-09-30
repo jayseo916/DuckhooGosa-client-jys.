@@ -44,6 +44,7 @@ class MySolved extends React.Component {
     const historyList = solution.map(el => {
       return (
         <Popconfirm
+          key={el.problem_id + "_Popconfirm"}
           title="다시 풀어 볼래요?"
           onConfirm={() => {
             this.confirm(el.problem_id);
@@ -54,7 +55,7 @@ class MySolved extends React.Component {
           placement="top"
         >
           <Card
-            key={el.problem_id}
+            key={el.problem_id + "_Card"}
             className="nes-container with-title is-rounded"
           >
             <p className="title"> {el.title} </p>
@@ -64,7 +65,7 @@ class MySolved extends React.Component {
                   님 정답률!{el.successRate}%
                 </span>
                 <span className="nes-text is-primary flex">
-                  언제 풀었어? {formatRelative(new Date(el.solved_date), new Date())}
+                  언제 풀었어? {formatRelative(new Date(el.date), new Date())}
                 </span>
               </div>
               <ImageBox className="flex-fixer thumbnail-wrap">
