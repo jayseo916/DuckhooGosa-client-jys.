@@ -4447,6 +4447,26 @@ filepond-plugin-file-poster@^2.2.0:
   resolved "https://registry.yarnpkg.com/filepond-plugin-file-poster/-/filepond-plugin-file-poster-2.2.0.tgz#3c5c72a6a18d30974721e32201008a31961147e3"
   integrity sha512-PnynEdXqo/XO3V1ofhbJP9la9mKKf/8YjrFEoDKf1ATA9S3fIX1SNCRSn7q4b6O3WMKOJ5RTpHlzBrbDYs5i/A==
 
+filepond-plugin-file-validate-size@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/filepond-plugin-file-validate-size/-/filepond-plugin-file-validate-size-2.2.0.tgz#89e393e4c757c38467b8b2f7049760682d036716"
+  integrity sha512-Czlj4JLrxWRXBm50QO4rzvEVZVGfB4Gst0denBAGTKTZtuj566KB7vwDQy/daZoYtXOQdoVvfJgrJGifZ5n9KA==
+
+filepond-plugin-file-validate-type@^1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/filepond-plugin-file-validate-type/-/filepond-plugin-file-validate-type-1.2.4.tgz#ce7f5f469dbc7ce0da12fdef7b0f24e4c263c410"
+  integrity sha512-K1qD8mfahJoz2zRlWWvYoHuy4k/8tHggsoGbm/blpTp63OyahOdJBzMN3VK7USYn5OZ58uOFdMTMyi8ibFpW/Q==
+
+filepond-plugin-image-crop@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/filepond-plugin-image-crop/-/filepond-plugin-image-crop-2.0.3.tgz#4be354a10a85d86946abc9ce738c6bda44e21a8c"
+  integrity sha512-+XV09yBoMHwNgww75zgMmA8imckNiOCvtAYTgtDE5sMcZ/lWTrK339SxwuLLxqV66tFAWO8pAL/nrYKKY1Ixpw==
+
+filepond-plugin-image-edit@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/filepond-plugin-image-edit/-/filepond-plugin-image-edit-1.4.0.tgz#8930614e8648b9030bcd8af1bd6d057f4c9b78d5"
+  integrity sha512-F1hEZUvWa67Pxf+vJib/6W8/lFfUMdTHS+DAHfhXsKaG/qFzLpyMgmagBjRGk9FxMBCCtWzjhLwZBN8bG+ksog==
+
 filepond-plugin-image-exif-orientation@^1.0.6:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/filepond-plugin-image-exif-orientation/-/filepond-plugin-image-exif-orientation-1.0.6.tgz#75920935a5da298884718bfd454f03362ad783e8"
@@ -4456,6 +4476,16 @@ filepond-plugin-image-preview@^4.4.0:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/filepond-plugin-image-preview/-/filepond-plugin-image-preview-4.4.0.tgz#4f8c618ebd899e25fb908f7c081ff2005976b040"
   integrity sha512-Kx0Sg9+0ob9mbLyyLZWoo9htVzLiiZQzGgqse8NJp9YeQWPiRwkfloHyzw5eAgvtsM3geXJG6QKfi09u/aEVFg==
+
+filepond-plugin-image-resize@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/filepond-plugin-image-resize/-/filepond-plugin-image-resize-2.0.4.tgz#1f1c77ec692f37d789a9a5600920dd9fc5f26015"
+  integrity sha512-4qDB6cGqO/9sxAHnmlI5iJ1sXWgqzusKeTFCLEEba9JiX6eaY+w5BQjkO5zrhF7OuYAvqFAziunIhkZet6BpiQ==
+
+filepond-plugin-image-transform@^3.4.3:
+  version "3.4.3"
+  resolved "https://registry.yarnpkg.com/filepond-plugin-image-transform/-/filepond-plugin-image-transform-3.4.3.tgz#97a1317b2ce065d993c366dbdfe17a00cbc63485"
+  integrity sha512-dX98KjSrsN6Td5ewSem9GEk2hL8u4/BBbL7sp3MolmB/pE/JQOeH+bmKlaQar2dCkdctONPkNWBM1K6HIUphig==
 
 filepond-plugin-image-validate-size@^1.2.3:
   version "1.2.3"
