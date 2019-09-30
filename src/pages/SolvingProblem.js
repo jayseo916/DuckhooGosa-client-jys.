@@ -296,12 +296,11 @@ export default class SolvingProblem extends Component {
         ) : (
           <Scoring
             data={{
-              okCount: this.state.resultData.okCount,
-              tryCount: this.state.resultData.tryCount,
+              okCount: this.state.resultData.all_okCount,
+              tryCount: this.state.resultData.all_tryCount,
               commentCount: this.state.resultData.commentCount,
               problem_id: this.state.problem_id,
               checkProblem: this.state.resultData.checkProblem,
-              totalProblem: this.state.resultData.totalProblem,
               email: this.state.email
             }}
             history={this.props.history}

@@ -99,22 +99,14 @@ export class Scoring extends Component {
   };
 
   render() {
-    let {
-      okCount,
-      tryCount,
-      commentCount,
-      problem_id,
-      checkProblem,
-      totalProblem
-    } = this.props.data;
-    // checkProblem = [
-    //   //페이크 데이타
-    //   { num: 1, okCount: 300, tryCount: 530, ok: true },
-    //   { num: 2, okCount: 120, tryCount: 530, ok: false },
-    //   { num: 3, okCount: 160, tryCount: 530, ok: true },
-    //   { num: 4, okCount: 200, tryCount: 720, ok: false }
-    // ];
-    console.log("data받아온 rj", this.props.data);
+    let { okCount, tryCount, commentCount, checkProblem } = this.props.data;
+    checkProblem = [
+      //페이크 데이타
+      { num: 1, okCount: 300, tryCount: 530, ok: true },
+      { num: 2, okCount: 120, tryCount: 530, ok: false },
+      { num: 3, okCount: 160, tryCount: 530, ok: true },
+      { num: 4, okCount: 200, tryCount: 720, ok: false }
+    ];
     let correctProblem = checkProblem.filter(v => {
       //마자춘 문제수 측정용
       if (v.ok === true) {
@@ -123,7 +115,7 @@ export class Scoring extends Component {
     });
     let viewProblem = this.viewScoring(checkProblem); //만춘문제 틀린문제 뷰
     const { evalQ, evalD, comment } = this.state;
-    
+
     return (
       <div>
         <Modal
@@ -168,11 +160,12 @@ export class Scoring extends Component {
           <div className="nes-container is-dark with-title">
             <p className="title">correct!!</p>
             <p>
-              {correctProblem.length} / {totalProblem}
+
+              {correctProblem.length} / {checkProblem.length}
             </p>
             <p>
               Your Correct Rate :{" "}
-              {Math.round((correctProblem.length * 100) / totalProblem)}%
+              {Math.round((correctProblem.length * 100) / checkProblem.length)}%
             </p>
           </div>
 
