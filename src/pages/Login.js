@@ -64,12 +64,13 @@ class Login extends React.Component {
         } else {
           console.log(res.data.reason);
         }
-        console.log("로그아웃");
-        this.props.emptyEmail();
       })
       .catch(err => {
         console.log(err, "ERROR in logout SEQ");
       });
+    console.log("로그아웃");
+    this.props.emptyEmail();
+    localStorage.removeItem("authData");
   };
 
   render() {
