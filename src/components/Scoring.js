@@ -6,41 +6,68 @@ import axios from "axios";
 import StarRatingComponent from 'react-star-rating-component';
 import "../shared/App.css";
 export class Scoring extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       visible: true,
-      evalQ:3,
-      evalD:3,
-      comment:""
-    }
+      hovEvalQ: 3,
+      evalQ: 3,
+      hovEvalD: 3,
+      evalD: 3,
+      comment: "",
+      email: this.props.data.email
+    };
   }
-  
-  
+
   goComment = () => {
     this.props.history.push(`/commnet/${this.props.data.problem_id}`);
   };
   evalSubmit() {
-    alert("프롭스로 넘어온 문제아이디:"+this.props.data.problem_id+ "퀄리티평점:"+this.state.evalQ+ "난이도평점:"+this.state.evalD+ "댓글:"+this.state.comment);
-    this.setState({ visible: false })
-    axios.post(`http://localhost:8000/problem/evaluation`, {
-      _id: this.props.data.problem_id, 
-      evalQ: this.state.evalQ,
-      evalD: this.state.evalD,
-      comments: this.state.comment
-    }, config)
-    .then(res => console.log(res))
-    .catch(err => console.log(err));
+    alert(
+      "프롭스로 넘어온 문제아이디:" +
+        this.props.data.problem_id +
+        "퀄리티평점:" +
+        this.state.evalQ +
+        "난이도평점:" +
+        this.state.evalD +
+        "댓글:" +
+        this.state.comment
+    );
+    this.setState({ visible: false });
+    axios
+      .post(
+        `http://localhost:8000/problem/evaluation`,
+        {
+          _id: this.props.data.problem_id,
+          evalQ: this.state.evalQ,
+          evalD: this.state.evalD,
+          comments: this.state.comment,
+          email: this.state.email
+        },
+        config
+      )
+      .then(res => console.log(res))
+      .catch(err => console.log(err));
   }
-  cancel(e) {
-    this.setState({ visible: false })
+  cancel = e => {
+    this.setState({ visible: false });
+  };
+  setHoverEvalQ(e) {
+    this.setState({
+      hovEvalQ: e
+    });
   }
-  setEvalQ(e){
+  setHoverEvalD(e) {
+    this.setState({
+      hovEvalD: e
+    });
+  }
+  setEvalQ(e) {
     this.setState({
       evalQ: e
-    })
+    });
   }
-  setEvalD(e){
+  setEvalD(e) {
     this.setState({
       evalD: e
     })
@@ -62,6 +89,9 @@ export class Scoring extends Component {
   commentHandle = (e) => {
     this.setState({ comment: e.target.value })
   }
+  commentHandle = e => {
+    this.setState({ comment: e.target.value });
+  };
   viewScoring = checkProblem => {
     //문제 오브젝트어레이 넣으면 맞춘문제 틀린문제 표시해서 보여줌
     let viewProblem = checkProblem.map(v => {
@@ -87,21 +117,14 @@ export class Scoring extends Component {
   };
 
   render() {
-    let {
-      okCount,
-      tryCount,
-      commentCount,
-      problem_id,
-      checkProblem,
-      totalProblem
-    } = this.props.data;
-    // checkProblem = [
-    //   //페이크 데이타
-    //   { num: 1, okCount: 300, tryCount: 530, ok: true },
-    //   { num: 2, okCount: 120, tryCount: 530, ok: false },
-    //   { num: 3, okCount: 160, tryCount: 530, ok: true },
-    //   { num: 4, okCount: 200, tryCount: 720, ok: false }
-    // ];
+    let { okCount, tryCount, commentCount, checkProblem } = this.props.data;
+    checkProblem = [
+      //페이크 데이타
+      { num: 1, okCount: 300, tryCount: 530, ok: true },
+      { num: 2, okCount: 120, tryCount: 530, ok: false },
+      { num: 3, okCount: 160, tryCount: 530, ok: true },
+      { num: 4, okCount: 200, tryCount: 720, ok: false }
+    ];
     let correctProblem = checkProblem.filter(v => {
       //마자춘 문제수 측정용
       if (v.ok === true) {
@@ -109,7 +132,8 @@ export class Scoring extends Component {
       }
     });
     let viewProblem = this.viewScoring(checkProblem); //만춘문제 틀린문제 뷰
-    const { evalQ, evalD, comment } = this.state; 
+    const { evalQ, evalD, comment } = this.state;
+
     return (
     <div>
       <Modal 
@@ -153,34 +177,35 @@ export class Scoring extends Component {
           <p>Hello, it's your score!</p>
         </div>
 
-        <div className="nes-container is-dark with-title">
-          <p className="title">correct!!</p>
-          <p>
-            {correctProblem.length} / {totalProblem}
-          </p>
-          <p>
-            Your Correct Rate :{" "}
-            {Math.round((correctProblem.length * 100) / totalProblem)}%
-          </p>
-        </div>
+          <div className="nes-container is-dark with-title">
+            <p className="title">correct!!</p>
+            <p>
 
-        <div className="nes-container is-rounded">
-          <p>
-            Total Average Correct Rate :{" "}
-            {Math.round((okCount * 100) / tryCount)}%
-          </p>
-        </div>
+              {correctProblem.length} / {checkProblem.length}
+            </p>
+            <p>
+              Your Correct Rate :{" "}
+              {Math.round((correctProblem.length * 100) / checkProblem.length)}%
+            </p>
+          </div>
 
-        <div className="nes-container is-rounded">{viewProblem}</div>
-        <button
-          type="button"
-          className="nes-btn is-primary"
-          onClick={this.goComment}
-        >
-          COMMENT [{commentCount}]
-        </button>
+          <div className="nes-container is-rounded">
+            <p>
+              Total Average Correct Rate :{" "}
+              {Math.round((okCount * 100) / tryCount)}%
+            </p>
+          </div>
+
+          <div className="nes-container is-rounded">{viewProblem}</div>
+          <button
+            type="button"
+            className="nes-btn is-primary"
+            onClick={this.goComment}
+          >
+            COMMENT [{commentCount}]
+          </button>
+        </div>
       </div>
-    </div>
     );
   }
 }
