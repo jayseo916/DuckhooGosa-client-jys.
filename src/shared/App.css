@@ -6,12 +6,12 @@
 }
 
 @font-face {
-  font-family: "DungGeunMo";
-  src: url("../font/DungGeunMo.eot") format("embedded-opentype"),
-  url("../font/DungGeunMo.woff2") format("woff2"),
-  url("../font/DungGeunMo.woff") format("woff"),
-  url("../font/DungGeunMo.ttf") format("truetype"),
-  url("../font/DungGeunMo.otf") format("otf");
+  font-family: 'DungGeunMo';
+  src: url('../font/DungGeunMo.eot') format('embedded-opentype'),
+    url('../font/DungGeunMo.woff2') format('woff2'),
+    url('../font/DungGeunMo.woff') format('woff'),
+    url('../font/DungGeunMo.ttf') format('truetype'),
+    url('../font/DungGeunMo.otf') format('otf');
 }
 
 * {
@@ -97,7 +97,7 @@
     /* width: 260px; */
     font-size: 12px;
     font-weight: bold;
-    font-family: "Trebuchet MS", Dotum, Arial;
+    font-family: 'Trebuchet MS', Dotum, Arial;
   }
   #footer-menubar1 .menuLink:hover {
     color: rgb(255, 136, 0);
@@ -133,7 +133,7 @@
   margin: 0; /*reset margin of figure tag*/
 }
 
-.thumbnail{
+.thumbnail {
   display: block; /*remove inline-block spaces*/
   width: 100%; /*make image streatch*/
 }
@@ -141,9 +141,25 @@
 .thumbnail-wrap .thumbnail {
   /*add to other styles*/
   /*add to other styles*/
-  margin:-21.875% 0;
+  margin: -21.875% 0;
   /*width:177.777%;!**!*/
 }
 
 /*썸네일표현*/
+.eval-quality {
+  text-align: center;
+}
 
+.eval-difficulty {
+  text-align: center;
+}
+.input-comment {
+  text-align: center;
+}
+i {
+  font-size: 44px;
+  display: block;
+}
+.eval-question{
+  font-size:17px;
+}

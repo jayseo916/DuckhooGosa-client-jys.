@@ -3,15 +3,14 @@ import "../../node_modules/nes.css/css/nes.css";
 import { Modal } from "antd";
 import { config } from "../config";
 import axios from "axios";
-import StarRatingComponent from "react-star-rating-component";
+import StarRatingComponent from 'react-star-rating-component';
+import "../shared/App.css";
 export class Scoring extends Component {
   constructor(props) {
     super(props);
     this.state = {
       visible: true,
-      hovEvalQ: 3,
       evalQ: 3,
-      hovEvalD: 3,
       evalD: 3,
       comment: "",
       email: this.props.data.email
@@ -51,16 +50,6 @@ export class Scoring extends Component {
   cancel = e => {
     this.setState({ visible: false });
   };
-  setHoverEvalQ(e) {
-    this.setState({
-      hovEvalQ: e
-    });
-  }
-  setHoverEvalD(e) {
-    this.setState({
-      hovEvalD: e
-    });
-  }
   setEvalQ(e) {
     this.setState({
       evalQ: e
@@ -69,7 +58,7 @@ export class Scoring extends Component {
   setEvalD(e) {
     this.setState({
       evalD: e
-    });
+    })
   }
   commentHandle = e => {
     this.setState({ comment: e.target.value });
@@ -117,45 +106,43 @@ export class Scoring extends Component {
     const { evalQ, evalD, comment } = this.state;
 
     return (
-      <div>
-        <Modal
-          title="해당 문제 평가"
-          visible={this.state.visible}
-          okText="평가 완료"
-          cancelText="닫기"
-          onOk={() => this.evalSubmit()}
-          onCancel={this.cancel}
-        >
-          <div>
-            문제가 어땠나요?(좋았어요:5점,구렸어요:1점)
-            <StarRatingComponent
-              style={{ size: "100%" }}
-              name="evalQuality"
-              value={this.state.evalQ}
-              starCount={5}
-              onStarClick={nextValue => this.setEvalQ(nextValue)}
-              onStarHover={nextValue => this.setHoverEvalQ(nextValue)}
-              starColor="yellow"
-            />
-          </div>
-          <div>
-            문제가 어려웠나요?(어려웠어요:5점,쉬웠어요:1점)
-            <StarRatingComponent
-              name="evalDifficulty"
-              value={this.state.evalD}
-              starCount={5}
-              onStarClick={nextValue => this.setEvalD(nextValue)}
-              onStarHover={nextValue => this.setHoverEvalD(nextValue)}
-              starColor="yellow"
-            />
-          </div>
+    <div>
+      <Modal 
+        title="해당 문제 평가" 
+        visible={this.state.visible}
+        okText="평가 완료"
+        cancelText="닫기"
+        onOk={() => this.evalSubmit()} 
+        onCancel={() => this.cancel()}>
+        <div className="eval-quality">
+          <div className="eval-question">문제의 퀄리티가 어땠나요?(좋았어요:5점,구렸어요:1점)</div>  
+          <StarRatingComponent
+            name="evalQuality"
+            value={this.state.evalQ}
+            starCount={5}
+            onStarClick={nextValue => this.setEvalQ(nextValue)}
+            starColor="yellow"
+          />  
+        </div>
+        <div className="eval-difficulty">
+          <div className="eval-question">문제의 난이도는 어땠나요?(어려웠어요:5점,쉬웠어요:1점)</div>
+          <StarRatingComponent
+            name="evalDifficulty"
+            value={this.state.evalD}
+            starCount={5}         
+            onStarClick={nextValue => this.setEvalD(nextValue)}
+            starColor="yellow"
+          />
+        </div>
+        <div className="input-comment">
           의견:<textarea onChange={e => this.commentHandle(e)}></textarea>
-        </Modal>
-        <div style={{ padding: "0 0 60px 30px" }}>
-          <div className="nes-container with-title is-centered">
-            <h1 className="title">SCORE!!</h1>
-            <p>Hello, it's your score!</p>
-          </div>
+        </div>
+      </Modal>
+      <div style={{ padding: "0 0 60px 30px" }}>
+        <div className="nes-container with-title is-centered">
+          <h1 className="title">SCORE!!</h1>
+          <p>Hello, it's your score!</p>
+        </div>
 
           <div className="nes-container is-dark with-title">
             <p className="title">correct!!</p>
