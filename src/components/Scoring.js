@@ -100,13 +100,13 @@ export class Scoring extends Component {
 
   render() {
     let { okCount, tryCount, commentCount, checkProblem } = this.props.data;
-    checkProblem = [
-      //페이크 데이타
-      { num: 1, okCount: 300, tryCount: 530, ok: true },
-      { num: 2, okCount: 120, tryCount: 530, ok: false },
-      { num: 3, okCount: 160, tryCount: 530, ok: true },
-      { num: 4, okCount: 200, tryCount: 720, ok: false }
-    ];
+    // checkProblem = [
+    //   //페이크 데이타
+    //   { num: 1, okCount: 300, tryCount: 530, ok: true },
+    //   { num: 2, okCount: 120, tryCount: 530, ok: false },
+    //   { num: 3, okCount: 160, tryCount: 530, ok: true },
+    //   { num: 4, okCount: 200, tryCount: 720, ok: false }
+    // ];
     let correctProblem = checkProblem.filter(v => {
       //마자춘 문제수 측정용
       if (v.ok === true) {
