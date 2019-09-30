@@ -48,9 +48,9 @@ export class Scoring extends Component {
       .then(res => console.log(res))
       .catch(err => console.log(err));
   }
-  cancel(e) {
+  cancel = e => {
     this.setState({ visible: false });
-  }
+  };
   setHoverEvalQ(e) {
     this.setState({
       hovEvalQ: e
@@ -71,9 +71,9 @@ export class Scoring extends Component {
       evalD: e
     });
   }
-  commentHandle(e) {
+  commentHandle = e => {
     this.setState({ comment: e.target.value });
-  }
+  };
   viewScoring = checkProblem => {
     //문제 오브젝트어레이 넣으면 맞춘문제 틀린문제 표시해서 보여줌
     let viewProblem = checkProblem.map(v => {
@@ -123,6 +123,7 @@ export class Scoring extends Component {
     });
     let viewProblem = this.viewScoring(checkProblem); //만춘문제 틀린문제 뷰
     const { evalQ, evalD, comment } = this.state;
+    
     return (
       <div>
         <Modal
