@@ -29,7 +29,9 @@ class Main extends React.Component {
       currentOption: "",
       input: "",
       genreOn: false,
-      noData: false
+      CurGenreNoData: false,
+      CurSearchNoData: false,
+      MainNoData: false
     };
   }
   componentDidMount = async () => {
@@ -70,56 +72,76 @@ class Main extends React.Component {
     if (scrollHeight - innerHeight - scrollTop < 30) {
       let countLoading = 0;
       let loadingProblem = 0;
-      if (this.state.search) {
-        countLoading = this.state.countSearchLoading;
-        loadingProblem = this.state.numberLoadingSearchProblem;
-      } else {
-        countLoading = this.state.countLoading;
-        loadingProblem = this.state.numberLoadingProblem;
-      }
+
       if (!this.state.genreOn) {
         /////////
+        if (this.state.search) {
+          countLoading = this.state.countSearchLoading;
+          loadingProblem = this.state.numberLoadingSearchProblem;
 
-        while (1) {
-          var { data } = await axios.post(
-            this.state.search ? searchApi : mainApi,
-            {
+          while (!this.state.CurSearchNoData) {
+            var { data } = await axios.post(searchApi, {
               next_problem: loadingProblem * countLoading,
               word: this.state.input
-            }
-          );
-
-          data = JSON.parse(data);
-          if (data === "NoData") break;
-          let origin = [];
-          this.state.search
-            ? (origin = this.state.searchProblems.map(v => JSON.stringify(v)))
-            : (origin = this.state.problems.map(v => JSON.stringify(v)));
-
-          var newData = data.filter(v => {
-            if (!origin.includes(JSON.stringify(v))) {
-              return v;
-            }
-          });
-          countLoading += 1;
-          if (newData.length !== 0) {
-            break;
-          }
-        }
-        if (data !== "NoData") {
-          if (!this.state.search) {
-            let problems = [...this.state.problems, ...newData];
-
-            this.setState({
-              problems: problems,
-              countLoading: countLoading
             });
-          } else {
-            let problems = [...this.state.searchProblems, ...newData];
+            data = JSON.parse(data);
+            if (data === "NoData") {
+              this.setState({
+                CurSearchNoData: true
+              });
+              break;
+            }
+            let origin = this.state.searchProblems.map(v => JSON.stringify(v));
 
+            var newData = data.filter(v => {
+              if (!origin.includes(JSON.stringify(v))) {
+                return v;
+              }
+            });
+            countLoading += 1;
+            if (newData.length !== 0) {
+              break;
+            }
+          }
+
+          if (!this.state.CurSearchNoData && data !== "NoData") {
+            let problems = [...this.state.searchProblems, ...newData];
             this.setState({
               searchProblems: problems,
               countSearchLoading: countLoading
+            });
+          }
+        } else {
+          countLoading = this.state.countLoading;
+          loadingProblem = this.state.numberLoadingProblem;
+          while (!this.state.MainNoData) {
+            var { data } = await axios.post(mainApi, {
+              next_problem: loadingProblem * countLoading
+            });
+
+            data = JSON.parse(data);
+            if (data === "NoData") {
+              this.setState({
+                MainNoData: true
+              });
+              break;
+            }
+            let origin = this.state.problems.map(v => JSON.stringify(v));
+            var newData = data.filter(v => {
+              if (!origin.includes(JSON.stringify(v))) {
+                return v;
+              }
+            });
+            countLoading += 1;
+            if (newData.length !== 0) {
+              break;
+            }
+          }
+          if (!this.state.MainNoData && data !== "NoData") {
+            let problems = [...this.state.problems, ...newData];
+            this.setState({
+              problems: problems,
+              countLoading: countLoading
             });
           }
         }
@@ -128,7 +150,7 @@ class Main extends React.Component {
         countLoading = this.state.countGenreLoading;
         loadingProblem = this.state.numberLoadingGenreProblem;
 
-        while (1) {
+        while (!this.state.CurGenreNoData) {
           var { data } = await axios.post(genreApi, {
             next_problem: loadingProblem * countLoading,
             genre: this.state.currentOption
@@ -138,6 +160,9 @@ class Main extends React.Component {
           console.log("데이터", data);
           console.log("타입", typeof data);
           if (data === "NoData") {
+            this.setState({
+              CurGenreNoData: true
+            });
             break;
           }
           let origin = this.state.problems.map(v => JSON.stringify(v));
@@ -152,7 +177,8 @@ class Main extends React.Component {
             break;
           }
         }
-        if (data !== "NoData") {
+        if (!this.state.CurGenreNoData && data !== "NoData") {
+          console.log("화긴", data);
           let problems = [...this.state.problems, ...newData];
           this.setState({
             problems: problems,
@@ -173,7 +199,9 @@ class Main extends React.Component {
       // console.log(choiceOpt);
       this.setState(
         {
-          currentOption: choiceOpt
+          currentOption: choiceOpt,
+          CurGenreNoData: false,
+          countGenreLoading: 0
         },
         async () => {
           let { data } = await axios.post(genreApi, {
@@ -182,22 +210,23 @@ class Main extends React.Component {
           });
 
           data = JSON.parse(data);
+          if (data !== "NoData") {
+            let origin = [];
+            this.state.search
+              ? (origin = this.state.searchProblems.map(v => JSON.stringify(v)))
+              : (origin = this.state.problems.map(v => JSON.stringify(v)));
 
-          let origin = [];
-          this.state.search
-            ? (origin = this.state.searchProblems.map(v => JSON.stringify(v)))
-            : (origin = this.state.problems.map(v => JSON.stringify(v)));
+            let newData = data.filter(v => {
+              if (!origin.includes(JSON.stringify(v))) {
+                return v;
+              }
+            });
 
-          let newData = data.filter(v => {
-            if (!origin.includes(JSON.stringify(v))) {
-              return v;
-            }
-          });
-
-          this.setState({
-            problems: [...this.state.problems, ...newData],
-            genreOn: true
-          });
+            this.setState({
+              problems: [...this.state.problems, ...newData],
+              genreOn: true
+            });
+          }
         }
       );
     } else {
@@ -222,7 +251,8 @@ class Main extends React.Component {
       this.setState(
         {
           search: true,
-          countSearchLoading: 0
+          countSearchLoading: 0,
+          CurSearchNoData: false
         },
         async () => {
           let countLoading = 0;
@@ -238,12 +268,19 @@ class Main extends React.Component {
               word: this.state.input
             });
             console.log("데이타", JSON.parse(data));
-            this.state.search
-              ? this.setState({
-                  searchProblems: JSON.parse(data),
-                  countSearchLoading: 0
-                })
-              : this.setState({ problems: JSON.parse(data) });
+            if (JSON.parse(data) !== "NoData") {
+              this.state.search
+                ? this.setState({
+                    searchProblems: JSON.parse(data)
+                  })
+                : this.setState({ problems: JSON.parse(data) });
+            } else {
+              this.state.search
+                ? this.setState({
+                    searchProblems: []
+                  })
+                : this.setState({ problems: [] });
+            }
           }
         }
       );
@@ -259,6 +296,8 @@ class Main extends React.Component {
     const problems = this.state.search
       ? this.state.searchProblems
       : this.state.problems;
+
+    console.log("에러?", problems);
     return (
       <div className="container">
         <div className="top-search-bar">
