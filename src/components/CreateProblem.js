@@ -49,7 +49,8 @@ class CreateProblem extends Component {
       complete: false,
       choiceInitialValue: "none",
       choice: [], //문제객체 배열  => {text:,answer:} 객체 저장
-      curProblem: 0 //현재 문제 번호 0~,
+      curProblem: 0, //현재 문제 번호 0~,
+      subjectAnswer: ""
     };
   }
   // problemTextSchema = {
@@ -118,7 +119,8 @@ class CreateProblem extends Component {
     } else if (e.target.type === "textarea" && answer.length === 1) {
       answer[v].answer = e.target.value;
       this.setState({
-        choice: answer
+        choice: answer,
+        subjectAnswer: e.target.value
       });
     } else {
       answer[v].text = e.target.value;
@@ -141,19 +143,23 @@ class CreateProblem extends Component {
     return (
       <React.Fragment>
         <div className="form-group">
-          <label htmlFor="" className="htmlFor">
+          <label htmlFor="choiceName">
             {this.state.choice[1] === undefined ? "주관식정답" : label}
           </label>
           <span>
             <textarea
+              id="choiceName"
               onChange={e => {
                 this.handleChoiceAnswer(e, num);
               }}
               type="text"
               className="form-control"
               defaultValue={
-                this.state.choice[num].text || this.state.choice[num].answer
-              } //
+                this.state.choice.length === 1 &&
+                this.state.choice[0].answer !== false
+                  ? this.state.choice[num].answer
+                  : this.state.choice[num].text
+              }
             />
             {"                 "}
             {this.state.choice[1] === undefined ? null : (
@@ -180,7 +186,7 @@ class CreateProblem extends Component {
     let type = parseInt(event.target.value);
     let arr = [];
     for (let i = 0; i < type; i++) {
-      arr.push([{ text: "", answer: false }]);
+      arr.push({ text: "", answer: false });
     }
     this.setState({
       choice: arr
@@ -197,7 +203,8 @@ class CreateProblem extends Component {
       //새로운 문제를 생성하는 경우
       let newProblem = {
         fileLink1: (this.state.files && this.state.files[0]) || null,
-
+        subjectAnswer:
+          this.state.choice.length === 1 ? this.state.subjectAnswer : "",
         problemText: this.state.problemText,
         choice: this.state.choice
       };
@@ -235,7 +242,8 @@ class CreateProblem extends Component {
   saveProblem = () => {
     let newProblem = {
       fileLink1: (this.state.files && this.state.files[0]) || null,
-
+      subjectAnswer:
+        this.state.choice.length === 1 ? this.state.subjectAnswer : "",
       problemText: this.state.problemText,
       choice: this.state.choice
     };

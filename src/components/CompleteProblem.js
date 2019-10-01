@@ -6,7 +6,7 @@ import {
   FilePond,
   // File,
   registerPlugin,
-  create,
+  create
   // setOptions
 } from "react-filepond";
 import FilePondPluginFilePoster from "filepond-plugin-file-poster";
@@ -50,7 +50,7 @@ class CompleteProblem extends React.Component {
 
   componentDidMount() {
     let Problems = this.props.Problems;
-    // console.log(Problems,'물려받은 상태 확인');
+    console.log(Problems, "물려받은 상태 확인");
 
     this.setState({
       allFiles: Problems
@@ -96,11 +96,10 @@ class CompleteProblem extends React.Component {
         let problems = this.props.Problems.map((problem, num) => {
           problem.fileLink1 = v[num];
           // console.log(problem,"중간작업")
-          if (problem.choice[0].answer !== undefined){
-            problem.subjectAnswer = problem.choice[0].answer
+          if (problem.choice[0].answer !== undefined) {
+            problem.subjectAnswer = problem.choice[0].answer;
           }
           return problem;
-
         });
 
         const { email, tags, genre, title, date } = this.props.problemState;
@@ -122,7 +121,6 @@ class CompleteProblem extends React.Component {
           .catch(err => {
             console.log(err);
           });
-
       })
       .catch(ex => {
         console.error(ex);
