@@ -31,9 +31,15 @@ class FooterMenubar extends React.Component {
             </Link>
           </li>
           <li className="menuLink5">
-            <Link className="menuLink" to="/profile">
-              프로필
-            </Link>
+            {!this.props.email ? (
+              <Link className="menuLink" to="/login">
+                로그인
+              </Link>
+            ) : (
+              <Link className="menuLink" to="/profile">
+                프로필
+              </Link>
+            )}
           </li>
         </ul>
       </nav>
