@@ -15,27 +15,37 @@ class Login extends React.Component {
 
   componentDidMount() {}
 
-  responseGoogle = res => {
+  responseGoogle = async res => {
     let data = {
       email: res.profileObj.email,
       expires_at: res.tokenObj.expires_at + res.tokenObj.expires_in
     };
     this.props.setUserInfo(data);
-    localStorage.setItem("authData", JSON.stringify(res));
-    console.log(`${process.env.REACT_APP_SERVER}/login`,"뭐가?")
+    await localStorage.setItem("authData", JSON.stringify(res));
+    const config = {
+      headers: {
+        access_token: localStorage["authData"]
+            ? JSON.parse(localStorage["authData"]).Zi.access_token
+            : null,
+        "Access-Control-Allow-Origin": "*"
+      },
+      withCredentials: true
+    };
+
     axios
-      .post(`${process.env.REACT_APP_SERVER}/login`, {}, config)
-      .then(res => {
-        if (res.data.result) {
-          this.props.history.push("/main");
-        } else {
-          console.log(res.data.reason);
-          this.props.history.push("/login");
-        }
-      })
-      .catch(err => {
-        console.log(err, "ERROR in login SEQ");
-      });
+        .post(`${process.env.REACT_APP_SERVER}/login`, {}, config)
+        .then(res => {
+          console.log(config);
+          if (res.data.result) {
+            this.props.history.push("/main");
+          } else {
+            console.log(res.data.reason);
+            this.props.history.push("/login");
+          }
+        })
+        .catch(err => {
+          console.log(err, "ERROR in login SEQ");
+        });
   };
   responseFail = err => {
     console.log(err);
