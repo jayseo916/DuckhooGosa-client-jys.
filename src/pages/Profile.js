@@ -33,7 +33,7 @@ class Profile extends Component {
   componentDidMount() {
     config.email = this.props.email;
     axios
-      .get(`http://localhost:8000/account/info`, config)
+      .get(`${process.env.REACT_APP_SERVER}/account/info`, config)
       .then(res => this.setState({ userInfo: res.data, isLoading: true }))
       .catch(err => console.log("프로필가져오기에러:" + err));
   }
@@ -62,7 +62,7 @@ class Profile extends Component {
     } else {
       axios
         .post(
-          "http://localhost:8000/account/img",
+            `${process.env.REACT_APP_SERVER}/account/img`,
           {
             img: this.state.curImg
           },
@@ -92,7 +92,7 @@ class Profile extends Component {
     } else {
       axios
         .post(
-          "http://localhost:8000/account/nick",
+            `${process.env.REACT_APP_SERVER}/account/nick`,
           {
             nick: this.state.curNick
           },
@@ -130,13 +130,13 @@ class Profile extends Component {
           <div>
             {!imgBtn && img ? (
               <div>
-                <img src={img} alt="본인계정이미지" height="200" width="300" />
-                <button onClick={() => this.uploadImage1()}>이미지 변경</button>
+                {/*<img src={img} alt="본인계정이미지" height="200" width="300" />*/}
+                {/*<button onClick={() => this.uploadImage1()}>이미지 변경</button>*/}
               </div>
             ) : !imgBtn && !img ? (
               <div>
-                <div>계정에 설정한 이미지가 없습니다.</div>
-                <button onClick={() => this.uploadImage1()}>이미지 설정</button>
+                {/*<div>계정에 설정한 이미지가 없습니다.</div>*/}
+                {/*<button onClick={() => this.uploadImage1()}>이미지 설정</button>*/}
               </div>
             ) : (
               <div>
@@ -152,18 +152,18 @@ class Profile extends Component {
             <div>
               {!nickBtn && nickname ? (
                 <div>
-                  닉네임: {nickname}
-                  <button onClick={() => this.changeNick1()}>
-                    닉네임 변경
-                  </button>
+                  {/*닉네임: {nickname}*/}
+                  {/*<button onClick={() => this.changeNick1()}>*/}
+                  {/*  닉네임 변경*/}
+                  {/*</button>*/}
                 </div>
               ) : !nickBtn && !nickname ? (
                 <div>
-                  {this.props.email}님의 닉네임이 없습니다 옆의 버튼을 눌러
-                  닉네임을 등록하세요!
-                  <button onClick={() => this.changeNick1()}>
-                    닉네임 등록
-                  </button>
+                  {this.props.email}님의 닉네임이 없습니다.
+                  차후에 지원예정
+                  {/*<button onClick={() => this.changeNick1()}>*/}
+                  {/*  닉네임 등록*/}
+                  {/*</button>*/}
                 </div>
               ) : (
                 <div>
@@ -182,7 +182,7 @@ class Profile extends Component {
               정답률:{(answerCount / totalProblemCount) * 100}%(총{" "}
               {totalProblemCount}문제 중 {answerCount}문제를 맞히셨습니다.)
             </p>
-            <p>My Tier:{tier}</p>
+            {/*<p>My Tier:{tier}</p>*/}
           </div>
           <div>
             <Link

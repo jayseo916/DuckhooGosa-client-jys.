@@ -4,6 +4,8 @@ import { formatRelative } from "date-fns";
 import { Popconfirm } from "antd";
 import "../shared/App.css";
 
+let uniqid = require("uniqid");
+
 class MySolved extends React.Component {
   constructor(props) {
     super(props);
@@ -44,7 +46,7 @@ class MySolved extends React.Component {
     const historyList = solution.map(el => {
       return (
         <Popconfirm
-          key={el.problem_id + "_Popconfirm"}
+          key={el.problem_id + "_Popconfirm" + uniqid("k")}
           title="다시 풀어 볼래요?"
           onConfirm={() => {
             this.confirm(el.problem_id);
@@ -55,7 +57,7 @@ class MySolved extends React.Component {
           placement="top"
         >
           <Card
-            key={el.problem_id + "_Card"}
+            key={el.problem_id + "_Card" + uniqid("k")}
             className="nes-container with-title is-rounded"
           >
             <p className="title"> {el.title} </p>

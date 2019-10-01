@@ -16,6 +16,7 @@ class Loading extends React.Component {
   }
 
   componentDidMount() {
+    console.log("현재 클라이언트::", process.env.REACT_APP_MODE);
     setTimeout(() => {
       fetch("https://jsonplaceholder.typicode.com/posts")
         .then(response => response.json())

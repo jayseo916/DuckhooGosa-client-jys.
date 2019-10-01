@@ -1,25 +1,18 @@
 import React from "react";
 import axios from "axios";
 import { config } from "../config";
-import { fakeData } from "../fakeData";
-import { Route, Switch, Link, Redirect } from "react-router-dom";
 import "./Main.css";
-let mainApi = "http://localhost:8000/problem/main";
-let searchApi = "http://localhost:8000/problem/search";
-let genreApi = "http://localhost:8000/problem/genre";
+
+let mainApi = `${process.env.REACT_APP_SERVER}/problem/main`;
+let searchApi = `${process.env.REACT_APP_SERVER}/problem/search`;
+let genreApi = `${process.env.REACT_APP_SERVER}/problem/genre`;
 class Main extends React.Component {
   constructor(props) {
     super(props);
-    // this.state = { // 실제로 사용할 state
-    //   problems: null,
-    //   currentOption: "",
-    //   input: ""
-    // };
     this.state = {
-      // 서버가 완성되기 전까지 가짜데이터로 임시로 설정
       problems: [],
       searchProblems: [],
-      numberLoadingSearchProblem: 5, //
+      numberLoadingSearchProblem: 5,
       countSearchLoading: 0,
       search: false,
       currentOption: "",
