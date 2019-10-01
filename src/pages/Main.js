@@ -20,13 +20,16 @@ class Main extends React.Component {
       problems: [],
       searchProblems: [],
       numberLoadingSearchProblem: 5, //
+      numberLoadingGenreProblem: 5,
+      numberLoadingProblem: 5, //한번에 로딩 되는 문제 수
+      countGenreLoading: 0,
       countSearchLoading: 0,
+      countLoading: 0, //문제 받아온 횟수
       search: false,
       currentOption: "",
       input: "",
-      numberLoadingProblem: 5, //한번에 로딩 되는 문제 수
-      countLoading: 0, //문제 받아온 횟수
-      genreOn: false
+      genreOn: false,
+      noData: false
     };
   }
   componentDidMount = async () => {
@@ -68,79 +71,92 @@ class Main extends React.Component {
       let countLoading = 0;
       let loadingProblem = 0;
       if (this.state.search) {
-        countLoading = this.state.countSearchLoading + 1;
+        countLoading = this.state.countSearchLoading;
         loadingProblem = this.state.numberLoadingSearchProblem;
       } else {
-        countLoading = this.state.countLoading + 1;
+        countLoading = this.state.countLoading;
         loadingProblem = this.state.numberLoadingProblem;
       }
       if (!this.state.genreOn) {
-        let { data } = await axios.post(
-          this.state.search ? searchApi : mainApi,
-          {
-            next_problem: loadingProblem * countLoading,
-            word: this.state.input
-          }
-        );
+        /////////
 
-        data = JSON.parse(data);
-        let origin = [];
-        this.state.search
-          ? (origin = this.state.searchProblems.map(v => JSON.stringify(v)))
-          : (origin = this.state.problems.map(v => JSON.stringify(v)));
+        while (1) {
+          var { data } = await axios.post(
+            this.state.search ? searchApi : mainApi,
+            {
+              next_problem: loadingProblem * countLoading,
+              word: this.state.input
+            }
+          );
 
-        let newData = data.filter(v => {
-          if (!origin.includes(JSON.stringify(v))) {
-            return v;
-          }
-        });
+          data = JSON.parse(data);
+          if (data === "NoData") break;
+          let origin = [];
+          this.state.search
+            ? (origin = this.state.searchProblems.map(v => JSON.stringify(v)))
+            : (origin = this.state.problems.map(v => JSON.stringify(v)));
 
-        if (!this.state.search) {
-          let problems = [...this.state.problems, ...newData];
-
-          this.setState({
-            problems: problems,
-            countLoading: countLoading
+          var newData = data.filter(v => {
+            if (!origin.includes(JSON.stringify(v))) {
+              return v;
+            }
           });
-        } else {
-          let problems = [...this.state.searchProblems, ...newData];
-
-          this.setState({
-            searchProblems: problems,
-            countSearchLoading: countLoading
-          });
+          countLoading += 1;
+          if (newData.length !== 0) {
+            break;
+          }
         }
-      } else {
-        let { data } = await axios.post(genreApi, {
-          next_problem: loadingProblem * countLoading,
-          genre: this.state.currentOption
-        });
+        if (data !== "NoData") {
+          if (!this.state.search) {
+            let problems = [...this.state.problems, ...newData];
 
-        data = JSON.parse(data);
-        let origin = [];
-        this.state.search
-          ? (origin = this.state.searchProblems.map(v => JSON.stringify(v)))
-          : (origin = this.state.problems.map(v => JSON.stringify(v)));
+            this.setState({
+              problems: problems,
+              countLoading: countLoading
+            });
+          } else {
+            let problems = [...this.state.searchProblems, ...newData];
 
-        let newData = data.filter(v => {
-          if (!origin.includes(JSON.stringify(v))) {
-            return v;
+            this.setState({
+              searchProblems: problems,
+              countSearchLoading: countLoading
+            });
           }
-        });
+        }
+        /////
+      } else {
+        countLoading = this.state.countGenreLoading;
+        loadingProblem = this.state.numberLoadingGenreProblem;
 
-        if (!this.state.search) {
+        while (1) {
+          var { data } = await axios.post(genreApi, {
+            next_problem: loadingProblem * countLoading,
+            genre: this.state.currentOption
+          });
+
+          data = JSON.parse(data);
+          console.log("데이터", data);
+          console.log("타입", typeof data);
+          if (data === "NoData") {
+            break;
+          }
+          let origin = this.state.problems.map(v => JSON.stringify(v));
+
+          var newData = data.filter(v => {
+            if (!origin.includes(JSON.stringify(v))) {
+              return v;
+            }
+          });
+          countLoading += 1;
+          if (newData.length !== 0) {
+            break;
+          }
+        }
+        if (data !== "NoData") {
           let problems = [...this.state.problems, ...newData];
-
           this.setState({
             problems: problems,
-            countLoading: countLoading
-          });
-        } else {
-          let problems = [...this.state.searchProblems, ...newData];
-
-          this.setState({
-            searchProblems: problems,
-            countSearchLoading: countLoading
+            countGenreLoading: countLoading
           });
         }
       }
