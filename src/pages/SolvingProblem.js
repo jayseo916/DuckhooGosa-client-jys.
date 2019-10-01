@@ -57,7 +57,7 @@ export default class SolvingProblem extends Component {
 
     try {
       const data = await axios
-        .get(`http://localhost:8000/problem/${this.state.problem_id}`, config)
+        .get(`${process.env.REACT_APP_SERVER}/problem/${this.state.problem_id}`, config)
         .then(res => {
           return res.data;
         })
@@ -93,7 +93,7 @@ export default class SolvingProblem extends Component {
         console.log("보내는 답", obj);
         console.log("보내는 답", JSON.stringify(obj));
         axios
-          .post("http://localhost:8000/problem/solution", obj, config)
+          .post(`${process.env.REACT_APP_SERVER}/problem/solution`, obj, config)
           .then(res => {
             console.log("답리절트", res);
             return res.data;

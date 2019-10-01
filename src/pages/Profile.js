@@ -33,7 +33,7 @@ class Profile extends Component {
   componentDidMount() {
     config.email = this.props.email;
     axios
-      .get(`http://localhost:8000/account/info`, config)
+      .get(`${process.env.REACT_APP_SERVER}/account/info`, config)
       .then(res => this.setState({ userInfo: res.data, isLoading: true }))
       .catch(err => console.log("프로필가져오기에러:" + err));
   }
@@ -62,7 +62,7 @@ class Profile extends Component {
     } else {
       axios
         .post(
-          "http://localhost:8000/account/img",
+            `${process.env.REACT_APP_SERVER}/account/img`,
           {
             img: this.state.curImg
           },
@@ -92,7 +92,7 @@ class Profile extends Component {
     } else {
       axios
         .post(
-          "http://localhost:8000/account/nick",
+            `${process.env.REACT_APP_SERVER}/account/nick`,
           {
             nick: this.state.curNick
           },
