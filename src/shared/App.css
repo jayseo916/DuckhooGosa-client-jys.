@@ -1,0 +1,165 @@
+@import '~antd/dist/antd.css';
+/* ANTD */
+
+.App {
+  text-align: center;
+}
+
+@font-face {
+  font-family: 'DungGeunMo';
+  src: url('../font/DungGeunMo.eot') format('embedded-opentype'),
+    url('../font/DungGeunMo.woff2') format('woff2'),
+    url('../font/DungGeunMo.woff') format('woff'),
+    url('../font/DungGeunMo.ttf') format('truetype'),
+    url('../font/DungGeunMo.otf') format('otf');
+}
+
+* {
+  font-family: DungGeunMo, serif !important;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.App-header {
+  background-color: #85471f;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media screen and (max-width: 767px) {
+  #footer-menubar1 {
+    display: none;
+  }
+}
+@media screen and (min-width: 768px) {
+  #footer-menubar1 ul li {
+    list-style: none;
+    color: white;
+    background-color: #222222;
+    float: left;
+    line-height: 30px;
+    vertical-align: middle;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    margin-bottom: 0px;
+  }
+  .menuLink1 {
+    position: fixed;
+    left: 0%;
+    width: 20%;
+  }
+  .menuLink2 {
+    position: fixed;
+    left: 20%;
+    width: 20%;
+  }
+  .menuLink3 {
+    position: fixed;
+    left: 40%;
+    width: 20%;
+  }
+  .menuLink4 {
+    position: fixed;
+    left: 60%;
+    width: 20%;
+  }
+  .menuLink5 {
+    position: fixed;
+    left: 80%;
+    width: 20%;
+  }
+  #footer-menubar1 .menuLink {
+    text-decoration: none;
+    color: white;
+    display: block;
+    /* width: 260px; */
+    font-size: 12px;
+    font-weight: bold;
+    font-family: 'Trebuchet MS', Dotum, Arial;
+  }
+  #footer-menubar1 .menuLink:hover {
+    color: rgb(255, 136, 0);
+    background-color: #f0d4d4;
+  }
+}
+
+.flex {
+  display: flex;
+  flex: 1;
+}
+.flex-fixer {
+  display: flex;
+  flex: 0 0 1;
+}
+
+.flex-container-col {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.flex-container-row {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+}
+
+/*썸네일표현*/
+.thumbnail-wrap {
+  width: 300px; /*container-width*/
+  overflow: hidden; /*hide bounds of image */
+  margin: 0; /*reset margin of figure tag*/
+}
+
+.thumbnail {
+  display: block; /*remove inline-block spaces*/
+  width: 100%; /*make image streatch*/
+}
+
+.thumbnail-wrap .thumbnail {
+  /*add to other styles*/
+  /*add to other styles*/
+  margin: -21.875% 0;
+  /*width:177.777%;!**!*/
+}
+
+/*썸네일표현*/
+.eval-quality {
+  text-align: center;
+}
+
+.eval-difficulty {
+  text-align: center;
+}
+.input-comment {
+  text-align: center;
+}
+i {
+  font-size: 44px;
+  display: block;
+}
+.eval-question{
+  font-size:17px;
+}
