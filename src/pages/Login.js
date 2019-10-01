@@ -1,9 +1,9 @@
 import React from "react";
-import { Redirect } from "react-router-dom";
 import { GoogleLogin, GoogleLogout } from "react-google-login";
 import "bootstrap/dist/css/bootstrap.css";
 import "../shared/App.css";
 import axios from "axios";
+import { config } from "../config";
 
 class Login extends React.Component {
   constructor(props) {
@@ -22,17 +22,9 @@ class Login extends React.Component {
     };
     this.props.setUserInfo(data);
     localStorage.setItem("authData", JSON.stringify(res));
-
-    let config = {
-      headers: {
-        access_token: JSON.parse(localStorage.getItem("authData")).Zi
-          .access_token,
-        "Access-Control-Allow-Origin": "*"
-      },
-      withCredentials: true
-    };
+    console.log(`${process.env.REACT_APP_SERVER}/login`,"뭐가?")
     axios
-      .post("http://localhost:8000/login/", {}, config)
+      .post(`${process.env.REACT_APP_SERVER}/login`, {}, config)
       .then(res => {
         if (res.data.result) {
           this.props.history.push("/main");
@@ -45,19 +37,13 @@ class Login extends React.Component {
         console.log(err, "ERROR in login SEQ");
       });
   };
-  responseFail = err => {};
+  responseFail = err => {
+    console.log(err);
+  };
 
   logout = () => {
-    let config = {
-      headers: {
-        access_token: JSON.parse(localStorage.getItem("authData")).Zi
-          .access_token,
-        "Access-Control-Allow-Origin": "*"
-      },
-      withCredentials: true
-    };
     axios
-      .post("http://localhost:8000/logout/", {}, config)
+      .post(`${process.env.REACT_APP_SERVER}logout`, {}, config)
       .then(res => {
         if (res.data.result) {
           console.log(res.data.result);

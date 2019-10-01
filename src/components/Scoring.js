@@ -34,7 +34,7 @@ export class Scoring extends Component {
     this.setState({ visible: false });
     axios
       .post(
-        `http://localhost:8000/problem/evaluation`,
+          `${process.env.REACT_APP_SERVER}/problem/evaluation`,
         {
           _id: this.props.data.problem_id,
           evalQ: this.state.evalQ,

@@ -23,7 +23,7 @@ import { UploadToS3 } from "../client/upLoad";
 
 var uniqid = require("uniqid");
 
-let endPoint = "http://localhost:8000/problem";
+let endPoint = `${process.env.REACT_APP_SERVER}/problem`;
 // Register the plugin
 registerPlugin(
   FilePondPluginFilePoster,
@@ -115,7 +115,7 @@ class CompleteProblem extends React.Component {
           problems: problems
         };
         axios
-          .post("http://localhost:8000/problem", obj, config)
+          .post(`${process.env.REACT_APP_SERVER}/problem`, obj, config)
           .then(res => {
             // console.log(res, "업로드결과");
           })
