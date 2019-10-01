@@ -1,7 +1,7 @@
 export const config = {
   headers: {
-    access_token: localStorage.getItem("authData")
-      ? JSON.parse(localStorage.getItem("authData")).Zi.access_token
+    access_token: localStorage["authData"]
+      ? JSON.parse(localStorage["authData"]).Zi.access_token
       : null,
     "Access-Control-Allow-Origin": "*"
   },
