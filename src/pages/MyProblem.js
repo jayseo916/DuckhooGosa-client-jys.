@@ -1,10 +1,10 @@
 import React from "react";
-import axios from "axios";
 import { Popconfirm } from "antd";
 import "../shared/App.css";
 import { formatRelative } from "date-fns";
 import styled from "styled-components";
-import { config } from "../config";
+
+let uniqid = require("uniqid");
 
 class MyProblem extends React.Component {
   constructor(props) {
@@ -30,7 +30,7 @@ class MyProblem extends React.Component {
 
     const problems = this.state.problems;
     let cards = problems.map(items => (
-      <div key={items._id}>
+      <div key={items._id + uniqid("key")}>
         <Popconfirm
           title="해당 문제를 푸시겠습니까?"
           okText="Yes"
@@ -38,20 +38,20 @@ class MyProblem extends React.Component {
           onConfirm={() => this.solving(items._id)}
           placement="left"
         >
-          <Card key={items._id} className="nes-container with-title is-rounded">
+          <Card
+            key={items._id + uniqid("key")}
+            className="nes-container with-title is-rounded"
+          >
             <p className="title"> {items.title} </p>
             <div className="flex-container-row is-rounded is-centered">
               <div className="left-col flex-container-col">
                 <span className="nes-text is-primary flex">
-                  문제 발행일: {formatRelative(new Date(items.date), new Date())}
+                  문제 발행일:{" "}
+                  {formatRelative(new Date(items.date), new Date())}
                 </span>
               </div>
               <ImageBox className="flex-fixer thumbnail-wrap">
-                <img
-                  className="thumbnail"
-                  src={items.img}
-                  alt="image place"
-                />
+                <img className="thumbnail" src={items.img} alt="image place" />
               </ImageBox>
             </div>
           </Card>

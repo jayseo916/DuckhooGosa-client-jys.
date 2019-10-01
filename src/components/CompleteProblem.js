@@ -21,7 +21,7 @@ import axios from "axios";
 import { UploadToS3 } from "../client/upLoad";
 // import { nullLiteral } from "@babel/types";
 
-var uniqid = require("uniqid");
+let uniqid = require("uniqid");
 
 let endPoint = `${process.env.REACT_APP_SERVER}/problem`;
 // Register the plugin
