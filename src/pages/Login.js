@@ -43,7 +43,7 @@ class Login extends React.Component {
 
   logout = () => {
     axios
-      .post(`${process.env.REACT_APP_SERVER}logout`, {}, config)
+      .post(`${process.env.REACT_APP_SERVER}/logout`, {}, config)
       .then(res => {
         if (res.data.result) {
           console.log(res.data.result);
