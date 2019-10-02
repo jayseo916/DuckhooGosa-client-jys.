@@ -9,6 +9,7 @@ import MySolved from "../pages/MySolved";
 import Loading from "../pages/Loading";
 import Login from "../pages/Login";
 import Profile from "../pages/Profile";
+import Private from '../pages/Private'
 import FooterMenubar from "../components/FooterMenubar";
 import UpLoadTest from "../client/upLoadTest";
 import SolvingProblem from "../pages/SolvingProblem";
@@ -69,6 +70,12 @@ class App extends React.Component {
             }}
           />
           <Route
+              path="/private"
+              render={props => {
+                return <Private {...props} />;
+              }}
+          />
+          <Route
             path="/createProblem"
             render={props => {
               if (!email) return <Redirect to="/login"></Redirect>;
@@ -95,7 +102,6 @@ class App extends React.Component {
               return <MyProblem {...props} />;
             }}
           />
-
           <Route
             path="/mySolved"
             render={props => {

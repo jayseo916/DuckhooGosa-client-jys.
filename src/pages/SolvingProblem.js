@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import axios from "axios";
 import Img from "react-image";
-import { config } from "../config";
+import {axiosInstance, config} from "../config";
 import Scoring from "../components/Scoring";
 import "../../node_modules/nes.css/css/nes.css";
 import {
@@ -56,8 +55,8 @@ export default class SolvingProblem extends Component {
     }, 10);
 
     try {
-      const data = await axios
-        .get(`${process.env.REACT_APP_SERVER}/problem/${this.state.problem_id}`, config)
+      const data = await axiosInstance
+        .get(`/problem/${this.state.problem_id}`, config)
         .then(res => {
           return res.data;
         })
@@ -92,8 +91,8 @@ export default class SolvingProblem extends Component {
         let obj = { nickname, answer, problem_id, email, date };
         console.log("보내는 답", obj);
         console.log("보내는 답", JSON.stringify(obj));
-        axios
-          .post(`${process.env.REACT_APP_SERVER}/problem/solution`, obj, config)
+        axiosInstance
+          .post('/problem/solution', obj, config)
           .then(res => {
             console.log("답리절트", res);
             return res.data;
