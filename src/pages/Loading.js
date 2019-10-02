@@ -7,6 +7,7 @@ import * as legoData from "../loading/fuckuman.json";
 import * as doneData from "../loading/check.json";
 import "bootstrap/dist/css/bootstrap.css";
 import "../shared/App.css";
+import { axiosInstance, config } from "../config";
 class Loading extends React.Component {
   constructor(props) {
     super(props);
@@ -16,6 +17,15 @@ class Loading extends React.Component {
   }
 
   componentDidMount() {
+    axiosInstance
+      .get("/", {}, config)
+      .then(res => {
+        console.log(res, " is this HELLO?");
+      })
+      .catch(err => {
+        console.log(err, "ERROR in basic setting");
+      });
+
     console.log("현재 클라이언트::", process.env.REACT_APP_MODE);
     setTimeout(() => {
       fetch("https://jsonplaceholder.typicode.com/posts")

@@ -1,11 +1,10 @@
 import React from "react";
-import axios from "axios";
-import { config } from "../config";
+import { config, axiosInstance } from "../config";
 import "./Main.css";
 
-let mainApi = `${process.env.REACT_APP_SERVER}/problem/main`;
-let searchApi = `${process.env.REACT_APP_SERVER}/problem/search`;
-let genreApi = `${process.env.REACT_APP_SERVER}/problem/genre`;
+let mainApi = '/problem/main';
+let searchApi = '/problem/search';
+let genreApi = '/problem/genre';
 class Main extends React.Component {
   constructor(props) {
     super(props);
@@ -31,7 +30,7 @@ class Main extends React.Component {
     console.log("카운트로딩", countLoading);
     if (countLoading === 0 && this.state.search === false) {
       console.log("초기검색어", this.state.input);
-      const { data } = await axios.post(
+      const { data } = await axiosInstance.post(
         this.state.search ? searchApi : mainApi,
         {
           next_problem: 0,
@@ -68,7 +67,7 @@ class Main extends React.Component {
         loadingProblem = this.state.numberLoadingProblem;
       }
       if (!this.state.genreOn) {
-        let { data } = await axios.post(
+        let { data } = await axiosInstance.post(
           this.state.search ? searchApi : mainApi,
           {
             next_problem: loadingProblem * countLoading,
@@ -104,7 +103,7 @@ class Main extends React.Component {
           });
         }
       } else {
-        let { data } = await axios.post(genreApi, {
+        let { data } = await axiosInstance.post(genreApi, {
           next_problem: loadingProblem * countLoading,
           genre: this.state.currentOption
         });
@@ -153,7 +152,7 @@ class Main extends React.Component {
           currentOption: choiceOpt
         },
         async () => {
-          let { data } = await axios.post(genreApi, {
+          let { data } = await axiosInstance.post(genreApi, {
             next_problem: 4,
             genre: this.state.currentOption
           });
@@ -210,7 +209,7 @@ class Main extends React.Component {
           console.log("카운트로딩", countLoading);
           if (countLoading === 0) {
             console.log("초기검색어", this.state.input);
-            const { data } = await axios.post(searchApi, {
+            const { data } = await axiosInstance.post(searchApi, {
               next_problem: 0,
               word: this.state.input
             });
