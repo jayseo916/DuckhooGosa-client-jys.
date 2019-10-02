@@ -269,6 +269,7 @@ class Main extends React.Component {
           CurSearchNoData: false
         },
         async () => {
+          console.log("카운트로딩검색시", this.state.countSearchLoading);
           let countLoading = 0;
           let loadingProblem = this.state.numberLoadingSearchProblem;
 
@@ -284,35 +285,17 @@ class Main extends React.Component {
               });
               break;
             }
-            let origin = this.state.searchProblems.map(v => JSON.stringify(v));
 
-            var newData = data.filter(v => {
-              if (!origin.includes(JSON.stringify(v))) {
-                return v;
-              }
-            });
             countLoading += 1;
-            if (newData.length !== 0) {
+            if (data !== "NoData") {
               break;
             }
           }
 
-          // if (!this.state.CurSearchNoData && data !== "NoData") {
           if (data !== "NoData") {
-            let problems = [...newData];
-            let origin = this.state.problems.map(v => JSON.stringify(v));
-            let filteringed = problems.filter(v => {
-              if (!origin.includes(JSON.stringify(v))) {
-                return v;
-              }
-            });
-
-            let total = [...this.state.problems, ...filteringed];
-
             this.setState({
-              searchProblems: problems,
-              countSearchLoading: countLoading,
-              problems: total
+              searchProblems: data,
+              countSearchLoading: countLoading
             });
           } else {
             this.setState({
@@ -320,35 +303,6 @@ class Main extends React.Component {
               countSearchLoading: countLoading
             });
           }
-          // }
-
-          // this.state.search
-          //   ? (countLoading = this.state.countSearchLoading)
-          //   : (countLoading = this.state.countLoading);
-
-          // console.log("카운트로딩", countLoading);
-          // if (countLoading === 0) {
-          //   console.log("초기검색어", this.state.input);
-
-          //   const { data } = await axios.post(searchApi, {
-          //     next_problem: 0,
-          //     word: this.state.input
-          //   });
-          //   console.log("데이타", JSON.parse(data));
-          //   if (JSON.parse(data) !== "NoData") {
-          //     this.state.search
-          //       ? this.setState({
-          //           searchProblems: JSON.parse(data)
-          //         })
-          //       : this.setState({ problems: JSON.parse(data) });
-          //   } else {
-          //     this.state.search
-          //       ? this.setState({
-          //           searchProblems: []
-          //         })
-          //       : this.setState({ problems: [] });
-          //   }
-          // }
         }
       );
     }
