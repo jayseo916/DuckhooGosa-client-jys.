@@ -5,6 +5,8 @@ import { config } from "../config";
 import axios from "axios";
 import StarRatingComponent from "react-star-rating-component";
 import "../shared/App.css";
+
+
 export class Scoring extends Component {
   constructor(props) {
     super(props);
@@ -21,20 +23,10 @@ export class Scoring extends Component {
     this.props.history.push(`/comment/${this.props.data.problem_id}`);
   };
   evalSubmit() {
-    alert(
-      "프롭스로 넘어온 문제아이디:" +
-        this.props.data.problem_id +
-        "퀄리티평점:" +
-        this.state.evalQ +
-        "난이도평점:" +
-        this.state.evalD +
-        "댓글:" +
-        this.state.comment
-    );
     this.setState({ visible: false });
     axios
       .post(
-        `http://localhost:8000/problem/evaluation`,
+          `${process.env.REACT_APP_SERVER}/problem/evaluation`,
         {
           _id: this.props.data.problem_id,
           evalQ: this.state.evalQ,
@@ -148,7 +140,6 @@ export class Scoring extends Component {
             <h1 className="title">SCORE!!</h1>
             <p>Hello, it's your score!</p>
           </div>
-
           <div className="nes-container is-dark with-title">
             <p className="title">correct!!</p>
             <p>
