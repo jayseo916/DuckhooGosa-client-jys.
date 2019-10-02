@@ -5,6 +5,8 @@ import { config } from "../config";
 import axios from "axios";
 import StarRatingComponent from 'react-star-rating-component';
 import "../shared/App.css";
+
+
 export class Scoring extends Component {
   constructor(props) {
     super(props);
@@ -21,20 +23,10 @@ export class Scoring extends Component {
     this.props.history.push(`/commnet/${this.props.data.problem_id}`);
   };
   evalSubmit() {
-    alert(
-      "프롭스로 넘어온 문제아이디:" +
-        this.props.data.problem_id +
-        "퀄리티평점:" +
-        this.state.evalQ +
-        "난이도평점:" +
-        this.state.evalD +
-        "댓글:" +
-        this.state.comment
-    );
     this.setState({ visible: false });
     axios
       .post(
-        `http://localhost:8000/problem/evaluation`,
+          `${process.env.REACT_APP_SERVER}/problem/evaluation`,
         {
           _id: this.props.data.problem_id,
           evalQ: this.state.evalQ,
@@ -107,29 +99,29 @@ export class Scoring extends Component {
 
     return (
     <div>
-      <Modal 
-        title="해당 문제 평가" 
+      <Modal
+        title="해당 문제 평가"
         visible={this.state.visible}
         okText="평가 완료"
         cancelText="닫기"
-        onOk={() => this.evalSubmit()} 
+        onOk={() => this.evalSubmit()}
         onCancel={() => this.cancel()}>
         <div className="eval-quality">
-          <div className="eval-question">문제의 퀄리티가 어땠나요?(좋았어요:5점,구렸어요:1점)</div>  
+          <div className="eval-question">문제의 퀄리티가 어땠나요?(좋았어요:5점,구렸어요:1점)</div>
           <StarRatingComponent
             name="evalQuality"
             value={this.state.evalQ}
             starCount={5}
             onStarClick={nextValue => this.setEvalQ(nextValue)}
             starColor="yellow"
-          />  
+          />
         </div>
         <div className="eval-difficulty">
           <div className="eval-question">문제의 난이도는 어땠나요?(어려웠어요:5점,쉬웠어요:1점)</div>
           <StarRatingComponent
             name="evalDifficulty"
             value={this.state.evalD}
-            starCount={5}         
+            starCount={5}
             onStarClick={nextValue => this.setEvalD(nextValue)}
             starColor="yellow"
           />

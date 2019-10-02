@@ -1,9 +1,9 @@
 import React from "react";
-import { Redirect } from "react-router-dom";
 import { GoogleLogin, GoogleLogout } from "react-google-login";
 import "bootstrap/dist/css/bootstrap.css";
 import "../shared/App.css";
 import axios from "axios";
+import { config } from "../config";
 
 class Login extends React.Component {
   constructor(props) {
@@ -15,49 +15,45 @@ class Login extends React.Component {
 
   componentDidMount() {}
 
-  responseGoogle = res => {
+  responseGoogle = async res => {
     let data = {
       email: res.profileObj.email,
       expires_at: res.tokenObj.expires_at + res.tokenObj.expires_in
     };
     this.props.setUserInfo(data);
-    localStorage.setItem("authData", JSON.stringify(res));
-
-    let config = {
+    await localStorage.setItem("authData", JSON.stringify(res));
+    const config = {
       headers: {
-        access_token: JSON.parse(localStorage.getItem("authData")).Zi
-          .access_token,
+        access_token: localStorage["authData"]
+            ? JSON.parse(localStorage["authData"]).Zi.access_token
+            : null,
         "Access-Control-Allow-Origin": "*"
       },
       withCredentials: true
     };
+
     axios
-      .post("http://localhost:8000/login/", {}, config)
-      .then(res => {
-        if (res.data.result) {
-          this.props.history.push("/main");
-        } else {
-          console.log(res.data.reason);
-          this.props.history.push("/login");
-        }
-      })
-      .catch(err => {
-        console.log(err, "ERROR in login SEQ");
-      });
+        .post(`${process.env.REACT_APP_SERVER}/login`, {}, config)
+        .then(res => {
+          console.log(config);
+          if (res.data.result) {
+            this.props.history.push("/main");
+          } else {
+            console.log(res.data.reason);
+            this.props.history.push("/login");
+          }
+        })
+        .catch(err => {
+          console.log(err, "ERROR in login SEQ");
+        });
   };
-  responseFail = err => {};
+  responseFail = err => {
+    console.log(err);
+  };
 
   logout = () => {
-    let config = {
-      headers: {
-        access_token: JSON.parse(localStorage.getItem("authData")).Zi
-          .access_token,
-        "Access-Control-Allow-Origin": "*"
-      },
-      withCredentials: true
-    };
     axios
-      .post("http://localhost:8000/logout/", {}, config)
+      .post(`${process.env.REACT_APP_SERVER}/logout`, {}, config)
       .then(res => {
         if (res.data.result) {
           console.log(res.data.result);
