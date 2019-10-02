@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import "../../node_modules/nes.css/css/nes.css";
 import { Modal } from "antd";
-import { config } from "../config";
-import axios from "axios";
+import {axiosInstance, config} from "../config";
 import StarRatingComponent from 'react-star-rating-component';
 import "../shared/App.css";
 
@@ -20,13 +19,13 @@ export class Scoring extends Component {
   }
 
   goComment = () => {
-    this.props.history.push(`/commnet/${this.props.data.problem_id}`);
+    this.props.history.push(`/comment/${this.props.data.problem_id}`);
   };
   evalSubmit() {
     this.setState({ visible: false });
-    axios
+    axiosInstance
       .post(
-          `${process.env.REACT_APP_SERVER}/problem/evaluation`,
+          '/problem/evaluation',
         {
           _id: this.props.data.problem_id,
           evalQ: this.state.evalQ,
@@ -50,7 +49,7 @@ export class Scoring extends Component {
   setEvalD(e) {
     this.setState({
       evalD: e
-    })
+    });
   }
   commentHandle = e => {
     this.setState({ comment: e.target.value });
@@ -98,48 +97,51 @@ export class Scoring extends Component {
     const { evalQ, evalD, comment } = this.state;
 
     return (
-    <div>
-      <Modal
-        title="해당 문제 평가"
-        visible={this.state.visible}
-        okText="평가 완료"
-        cancelText="닫기"
-        onOk={() => this.evalSubmit()}
-        onCancel={() => this.cancel()}>
-        <div className="eval-quality">
-          <div className="eval-question">문제의 퀄리티가 어땠나요?(좋았어요:5점,구렸어요:1점)</div>
-          <StarRatingComponent
-            name="evalQuality"
-            value={this.state.evalQ}
-            starCount={5}
-            onStarClick={nextValue => this.setEvalQ(nextValue)}
-            starColor="yellow"
-          />
-        </div>
-        <div className="eval-difficulty">
-          <div className="eval-question">문제의 난이도는 어땠나요?(어려웠어요:5점,쉬웠어요:1점)</div>
-          <StarRatingComponent
-            name="evalDifficulty"
-            value={this.state.evalD}
-            starCount={5}
-            onStarClick={nextValue => this.setEvalD(nextValue)}
-            starColor="yellow"
-          />
-        </div>
-        <div className="input-comment">
-          의견:<textarea onChange={e => this.commentHandle(e)}></textarea>
-        </div>
-      </Modal>
-      <div style={{ padding: "0 0 60px 30px" }}>
-        <div className="nes-container with-title is-centered">
-          <h1 className="title">SCORE!!</h1>
-          <p>Hello, it's your score!</p>
-        </div>
-
+      <div>
+        <Modal
+          title="해당 문제 평가"
+          visible={this.state.visible}
+          okText="평가 완료"
+          cancelText="닫기"
+          onOk={() => this.evalSubmit()}
+          onCancel={() => this.cancel()}
+        >
+          <div className="eval-quality">
+            <div className="eval-question">
+              문제의 퀄리티가 어땠나요?(좋았어요:5점,구렸어요:1점)
+            </div>
+            <StarRatingComponent
+              name="evalQuality"
+              value={this.state.evalQ}
+              starCount={5}
+              onStarClick={nextValue => this.setEvalQ(nextValue)}
+              starColor="yellow"
+            />
+          </div>
+          <div className="eval-difficulty">
+            <div className="eval-question">
+              문제의 난이도는 어땠나요?(어려웠어요:5점,쉬웠어요:1점)
+            </div>
+            <StarRatingComponent
+              name="evalDifficulty"
+              value={this.state.evalD}
+              starCount={5}
+              onStarClick={nextValue => this.setEvalD(nextValue)}
+              starColor="yellow"
+            />
+          </div>
+          <div className="input-comment">
+            의견:<textarea onChange={e => this.commentHandle(e)}></textarea>
+          </div>
+        </Modal>
+        <div style={{ padding: "0 0 60px 30px" }}>
+          <div className="nes-container with-title is-centered">
+            <h1 className="title">SCORE!!</h1>
+            <p>Hello, it's your score!</p>
+          </div>
           <div className="nes-container is-dark with-title">
             <p className="title">correct!!</p>
             <p>
-
               {correctProblem.length} / {checkProblem.length}
             </p>
             <p>

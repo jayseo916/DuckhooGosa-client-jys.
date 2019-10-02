@@ -2,8 +2,7 @@ import React from "react";
 import { GoogleLogin, GoogleLogout } from "react-google-login";
 import "bootstrap/dist/css/bootstrap.css";
 import "../shared/App.css";
-import axios from "axios";
-import { config } from "../config";
+import { config, axiosInstance } from "../config";
 
 class Login extends React.Component {
   constructor(props) {
@@ -32,10 +31,10 @@ class Login extends React.Component {
       withCredentials: true
     };
 
-    axios
-        .post(`${process.env.REACT_APP_SERVER}/login`, {}, config)
+    axiosInstance
+        .post('/login', {}, config)
         .then(res => {
-          console.log(config);
+          console.log(res,"요청결과 확인")
           if (res.data.result) {
             this.props.history.push("/main");
           } else {
@@ -52,8 +51,8 @@ class Login extends React.Component {
   };
 
   logout = () => {
-    axios
-      .post(`${process.env.REACT_APP_SERVER}/logout`, {}, config)
+    axiosInstance
+      .post('/logout', {}, config)
       .then(res => {
         if (res.data.result) {
           console.log(res.data.result);

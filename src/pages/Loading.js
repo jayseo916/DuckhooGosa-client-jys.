@@ -6,6 +6,7 @@ import * as legoData from "../loading/8092-retro-console-run";
 import * as doneData from "../loading/5785-checkmark.json";
 import "bootstrap/dist/css/bootstrap.css";
 import "../shared/App.css";
+import { axiosInstance, config } from "../config";
 class Loading extends React.Component {
   constructor(props) {
     super(props);
@@ -16,6 +17,15 @@ class Loading extends React.Component {
   }
 
   componentDidMount() {
+    axiosInstance
+      .get("/", {}, config)
+      .then(res => {
+        console.log(res, " is this HELLO?");
+      })
+      .catch(err => {
+        console.log(err, "ERROR in basic setting");
+      });
+
     console.log("현재 클라이언트::", process.env.REACT_APP_MODE);
     setTimeout(() => {
       this.setState({ loading: false }, () => {

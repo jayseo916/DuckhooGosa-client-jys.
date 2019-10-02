@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import axios from "axios";
-import { config } from "../config";
+import {axiosInstance, config} from "../config";
 import { Link } from "react-router-dom";
 
 class Profile extends Component {
@@ -32,8 +31,8 @@ class Profile extends Component {
 
   componentDidMount() {
     config.email = this.props.email;
-    axios
-      .get(`${process.env.REACT_APP_SERVER}/account/info`, config)
+    axiosInstance
+      .get(`/account/info`, config)
       .then(res => this.setState({ userInfo: res.data, isLoading: true }))
       .catch(err => console.log("프로필가져오기에러:" + err));
   }
@@ -60,9 +59,9 @@ class Profile extends Component {
     if (!this.state.curImg) {
       alert("사진을 업로드해 주세요.");
     } else {
-      axios
+      axiosInstance
         .post(
-            `${process.env.REACT_APP_SERVER}/account/img`,
+            '/account/img',
           {
             img: this.state.curImg
           },
@@ -90,9 +89,9 @@ class Profile extends Component {
     if (!this.state.curNick) {
       alert("바꿀 닉네임을 적어주세요");
     } else {
-      axios
+      axiosInstance
         .post(
-            `${process.env.REACT_APP_SERVER}/account/nick`,
+            '/account/nick',
           {
             nick: this.state.curNick
           },
