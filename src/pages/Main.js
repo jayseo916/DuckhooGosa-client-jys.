@@ -1,11 +1,10 @@
 import React from "react";
-import axios from "axios";
-import { config } from "../config";
+import { config, axiosInstance } from "../config";
 import "./Main.css";
 
-let mainApi = `${process.env.REACT_APP_SERVER}/problem/main`;
-let searchApi = `${process.env.REACT_APP_SERVER}/problem/search`;
-let genreApi = `${process.env.REACT_APP_SERVER}/problem/genre`;
+let mainApi = '/problem/main';
+let searchApi = '/problem/search';
+let genreApi = '/problem/genre';
 class Main extends React.Component {
   constructor(props) {
     super(props);
@@ -36,7 +35,7 @@ class Main extends React.Component {
     console.log("카운트로딩", countLoading);
     if (countLoading === 0 && this.state.search === false) {
       console.log("초기검색어", this.state.input);
-      const { data } = await axios.post(
+      const { data } = await axiosInstance.post(
         this.state.search ? searchApi : mainApi,
         {
           next_problem: 0,
@@ -67,7 +66,6 @@ class Main extends React.Component {
       let loadingProblem = 0;
 
       if (!this.state.genreOn) {
-        /////////
         if (this.state.search) {
           countLoading = this.state.countSearchLoading;
           loadingProblem = this.state.numberLoadingSearchProblem;
@@ -206,7 +204,7 @@ class Main extends React.Component {
           countGenreLoading: 0
         },
         async () => {
-          let { data } = await axios.post(genreApi, {
+          let { data } = await axiosInstance.post(genreApi, {
             next_problem: 4,
             genre: this.state.currentOption
           });
@@ -267,8 +265,9 @@ class Main extends React.Component {
           let loadingProblem = this.state.numberLoadingSearchProblem;
 
           while (!this.state.CurSearchNoData) {
-            var { data } = await axios.post(searchApi, {
+            var { data } = await axiosInstance.post(searchApi, {
               next_problem: loadingProblem * countLoading,
+
               word: this.state.input
             });
             data = JSON.parse(data);

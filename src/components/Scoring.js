@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import "../../node_modules/nes.css/css/nes.css";
 import { Modal } from "antd";
-import { config } from "../config";
-import axios from "axios";
-import StarRatingComponent from "react-star-rating-component";
+import {axiosInstance, config} from "../config";
+import StarRatingComponent from 'react-star-rating-component';
 import "../shared/App.css";
 
 
@@ -24,9 +23,9 @@ export class Scoring extends Component {
   };
   evalSubmit() {
     this.setState({ visible: false });
-    axios
+    axiosInstance
       .post(
-          `${process.env.REACT_APP_SERVER}/problem/evaluation`,
+          '/problem/evaluation',
         {
           _id: this.props.data.problem_id,
           evalQ: this.state.evalQ,

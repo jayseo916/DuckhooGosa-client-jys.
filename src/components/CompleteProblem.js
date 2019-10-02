@@ -1,6 +1,6 @@
 import React from "react";
 import AWS from "aws-sdk";
-import { config } from "../config";
+import {axiosInstance, config} from "../config";
 import { Link } from "react-router-dom";
 import {
   FilePond,
@@ -17,13 +17,11 @@ import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import FilePondPluginMediaPreview from "filepond-plugin-media-preview";
 import FilePondPluginImageValidateSize from "filepond-plugin-image-validate-size";
 import FilePondPluginFileEncode from "filepond-plugin-file-encode";
-import axios from "axios";
 import { UploadToS3 } from "../client/upLoad";
 // import { nullLiteral } from "@babel/types";
 
 let uniqid = require("uniqid");
 
-let endPoint = `${process.env.REACT_APP_SERVER}/problem`;
 // Register the plugin
 registerPlugin(
   FilePondPluginFilePoster,
@@ -113,8 +111,8 @@ class CompleteProblem extends React.Component {
           representImg: representImg,
           problems: problems
         };
-        axios
-          .post(`${process.env.REACT_APP_SERVER}/problem`, obj, config)
+        axiosInstance
+          .post('/problem', obj, config)
           .then(res => {
             // console.log(res, "업로드결과");
           })
