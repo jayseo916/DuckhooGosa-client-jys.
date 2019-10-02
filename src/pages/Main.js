@@ -71,7 +71,7 @@ class Main extends React.Component {
           loadingProblem = this.state.numberLoadingSearchProblem;
 
           while (!this.state.CurSearchNoData) {
-            var { data } = await axios.post(searchApi, {
+            var { data } = await axiosInstance.post(searchApi, {
               next_problem: loadingProblem * countLoading,
               word: this.state.input
             });
@@ -115,7 +115,7 @@ class Main extends React.Component {
           countLoading = this.state.countLoading;
           loadingProblem = this.state.numberLoadingProblem;
           while (!this.state.MainNoData) {
-            var { data } = await axios.post(mainApi, {
+            var { data } = await axiosInstance.post(mainApi, {
               next_problem: loadingProblem * countLoading
             });
 
@@ -151,7 +151,7 @@ class Main extends React.Component {
         loadingProblem = this.state.numberLoadingGenreProblem;
 
         while (!this.state.CurGenreNoData) {
-          var { data } = await axios.post(genreApi, {
+          var { data } = await axiosInstance.post(genreApi, {
             next_problem: loadingProblem * countLoading,
             genre: this.state.currentOption
           });

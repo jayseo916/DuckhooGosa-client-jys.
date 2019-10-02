@@ -4,6 +4,9 @@
 .App {
   text-align: center;
 }
+.load-page {
+  flex-direction: column;
+}
 
 @font-face {
   font-family: 'DungGeunMo';
@@ -25,7 +28,7 @@
 }
 
 .App-header {
-  background-color: #85471f;
+  background-color: #ff9fc9;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
