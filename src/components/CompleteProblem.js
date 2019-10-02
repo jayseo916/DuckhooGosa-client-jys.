@@ -1,13 +1,9 @@
 import React from "react";
-import AWS from "aws-sdk";
 import { config } from "../config";
 import { Link } from "react-router-dom";
 import {
   FilePond,
-  // File,
   registerPlugin,
-  create
-  // setOptions
 } from "react-filepond";
 import FilePondPluginFilePoster from "filepond-plugin-file-poster";
 import "filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css";
@@ -23,7 +19,7 @@ import { UploadToS3 } from "../client/upLoad";
 
 let uniqid = require("uniqid");
 
-let endPoint = `${process.env.REACT_APP_SERVER}/problem`;
+// let endPoint = `${process.env.REACT_APP_SERVER}/problem`;
 // Register the plugin
 registerPlugin(
   FilePondPluginFilePoster,
@@ -32,10 +28,6 @@ registerPlugin(
   FilePondPluginImageValidateSize,
   FilePondPluginFileEncode
 );
-
-const albumBucketName = "duckhoogosa";
-const bucketRegion = "ap-northeast-2";
-const IdentityPoolId = "ap-northeast-2:ba805140-83ec-4793-8736-0641dd7d6f71";
 
 class CompleteProblem extends React.Component {
   constructor(props) {
