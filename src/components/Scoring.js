@@ -15,12 +15,13 @@ export class Scoring extends Component {
       evalQ: 3,
       evalD: 3,
       comment: "",
-      email: this.props.data.email
+      email: this.props.data.email,
+      visible2: false
     };
   }
 
   goComment = () => {
-    this.props.history.push(`/commnet/${this.props.data.problem_id}`);
+    this.props.history.push(`/comment/${this.props.data.problem_id}`);
   };
   evalSubmit() {
     this.setState({ visible: false });

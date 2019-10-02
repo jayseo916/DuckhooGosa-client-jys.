@@ -12,6 +12,7 @@ import Profile from "../pages/Profile";
 import FooterMenubar from "../components/FooterMenubar";
 import UpLoadTest from "../client/upLoadTest";
 import SolvingProblem from "../pages/SolvingProblem";
+import Comment from "../pages/Comment";
 import NotFound from "../pages/NotFound";
 import "./App.css";
 
@@ -119,6 +120,7 @@ class App extends React.Component {
           />
           <Route path="/UpLoadTest" component={UpLoadTest} />
           <Route path="/main" render={props => <Main {...props} />} />
+          <Route path="/Comments/:id" component={Comment} />
           <Route
             path="/login"
             render={props => (

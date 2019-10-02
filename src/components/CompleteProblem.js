@@ -113,6 +113,9 @@ class CompleteProblem extends React.Component {
           representImg: representImg,
           problems: problems
         };
+        if(obj.representImg === null) {
+          obj.representImg = "https://duckhoogosa.s3.ap-northeast-2.amazonaws.com/problem_1/gamePad.png"
+        }
         axios
           .post(`${process.env.REACT_APP_SERVER}/problem`, obj, config)
           .then(res => {
