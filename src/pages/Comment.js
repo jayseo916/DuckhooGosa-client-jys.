@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { config } from "../config";
+import "../shared/App.css";
 
 export default class Comment extends React.Component {
   constructor(props) {
@@ -17,7 +18,7 @@ export default class Comment extends React.Component {
     };
   }
   componentDidMount() {
-    console.log(this.props);
+    console.log("commentjs로넘어온 props값" + JSON.stringify(this.props));
     axios
       .get(
         `${process.env.REACT_APP_SERVER}/comment/${this.state.problem_id}`,
@@ -32,7 +33,9 @@ export default class Comment extends React.Component {
       comments.map((data, i) => {
         return (
           <div key={i} className="nes-container is-rounded">
-            {data.nick}님의 의견:{data.comment}
+            <div>
+              {data.nick}님의 의견:{data.comment}
+            </div>
             날짜:{data.day}
           </div>
         );

@@ -126,7 +126,7 @@ class App extends React.Component {
           />
           <Route path="/UpLoadTest" component={UpLoadTest} />
           <Route path="/main" render={props => <Main {...props} />} />
-          <Route path="/Comments/:id" component={Comment} />
+          <Route path="/comment/:id" component={Comment} />
           <Route
             path="/login"
             render={props => (

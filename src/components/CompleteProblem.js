@@ -72,14 +72,7 @@ class CompleteProblem extends React.Component {
         // return null;
       }
     });
-    let representImg = "https://duckhoogosa.s3.ap-northeast-2.amazonaws.com/problem_1/movieSet.jpeg";
-    if(this.props.Problems.genre === "game") {
-      representImg = "https://duckhoogosa.s3.ap-northeast-2.amazonaws.com/problem_1/gamePad.png";
-    } else if(this.props.Problems.genre === "sports") {
-      representImg = "https://duckhoogosa.s3.ap-northeast-2.amazonaws.com/problem_1/sports+balls.jpg";
-    } else if(this.props.Problems.genre ==="military") {
-      representImg = "https://duckhoogosa.s3.ap-northeast-2.amazonaws.com/problem_1/military.png";
-    }
+    let representImg = "https://duckhoogosa.s3.ap-northeast-2.amazonaws.com/problem_1/problem!.jpg";
     if(this.props.repreImg !== null){
       representImg = await new Promise((resolve, reject) => {
         try {
