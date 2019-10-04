@@ -1,7 +1,39 @@
 import React, { Component } from "react";
-import {axiosInstance, config} from "../config";
+import { axiosInstance, config } from "../config";
 import { Link } from "react-router-dom";
+import { GoogleLogin, GoogleLogout } from "react-google-login";
+import { Collapse } from "antd";
 
+import "antd/dist/antd.css";
+import "bootstrap/dist/css/bootstrap.css";
+import "../shared/App.css";
+
+const { Panel } = Collapse;
+//FAQ&문의메일 설명 내용
+const text =
+  " 사용방법\n기본적으로 로그인이 필요하고 편하게 구글로그인 하시면 됩니당";
+// 문제 만드는법
+// 1.로그인
+// 2.만들기
+// 3.문제에 필요한 파일(사진,오디오,동영상)을 업로드 후 문제 작성
+// 4.보기는 주관식과 2지선다부터 5지선다까지 있다. 원하는 걸 골라서 만들면 된다.
+// 5.문제를 작성했으면 다음문제 버튼을 눌러 다음 문제를 작성한다. 이때 다음문제 버튼을 누르면 자동으로 저장이 된다.
+// 6.수정을 원하면 이전문제 버튼을 누르고 수정을 하면된다. 수정을 반영하려면 저장버튼을 꼭 누른다.
+// 7.현재 작성중인 문제를 반영하려면 저장을 누른후 제출한다. 저장을 누르지 않고 작성도중에 제출하면 작성중인 문제는 저장되지 않는다.
+// 8.작성한 문제를 확인하고 완료를 누르면 문제지 작성이 완료된다. 수정을 원하면 수정버튼을 눌르고 수정을 한다. 이때도 수정한 문제는 저장버튼을 눌러준다.
+
+// 문제 푸는법
+// 1. 로그인
+// 2. 문제 클릭
+// 3. 해당 문제를 푼다. 객관식의 경우 답이 여러개일 수 있다.
+// 4. 모두 풀고 제출하면 채점후 결과가 나오는데 난이도와 문제 퀄리티 두종류의 평점을 을 매기고 코멘트를 달 수 있다.
+
+// 이멜: 111@gmail.com
+// "
+
+function callback(key) {
+  console.log(key);
+}
 class Profile extends Component {
   constructor(props) {
     super(props);
@@ -30,12 +62,31 @@ class Profile extends Component {
   }
 
   componentDidMount() {
+    console.log("함수", this.props.emptyEamil);
     config.email = this.props.email;
     axiosInstance
       .get(`/account/info`, config)
       .then(res => this.setState({ userInfo: res.data, isLoading: true }))
       .catch(err => console.log("프로필가져오기에러:" + err));
   }
+
+  logout = () => {
+    axiosInstance
+      .post("/logout", {}, config)
+      .then(res => {
+        if (res.data.result) {
+          console.log(res.data.result);
+        } else {
+          console.log(res.data.reason);
+        }
+      })
+      .catch(err => {
+        console.log(err, "ERROR in logout SEQ");
+      });
+    console.log("로그아웃");
+    this.props.emptyEmail();
+    localStorage.removeItem("authData");
+  };
 
   uploadImage1() {
     this.setState({ imageBtn: !this.state.imageBtn });
@@ -61,7 +112,7 @@ class Profile extends Component {
     } else {
       axiosInstance
         .post(
-            '/account/img',
+          "/account/img",
           {
             img: this.state.curImg
           },
@@ -91,7 +142,7 @@ class Profile extends Component {
     } else {
       axiosInstance
         .post(
-            '/account/nick',
+          "/account/nick",
           {
             nick: this.state.curNick
           },
@@ -158,8 +209,7 @@ class Profile extends Component {
                 </div>
               ) : !nickBtn && !nickname ? (
                 <div>
-                  {this.props.email}님의 닉네임이 없습니다.
-                  차후에 지원예정
+                  {this.props.email}님의 닉네임이 없습니다. 차후에 지원예정
                   {/*<button onClick={() => this.changeNick1()}>*/}
                   {/*  닉네임 등록*/}
                   {/*</button>*/}
@@ -205,6 +255,58 @@ class Profile extends Component {
               <button>만든문제 History</button>
             </Link>
           </div>
+          <GoogleLogout
+            clientId={process.env.REACT_APP_Google}
+            buttonText="Logout"
+            onLogoutSuccess={this.logout}
+          />
+          <Collapse onChange={callback}>
+            <Panel header="FAQ" key="1">
+              <p>사용방법</p>
+              <p>
+                기본적으로 로그인이 필요하고 편하게 구글로그인 하시면 됩니당
+              </p>
+              <p> 문제 만드는법</p>
+              <p>1.로그인</p>
+              <p>2.만들기</p>
+              <p>
+                3.문제에 필요한 파일(사진,오디오,동영상)을 업로드 후 문제 작성
+              </p>
+              <p>
+                4.보기는 주관식과 2지선다부터 5지선다까지 있다. 원하는 걸 골라서
+                만들면 된다.
+              </p>
+              <p>
+                5.문제를 작성했으면 다음문제 버튼을 눌러 다음 문제를 작성한다.
+                이때 다음문제 버튼을 누르면 자동으로 저장이 된다.
+              </p>
+              <p>
+                6.수정을 원하면 이전문제 버튼을 누르고 수정을 하면된다. 수정을
+                반영하려면 저장버튼을 꼭 누른다.
+              </p>
+              <p>
+                7.현재 작성중인 문제를 반영하려면 저장을 누른후 제출한다. 저장을
+                누르지 않고 작성도중에 제출하면 작성중인 문제는 저장되지 않는다.
+              </p>
+              <p>
+                8.작성한 문제를 확인하고 완료를 누르면 문제지 작성이 완료된다.
+                수정을 원하면 수정버튼을 눌르고 수정을 한다. 이때도 수정한
+                문제는 저장버튼을 눌러준다.
+              </p>
+
+              <p>문제 푸는법</p>
+              <p>1. 로그인</p>
+              <p>2. 문제 클릭</p>
+              <p>3. 해당 문제를 푼다. 객관식의 경우 답이 여러개일 수 있다.</p>
+              <p>
+                4. 모두 풀고 제출하면 채점후 결과가 나오는데 난이도와 문제
+                퀄리티 두종류의 평점을 을 매기고 코멘트를 달 수 있다.
+              </p>
+            </Panel>
+            <Panel header="문의" key="2">
+              <p>문의사항: 111@gmail.com</p>
+            </Panel>
+          </Collapse>
         </div>
       );
     }

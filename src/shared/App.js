@@ -9,12 +9,13 @@ import MySolved from "../pages/MySolved";
 import Loading from "../pages/Loading";
 import Login from "../pages/Login";
 import Profile from "../pages/Profile";
-import Private from '../pages/Private'
+import Private from "../pages/Private";
 import FooterMenubar from "../components/FooterMenubar";
 import UpLoadTest from "../client/upLoadTest";
 import SolvingProblem from "../pages/SolvingProblem";
 import Comment from "../pages/Comment";
 import NotFound from "../pages/NotFound";
+import Linked from "../pages/Linked";
 import "./App.css";
 
 class App extends React.Component {
@@ -30,9 +31,9 @@ class App extends React.Component {
   }
 
   emptyEmail = () => {
-    this.setState({
+    this.setState((state, props) => ({
       email: null
-    });
+    }));
   };
 
   setUserInfo = data => {
@@ -70,10 +71,10 @@ class App extends React.Component {
             }}
           />
           <Route
-              path="/private"
-              render={props => {
-                return <Private {...props} />;
-              }}
+            path="/private"
+            render={props => {
+              return <Private {...props} />;
+            }}
           />
           <Route
             path="/createProblem"
@@ -113,14 +114,30 @@ class App extends React.Component {
             path="/profile"
             render={props => {
               if (!email) return <Redirect to="/login"></Redirect>;
-              return <Profile email={this.state.email} {...props} />;
+              return (
+                <Profile
+                  email={this.state.email}
+                  emptyEmail={this.emptyEmail}
+                  {...props}
+                />
+              );
             }}
           />
           <Route path="/not-found" component={NotFound} />
+          <Route path="/Linked" component={Linked} />
           <Route
             path="/SolvingProblem/:id"
             render={props => {
-              if (!email) return <Redirect to="/login"></Redirect>;
+              if (!email)
+                return (
+                  <Redirect
+                    to={{
+                      pathname: "/Linked",
+                      problemId: props.match.params.id,
+                      setUserInfo: this.setUserInfo
+                    }}
+                  />
+                );
               return <SolvingProblem email={this.state.email} {...props} />;
             }}
           />
