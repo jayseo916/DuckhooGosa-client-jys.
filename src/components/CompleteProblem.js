@@ -68,19 +68,29 @@ class CompleteProblem extends React.Component {
           })
         );
       } else {
-        return null;
+        console.log(problem);
+        // return null;
       }
     });
-    let representImg = await new Promise((resolve, reject) => {
-      try {
-        UploadToS3(dir, this.props.repreImg, link => {
-          resolve(link);
-        });
-      } catch (ex) {
-        reject(ex);
-      }
-    });
-
+    let representImg = "https://duckhoogosa.s3.ap-northeast-2.amazonaws.com/problem_1/movieSet.jpeg";
+    if(this.props.Problems.genre === "game") {
+      representImg = "https://duckhoogosa.s3.ap-northeast-2.amazonaws.com/problem_1/gamePad.png";
+    } else if(this.props.Problems.genre === "sports") {
+      representImg = "https://duckhoogosa.s3.ap-northeast-2.amazonaws.com/problem_1/sports+balls.jpg";
+    } else if(this.props.Problems.genre ==="military") {
+      representImg = "https://duckhoogosa.s3.ap-northeast-2.amazonaws.com/problem_1/military.png";
+    }
+    if(this.props.repreImg !== null){
+      representImg = await new Promise((resolve, reject) => {
+        try {
+          UploadToS3(dir, this.props.repreImg, link => {
+            resolve(link);
+          });
+        } catch (ex) {
+          reject(ex);
+        }
+      });
+    }
     Promise.all(promise)
       .then(v => {
         let problems = this.props.Problems.map((problem, num) => {
@@ -93,7 +103,6 @@ class CompleteProblem extends React.Component {
         });
 
         const { email, tags, genre, title, date } = this.props.problemState;
-
         let obj = {
           email: email,
           tags: tags,
@@ -102,10 +111,7 @@ class CompleteProblem extends React.Component {
           date: date,
           representImg: representImg,
           problems: problems
-        };
-        if(obj.representImg === null) {
-          obj.representImg = "https://duckhoogosa.s3.ap-northeast-2.amazonaws.com/problem_1/gamePad.png"
-        }
+        };      
         axiosInstance
           .post(`${process.env.REACT_APP_SERVER}/problem`, obj, config)
           .then(res => {
