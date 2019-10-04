@@ -9,7 +9,7 @@ import MySolved from "../pages/MySolved";
 import Loading from "../pages/Loading";
 import Login from "../pages/Login";
 import Profile from "../pages/Profile";
-import Private from '../pages/Private'
+import Private from "../pages/Private";
 import FooterMenubar from "../components/FooterMenubar";
 import UpLoadTest from "../client/upLoadTest";
 import SolvingProblem from "../pages/SolvingProblem";
@@ -29,9 +29,9 @@ class App extends React.Component {
   }
 
   emptyEmail = () => {
-    this.setState({
+    this.setState((state, props) => ({
       email: null
-    });
+    }));
   };
 
   setUserInfo = data => {
@@ -69,10 +69,10 @@ class App extends React.Component {
             }}
           />
           <Route
-              path="/private"
-              render={props => {
-                return <Private {...props} />;
-              }}
+            path="/private"
+            render={props => {
+              return <Private {...props} />;
+            }}
           />
           <Route
             path="/createProblem"
@@ -112,7 +112,13 @@ class App extends React.Component {
             path="/profile"
             render={props => {
               if (!email) return <Redirect to="/login"></Redirect>;
-              return <Profile email={this.state.email} {...props} />;
+              return (
+                <Profile
+                  email={this.state.email}
+                  emptyEmail={this.emptyEmail}
+                  {...props}
+                />
+              );
             }}
           />
           <Route path="/not-found" component={NotFound} />

@@ -1,6 +1,9 @@
 import React, { Component } from "react";
-import {axiosInstance, config} from "../config";
+import { axiosInstance, config } from "../config";
 import { Link } from "react-router-dom";
+import { GoogleLogin, GoogleLogout } from "react-google-login";
+import "bootstrap/dist/css/bootstrap.css";
+import "../shared/App.css";
 
 class Profile extends Component {
   constructor(props) {
@@ -30,12 +33,31 @@ class Profile extends Component {
   }
 
   componentDidMount() {
+    console.log('함수',this.props.emptyEamil);
     config.email = this.props.email;
     axiosInstance
       .get(`/account/info`, config)
       .then(res => this.setState({ userInfo: res.data, isLoading: true }))
       .catch(err => console.log("프로필가져오기에러:" + err));
   }
+
+  logout = () => {
+    axiosInstance
+      .post("/logout", {}, config)
+      .then(res => {
+        if (res.data.result) {
+          console.log(res.data.result);
+        } else {
+          console.log(res.data.reason);
+        }
+      })
+      .catch(err => {
+        console.log(err, "ERROR in logout SEQ");
+      });
+    console.log("로그아웃");
+    this.props.emptyEmail();
+    localStorage.removeItem("authData");
+  };
 
   uploadImage1() {
     this.setState({ imageBtn: !this.state.imageBtn });
@@ -61,7 +83,7 @@ class Profile extends Component {
     } else {
       axiosInstance
         .post(
-            '/account/img',
+          "/account/img",
           {
             img: this.state.curImg
           },
@@ -91,7 +113,7 @@ class Profile extends Component {
     } else {
       axiosInstance
         .post(
-            '/account/nick',
+          "/account/nick",
           {
             nick: this.state.curNick
           },
@@ -158,8 +180,7 @@ class Profile extends Component {
                 </div>
               ) : !nickBtn && !nickname ? (
                 <div>
-                  {this.props.email}님의 닉네임이 없습니다.
-                  차후에 지원예정
+                  {this.props.email}님의 닉네임이 없습니다. 차후에 지원예정
                   {/*<button onClick={() => this.changeNick1()}>*/}
                   {/*  닉네임 등록*/}
                   {/*</button>*/}
@@ -205,6 +226,11 @@ class Profile extends Component {
               <button>만든문제 History</button>
             </Link>
           </div>
+          <GoogleLogout
+            clientId={process.env.REACT_APP_Google}
+            buttonText="Logout"
+            onLogoutSuccess={this.logout}
+          />
         </div>
       );
     }
