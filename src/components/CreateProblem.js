@@ -58,7 +58,7 @@ class CreateProblem extends Component {
   // };
 
   componentDidMount() {
-    // console.log(this.state)
+    console.log(this.props)
   }
   handleInit() {
     // console.log("FilePond instance has initialised", this.pond);

@@ -14,7 +14,8 @@ export class Scoring extends Component {
       evalQ: 3,
       evalD: 3,
       comment: "",
-      email: this.props.data.email
+      email: this.props.data.email,
+      visible2: false
     };
   }
 

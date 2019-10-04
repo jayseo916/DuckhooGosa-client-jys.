@@ -9,52 +9,58 @@ class SelectGenre extends React.Component {
     return (
       <div className="select-genre">
         <img
-          src="1.jpg"
+          src="https://duckhoogosa.s3.ap-northeast-2.amazonaws.com/problem_1/movieSet.jpeg"
           alt="영화"
-          height="40"
-          sizes="100"
+          height="10%"
+          width="20%"
           onClick={() => this.genreSubmit("movie")}
         />
+        영화
         <br></br>
         <img
-          src="2.jpg"
+          src="https://duckhoogosa.s3.ap-northeast-2.amazonaws.com/problem_1/movieSet.jpeg"
           alt="애니메이션"
-          height="40"
-          sizes="100"
+          height="10%"
+          width="20%"
           onClick={() => this.genreSubmit("animation")}
         />
+        애니메이션
         <br></br>
         <img
-          src="3.jpg"
+          src="https://duckhoogosa.s3.ap-northeast-2.amazonaws.com/problem_1/gamePad.png"
           alt="게임"
-          height="40"
-          sizes="100"
+          height="10%"
+          width="20%"
           onClick={() => this.genreSubmit("game")}
         />
+        게임
         <br></br>
         <img
-          src="4.jpg"
+          src="https://duckhoogosa.s3.ap-northeast-2.amazonaws.com/problem_1/movieSet.jpeg"
           alt="연예"
-          height="40"
-          sizes="100"
+          height="10%"
+          width="20%"
           onClick={() => this.genreSubmit("entertain")}
         />
+        연예
         <br></br>
         <img
-          src="5.jpg"
+          src="https://duckhoogosa.s3.ap-northeast-2.amazonaws.com/problem_1/military.png"
           alt="군사"
-          height="40"
-          sizes="100"
+          height="10%"
+          width="20%"
           onClick={() => this.genreSubmit("military")}
         />
+        군사
         <br></br>
         <img
-          src="6.jpg"
+          src="https://duckhoogosa.s3.ap-northeast-2.amazonaws.com/problem_1/sports+balls.jpg"
           alt="스포츠"
-          height="40"
-          sizes="100"
+          height="10%"
+          width="20%"
           onClick={() => this.genreSubmit("sports")}
         />
+        스포츠
       </div>
     );
   }

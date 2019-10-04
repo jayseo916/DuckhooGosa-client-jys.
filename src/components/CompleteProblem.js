@@ -68,19 +68,22 @@ class CompleteProblem extends React.Component {
           })
         );
       } else {
-        return null;
+        console.log(problem);
+        // return null;
       }
     });
-    let representImg = await new Promise((resolve, reject) => {
-      try {
-        UploadToS3(dir, this.props.repreImg, link => {
-          resolve(link);
-        });
-      } catch (ex) {
-        reject(ex);
-      }
-    });
-
+    let representImg = "https://duckhoogosa.s3.ap-northeast-2.amazonaws.com/problem_1/problem!.jpg";
+    if(this.props.repreImg !== null){
+      representImg = await new Promise((resolve, reject) => {
+        try {
+          UploadToS3(dir, this.props.repreImg, link => {
+            resolve(link);
+          });
+        } catch (ex) {
+          reject(ex);
+        }
+      });
+    }
     Promise.all(promise)
       .then(v => {
         let problems = this.props.Problems.map((problem, num) => {
@@ -93,7 +96,6 @@ class CompleteProblem extends React.Component {
         });
 
         const { email, tags, genre, title, date } = this.props.problemState;
-
         let obj = {
           email: email,
           tags: tags,
@@ -102,9 +104,9 @@ class CompleteProblem extends React.Component {
           date: date,
           representImg: representImg,
           problems: problems
-        };
+        };      
         axiosInstance
-          .post('/problem', obj, config)
+          .post(`${process.env.REACT_APP_SERVER}/problem`, obj, config)
           .then(res => {
             // console.log(res, "업로드결과");
           })

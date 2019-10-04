@@ -34,7 +34,7 @@ class SelectTheme extends React.Component {
         <p>현재 선택된 장르:{localStorage.getItem("genre")}</p>
         <input
           type="text"
-          size="140"
+          size="40%"
           placeholder="문제 제목을 입력해주세요"
           onChange={e => this.handleTitleChange(e)}
         ></input>
