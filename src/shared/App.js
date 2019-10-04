@@ -14,6 +14,7 @@ import FooterMenubar from "../components/FooterMenubar";
 import UpLoadTest from "../client/upLoadTest";
 import SolvingProblem from "../pages/SolvingProblem";
 import NotFound from "../pages/NotFound";
+import Linked from "../pages/Linked";
 import "./App.css";
 
 class App extends React.Component {
@@ -122,10 +123,20 @@ class App extends React.Component {
             }}
           />
           <Route path="/not-found" component={NotFound} />
+          <Route path="/Linked" component={Linked} />
           <Route
             path="/SolvingProblem/:id"
             render={props => {
-              if (!email) return <Redirect to="/login"></Redirect>;
+              if (!email)
+                return (
+                  <Redirect
+                    to={{
+                      pathname: "/Linked",
+                      problemId: props.match.params.id,
+                      setUserInfo: this.setUserInfo
+                    }}
+                  />
+                );
               return <SolvingProblem email={this.state.email} {...props} />;
             }}
           />

@@ -261,7 +261,7 @@ class Profile extends Component {
             onLogoutSuccess={this.logout}
           />
           <Collapse onChange={callback}>
-            <Panel header="FAQ/Email" key="1">
+            <Panel header="FAQ" key="1">
               <p>사용방법</p>
               <p>
                 기본적으로 로그인이 필요하고 편하게 구글로그인 하시면 됩니당
@@ -302,7 +302,8 @@ class Profile extends Component {
                 4. 모두 풀고 제출하면 채점후 결과가 나오는데 난이도와 문제
                 퀄리티 두종류의 평점을 을 매기고 코멘트를 달 수 있다.
               </p>
-
+            </Panel>
+            <Panel header="문의" key="2">
               <p>문의사항: 111@gmail.com</p>
             </Panel>
           </Collapse>
