@@ -1,10 +1,10 @@
 import React from "react";
 import { config, axiosInstance } from "../config";
-import "./Main.css";
+import styled from "styled-components";
 
-let mainApi = '/problem/main';
-let searchApi = '/problem/search';
-let genreApi = '/problem/genre';
+let mainApi = "/problem/main";
+let searchApi = "/problem/search";
+let genreApi = "/problem/genre";
 class Main extends React.Component {
   constructor(props) {
     super(props);
@@ -310,79 +310,145 @@ class Main extends React.Component {
       ? this.state.searchProblems
       : this.state.problems;
 
-    console.log("에러?", problems);
+    const MainConatiner = styled.div`
+      flex-direction: column;
+      height: fit-content;
+    `;
+    const CenterContainer = styled.div`
+      flex-direction: column;
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 767px;
+      flex-wrap: wrap;
+      background-color: #DDFFAD;
+    `;
+    const TopBox = styled.div`
+      padding: 0.75em 0 0.5em 0;
+    `;
+    const ProblemList = styled.div`
+      flex-direction: column;
+    `;
+    const SelectDiv = styled.select`
+      display: flex !important;
+      height: min-content;
+      width: 30%;
+    `;
+
+    const SearchInput = styled.input`
+      height: min-content;
+      display: flex !important;
+      width: 95%;
+      margin-left: 0.3em;
+      margin-right: 0.3em;
+    `;
+    const SearchButton = styled.button`
+      display: flex !important;
+      height: min-content;
+      margin-left: 0.3em;
+    `;
+    const ImageBox = styled.div`
+      height: 10em;
+      width: 70%;
+    `;
+
+    const ProblemListContainer = styled.div``;
     return (
-      <div className="container">
-        <div className="top-search-bar">
-          장르(검색시에는 적용되지않음)
-          <select
-            id="currentGenre"
-            className="form-control"
-            onChange={e => {
-              this.handleSelect(e);
-            }}
-          >
-            <option value="">모두</option>
-            <option value="movie">영화</option>
-            <option value="animation">애니메이션</option>
-            <option value="game">게임</option>
-            <option value="sports">스포츠</option>
-            <option value="entertain">연예</option>
-            <option value="military">군사</option>
-          </select>
-          <input
-            type="text"
-            id="inputTag"
-            className="form-control"
-            placeholder="제목 검색"
-            value={this.state.input}
-            size="40"
-            onChange={e => this.handleInput(e)}
-          />
-          <button onClick={() => this.search()}>찾기</button>
-        </div>
-        <hr></hr>
-        <div className="problem-list">
-          문제 모음집
-          {problems.map((item, i) =>
-            this.state.currentOption === "" ? (
-              <div key={i + item._id} className="problems">
-                <a href="/#">
-                  <img
-                    src={item.representImg}
-                    alt="Responsive"
-                    height="200"
-                    width="300"
-                    onClick={e => this.solvedProblem(e, item._id)}
-                  />
-                </a>
-                <br></br>
-                <a href="/#" onClick={e => this.solvedProblem(e, item._id)}>
-                  {item.title}
-                </a>
+        <MainConatiner className="flex">
+          <CenterContainer className="flex-fixer">
+            <TopBox className="flex fdr">
+              <div className="nes-select flex">
+                <SelectDiv
+                    required
+                    id="currentGenre default_select"
+                    className="form-control flex"
+                    onChange={e => {
+                      this.handleSelect(e);
+                    }}
+                >
+                  <option value="" disabled selected hidden>
+                    Select...
+                  </option>
+                  <option value="movie">영화</option>
+                  <option value="animation">애니메이션</option>
+                  <option value="game">게임</option>
+                  <option value="sports">스포츠</option>
+                  <option value="entertain">연예</option>
+                  <option value="military">군사</option>
+                </SelectDiv>
               </div>
-            ) : this.state.currentOption === item.genre ? (
-              <div key={i + item._id + i} className="problems">
-                <a href="/#">
-                  <img
-                    src={item.representImg}
-                    alt="Responsive"
-                    height="200"
-                    width="300"
-                    onClick={e => this.solvedProblem(e, item._id)}
-                  />
-                </a>
-                <br></br>
-                <a href="/#" onClick={e => this.solvedProblem(e, item._id)}>
-                  {item.title}
-                  <br></br>
-                  {/* {item.tags} */}
-                </a>
+
+              <div className="nes-field is-inline flex">
+                <SearchInput
+                    type="text"
+                    id="inputTag inline_field"
+                    className="nes-input flex"
+                    value={this.state.input}
+                    size="40"
+                    onChange={e => this.handleInput(e)}
+                />
               </div>
-            ) : null
-          )}
-        </div>
-      </div>
+              <SearchButton
+                  className="nes-btn flex-fixer"
+                  onClick={() => this.search()}
+              >
+                FIND
+              </SearchButton>
+            </TopBox>
+            <ProblemListContainer className="nes-container with-title is-centered">
+              <p className="title"> Click and Solve </p>
+              <ProblemList className="flex">
+                {problems.map((item, i) =>
+                    this.state.currentOption === "" ? (
+                        <div>
+                          <div
+                              key={i + item._id}
+                              className="flex margin-center fdc center-parent"
+                          >
+                            <a href="/#" className="flex">
+                              <ImageBox className="flex-fixer main-thumbnail-wrap margin-center">
+                                <img
+                                    style={{"max-height": "20em"}}
+                                    className="thumbnail main-thumnail-img"
+                                    src={item.representImg}
+                                    alt="Responsive"
+                                    width="100%"
+                                    onClick={e => this.solvedProblem(e, item._id)}
+                                />
+                              </ImageBox>
+                            </a>
+                            <a
+                                href="/#"
+                                onClick={e => this.solvedProblem(e, item._id)}
+                            >
+                              <h4>{item.title}</h4>
+                            </a>
+                          </div>
+                          <hr className="main-hr"/>
+                        </div>
+                    ) : this.state.currentOption === item.genre ? (
+                        <div key={i + item._id + i} className="problems">
+                          <a href="/#">
+                            <img
+                                src={item.representImg}
+                                alt="Responsive"
+                                height="200"
+                                width="300"
+                                onClick={e => this.solvedProblem(e, item._id)}
+                            />
+                          </a>
+                          <br></br>
+                          <a href="/#" onClick={e => this.solvedProblem(e, item._id)}>
+                            {item.title}
+                            <br></br>
+                            {/* {item.tags} */}
+                          </a>
+                        </div>
+                    ) : null
+                )}
+              </ProblemList>
+            </ProblemListContainer>
+          </CenterContainer>
+        </MainConatiner>
     );
   }
 }

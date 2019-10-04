@@ -1,24 +1,68 @@
-@import '~antd/dist/antd.css';
+@import "~antd/dist/antd.css";
 /* ANTD */
 
 .App {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  text-align: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: azure;
+}
+
+.center-parent {
+  display: flex;
+  margin: auto;
+  justify-content: center;
+}
+
+.center-item {
+  flex: 1;
+}
+
+.center-flex-container {
+  margin-bottom: auto;
+  margin-left: auto;
+  margin-right: auto;
   text-align: center;
 }
-.load-page {
+
+.bottom-text-container {
+}
+
+.fdr {
+  flex-direction: row;
+}
+
+.fdc {
   flex-direction: column;
 }
 
+.margin-center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.load-page {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 @font-face {
-  font-family: 'DungGeunMo';
-  src: url('../font/DungGeunMo.eot') format('embedded-opentype'),
-    url('../font/DungGeunMo.woff2') format('woff2'),
-    url('../font/DungGeunMo.woff') format('woff'),
-    url('../font/DungGeunMo.ttf') format('truetype'),
-    url('../font/DungGeunMo.otf') format('otf');
+  font-family: "DungGeunMo";
+  src: url("../font/DungGeunMo.eot") format("embedded-opentype"),
+    url("../font/DungGeunMo.woff2") format("woff2"),
+    url("../font/DungGeunMo.woff") format("woff"),
+    url("../font/DungGeunMo.ttf") format("truetype"),
+    url("../font/DungGeunMo.otf") format("otf");
 }
 
 * {
-  font-family: DungGeunMo, serif !important;
+  font-family: DungGeunMo, serif, "Apple SD Gothic Neo" !important;
 }
 
 .App-logo {
@@ -41,6 +85,25 @@
 .App-link {
   color: #61dafb;
 }
+/* Color Theme Swatches in Hex */
+.Vibriant-sunshine-1-hex { color: #1BDDE8; }
+.Vibriant-sunshine-2-hex { color: #2BFF00; }
+.Vibriant-sunshine-3-hex { color: #FFCE00; }
+.Vibriant-sunshine-4-hex { color: #E80C7A; }
+.Vibriant-sunshine-5-hex { color: 	#FF69B4; }
+
+.pageCSS {
+  height: 100%;
+  background-color: hotpink;
+  flex-direction: column;
+  flex: 1;
+}
+.pageCSS-green {
+  height: 100%;
+  background-color: #FCF7DA;
+  flex-direction: column;
+  flex: 1;
+}
 
 @keyframes App-logo-spin {
   from {
@@ -50,12 +113,15 @@
     transform: rotate(360deg);
   }
 }
-@media screen and (max-width: 767px) {
+
+@media screen and (max-width: 1px) {
   #footer-menubar1 {
     display: none;
   }
 }
-@media screen and (min-width: 768px) {
+
+@media screen and (min-width: 0px) {
+  /*@media screen and (min-width: 768px) {*/
   #footer-menubar1 ul li {
     list-style: none;
     color: white;
@@ -100,7 +166,7 @@
     /* width: 260px; */
     font-size: 12px;
     font-weight: bold;
-    font-family: 'Trebuchet MS', Dotum, Arial;
+    font-family: "Trebuchet MS", Dotum, Arial;
   }
   #footer-menubar1 .menuLink:hover {
     color: rgb(255, 136, 0);
@@ -136,16 +202,37 @@
   margin: 0; /*reset margin of figure tag*/
 }
 
+.main-thumbnail-wrap {
+  width: 300px; /*container-width*/
+  overflow: hidden; /*hide bounds of image */
+  margin: 0 auto 0 auto; /*reset margin of figure tag*/
+}
+
 .thumbnail {
   display: block; /*remove inline-block spaces*/
   width: 100%; /*make image streatch*/
 }
 
-.thumbnail-wrap .thumbnail {
+.thumbnail {
   /*add to other styles*/
   /*add to other styles*/
   margin: -21.875% 0;
   /*width:177.777%;!**!*/
+}
+
+.main-thumnail-img {
+  max-width: 100%;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.main-hr {
+  width: 85%;
+  border-color: black;
+  margin-top: 1px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /*썸네일표현*/
@@ -163,6 +250,7 @@ i {
   font-size: 44px;
   display: block;
 }
-.eval-question{
-  font-size:17px;
+
+.eval-question {
+  font-size: 17px;
 }
