@@ -11,7 +11,6 @@ import Login from "../pages/Login";
 import Profile from "../pages/Profile";
 import Private from "../pages/Private";
 import FooterMenubar from "../components/FooterMenubar";
-import UpLoadTest from "../client/upLoadTest";
 import SolvingProblem from "../pages/SolvingProblem";
 import Comment from "../pages/Comment";
 import NotFound from "../pages/NotFound";
@@ -141,7 +140,6 @@ class App extends React.Component {
               return <SolvingProblem email={this.state.email} {...props} />;
             }}
           />
-          <Route path="/UpLoadTest" component={UpLoadTest} />
           <Route path="/main" render={props => <Main {...props} />} />
           <Route path="/comment/:id" component={Comment} />
           <Route
