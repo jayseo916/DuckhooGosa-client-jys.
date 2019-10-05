@@ -107,7 +107,7 @@ class Profile extends Component {
   profileImg(e) {
     this.setState({
       curImg: e.target.files[0]
-    })
+    });
   }
   async uploadImage2() {
     let memberImageDir = "memberImageDir";
@@ -117,15 +117,15 @@ class Profile extends Component {
       let img = await new Promise((resolve, reject) => {
         try {
           UploadToS3(memberImageDir, this.state.curImg, link => {
-            resolve(link)
-          })
+            resolve(link);
+          });
         } catch (err) {
           reject(err);
         }
-      })
+      });
       await this.setState({
         curImg: img
-      })
+      });
       await axiosInstance
         .post(
           "/account/img",
@@ -143,7 +143,6 @@ class Profile extends Component {
         }
       });
       await this.setState({ imageBtn: !this.state.imageBtn });
-      
     }
   }
   changeNick1() {
@@ -193,39 +192,37 @@ class Profile extends Component {
       return <div>LOADING</div>;
     } else {
       return (
-
         <this.MainConatiner>
           <this.CenterContainer>
             <span className="span_em_middle">Profile</span>
-
-//         <div>
-//           <div>
-//             {!imgBtn && img ? (
-//               <div>
-//                 <img src={img} alt="본인계정이미지" height="200" width="300" />
-//                 <button onClick={() => this.uploadImage1()}>이미지 변경</button>
-//               </div>
-//             ) : !imgBtn && !img ? (
-//               <div>
-//                 <div>계정에 설정한 이미지가 없습니다.(설정했는데 보이지 않는다면 새로고침을 해주세요)</div>
-//                 <button onClick={() => this.uploadImage1()}>이미지 설정</button>
-//               </div>
-//             ) : (
-//               <div>
-//                 <input type="file" onChange={e => this.profileImg(e)}></input>
-//                 <button onClick={() => this.uploadImage2()}>
-//                   이미지 업로드
-//                 </button>
-//               </div>
-//             )}
-//           </div>
-//           <div>
-//             <p>My Profile</p>
+            {!imgBtn && img ? (
+              <div>
+                <img src={img} alt="본인계정이미지" height="200" width="300" />
+                <button onClick={() => this.uploadImage1()}>이미지 변경</button>
+              </div>
+            ) : !imgBtn && !img ? (
+              <div>
+                <div>
+                  계정에 설정한 이미지가 없습니다.(설정했는데 보이지 않는다면
+                  새로고침을 해주세요)
+                </div>
+                <button onClick={() => this.uploadImage1()}>이미지 설정</button>
+              </div>
+            ) : (
+              <div>
+                <input type="file" onChange={e => this.profileImg(e)}></input>
+                <button onClick={() => this.uploadImage2()}>
+                  이미지 업로드
+                </button>
+              </div>
+            )}
+          </this.CenterContainer>
+          <this.CenterContainer>
+            <p>My Profile</p>
 
             <div>
               {!imgBtn && img ? (
                 <div>
-
                   <img
                     style={{
                       width: "100px",
@@ -244,16 +241,13 @@ class Profile extends Component {
                   >
                     이미지 변경
                   </this.ProfileButton>
-
-//                   닉네임: {nickname}
-//                   <button onClick={() => this.changeNick1()}>
-//                    닉네임 변경
-//                   </button>
-
+                  닉네임: {nickname}
+                  <button onClick={() => this.changeNick1()}>
+                    닉네임 변경
+                  </button>
                 </div>
               ) : !imgBtn && !img ? (
                 <div>
-
                   <div>
                     <span className="span_em_default">
                       {" "}
@@ -266,12 +260,10 @@ class Profile extends Component {
                   >
                     이미지 설정
                   </this.ProfileButton>
-
-  //                {this.props.email}님의 닉네임이 없습니다.
-//                   <button onClick={() => this.changeNick1()}>
-//                    닉네임 등록
-//                   </button>
-
+                  {this.props.email}님의 닉네임이 없습니다.
+                  <button onClick={() => this.changeNick1()}>
+                    닉네임 등록
+                  </button>
                 </div>
               ) : (
                 <div>

@@ -1,7 +1,6 @@
 import React from "react";
 import { config, axiosInstance } from "../config";
 import styled from "styled-components";
-import EventListener, { withOptions } from "react-event-listener";
 
 let mainApi = "/problem/main";
 let searchApi = "/problem/search";
@@ -48,7 +47,7 @@ class Main extends React.Component {
         ? this.setState({ searchProblems: JSON.parse(data) })
         : this.setState({ problems: JSON.parse(data) });
     }
-
+    console.log("붙었니?", "____________________");
     window.addEventListener("scroll", this.handleScroll);
   };
   componentWillUnmount() {
@@ -59,7 +58,7 @@ class Main extends React.Component {
   handleScroll = async () => {
     const { innerHeight } = window;
     const { scrollHeight } = document.body;
-    console.log(innerHeight, scrollHeight);
+    console.log(innerHeight, scrollHeight, "실시간 조회검사");
     const scrollTop =
       (document.documentElement && document.documentElement.scrollTop) ||
       document.body.scrollTop;
@@ -212,6 +211,7 @@ class Main extends React.Component {
           });
 
           data = JSON.parse(data);
+
           if (data !== "NoData") {
             let origin = [];
             this.state.search
@@ -319,16 +319,17 @@ class Main extends React.Component {
     `;
 
     return (
-
       <div
         className="flex fdc"
         style={{
-          height: "fit-content"
+          width: "fit-content",
+          "overflow-scrolling": "auto",
         }}
       >
         <div
-          className="flex-fixer fdc margin-center"
+          className="flex-fixer flex fdc margin-center"
           style={{
+
             "flex-wrap": "wrap",
             "background-color": "#ddffad",
             "max-width": "767px"
@@ -350,12 +351,10 @@ class Main extends React.Component {
                 }}
                 id="currentGenre default_select"
                 className="form-control flex"
-
                 onChange={e => {
                   this.handleSelect(e);
                 }}
               >
-
                 <option value="">Select...</option>
                 <option value="movie">영화</option>
                 <option value="animation">애니메이션</option>
@@ -363,7 +362,6 @@ class Main extends React.Component {
                 <option value="sports">스포츠</option>
                 <option value="entertain">연예</option>
                 <option value="military">군사</option>
-
               </select>
             </div>
 
@@ -373,10 +371,9 @@ class Main extends React.Component {
                   height: "min-content",
                   display: "flex !important",
                   width: "95%",
-                  "margin-left": "0.3em",
-                  "margin-right": "0.3em"
+                  marginLeft: "0.3em",
+                  marginRight: "0.3em"
                 }}
-
                 type="text"
                 id="inputTag inline_field"
                 className="nes-input flex"
@@ -390,16 +387,15 @@ class Main extends React.Component {
               style={{
                 display: "flex !important",
                 height: "min-content",
-                "margin-left": "0.3em"
+                marginLeft: "0.3em"
               }}
-
               className="nes-btn flex-fixer"
               onClick={() => this.search()}
             >
               FIND
-
             </button>
           </div>
+          {/*메인 카드리스트*/}
           <div className="padding-zero nes-container with-title is-centered">
             <p className="title"> Click and Solve </p>
             <div className="flex fdc">
@@ -413,8 +409,7 @@ class Main extends React.Component {
                       <a href="/#" className="flex">
                         <ImageBox className="flex-fixer main-thumbnail-wrap margin-center">
                           <img
-                            style={{ "max-height": "20em" }}
-
+                            style={{ maxheight: "20em" }}
                             className="thumbnail main-thumnail-img"
                             src={item.representImg}
                             alt="Responsive"
@@ -433,9 +428,7 @@ class Main extends React.Component {
                     <hr className="main-hr" />
                   </div>
                 ) : this.state.currentOption === item.genre ? (
-
                   <div key={item._id + i} className="problems">
-
                     <a href="/#">
                       <img
                         src={item.representImg}
@@ -454,12 +447,10 @@ class Main extends React.Component {
                   </div>
                 ) : null
               )}
-
             </div>
           </div>
         </div>
       </div>
-
     );
   }
 }
