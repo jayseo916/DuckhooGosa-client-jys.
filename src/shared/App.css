@@ -86,11 +86,25 @@
   color: #61dafb;
 }
 /* Color Theme Swatches in Hex */
-.Vibriant-sunshine-1-hex { color: #1BDDE8; }
-.Vibriant-sunshine-2-hex { color: #2BFF00; }
-.Vibriant-sunshine-3-hex { color: #FFCE00; }
-.Vibriant-sunshine-4-hex { color: #E80C7A; }
-.Vibriant-sunshine-5-hex { color: 	#FF69B4; }
+.Vibriant-sunshine-1-hex {
+  color: #1bdde8;
+}
+
+.Vibriant-sunshine-2-hex {
+  color: #2bff00;
+}
+
+.Vibriant-sunshine-3-hex {
+  color: #ffce00;
+}
+
+.Vibriant-sunshine-4-hex {
+  color: #e80c7a;
+}
+
+.Vibriant-sunshine-5-hex {
+  color: #ff69b4;
+}
 
 .pageCSS {
   height: 100%;
@@ -100,7 +114,7 @@
 }
 .pageCSS-green {
   height: 100%;
-  background-color: #FCF7DA;
+  background-color: #fcf7da;
   flex-direction: column;
   flex: 1;
 }
@@ -246,11 +260,48 @@
 .input-comment {
   text-align: center;
 }
+
+.dv-star-rating-star {
+  font-size: 5em;
+  margin-left: 0;
+}
+
 i {
-  font-size: 44px;
-  display: block;
+  /*font-size: 75px;*/
+  /*display: block;*/
+
+  border: black 2px;
+}
+
+label.dv-star-rating-star > i {
+  margin-left: 0.3em;
+}
+
+label.dv-star-rating-full-star > i {
+  margin-left: 0.3em;
 }
 
 .eval-question {
   font-size: 17px;
+}
+
+.span_em_middle {
+  font-size: 1.4em;
+}
+
+.span_em_default {
+  font-size: 1.2em;
+}
+
+.span_em_small {
+  font-size: 0.9em;
+}
+
+.padding-zero {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.inline-flex {
+  display: inline-flex;
 }
