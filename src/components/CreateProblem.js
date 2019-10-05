@@ -17,6 +17,7 @@ import CompleteProblem from "./CompleteProblem";
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import "filepond-plugin-image-edit/dist/filepond-plugin-image-edit.css";
+import styled from "styled-components";
 
 registerPlugin(
   FilePondPluginImageExifOrientation,
@@ -52,13 +53,22 @@ class CreateProblem extends Component {
       curProblem: 0, //현재 문제 번호 0~,
       subjectAnswer: ""
     };
+    this.MainConatiner = styled.div`
+      width: 100%;
+      height: 100%
+      padding-top: 1em;
+      padding-bottom: 3em;
+    `;
+    this.BottomButton = styled.button`
+      padding: 1px;
+    `;
   }
   // problemTextSchema = {
   //   Problemtext: Joi.string().required()
   // };
 
   componentDidMount() {
-    console.log(this.props)
+    console.log(this.props);
   }
   handleInit() {
     // console.log("FilePond instance has initialised", this.pond);
@@ -148,12 +158,13 @@ class CreateProblem extends Component {
           </label>
           <span>
             <textarea
+              style={{ width: "60%" }}
               id="choiceName"
               onChange={e => {
                 this.handleChoiceAnswer(e, num);
               }}
               type="text"
-              className="form-control"
+              className="form-control flex"
               defaultValue={
                 this.state.choice.length === 1 &&
                 this.state.choice[0].answer !== false
@@ -161,11 +172,12 @@ class CreateProblem extends Component {
                   : this.state.choice[num].text
               }
             />
-            {"                 "}
+            {/*{"                 "}*/}
             {this.state.choice[1] === undefined ? null : (
               <React.Fragment>
-                정답:
+                <span className="span_em_small inline-flex">정답:</span>
                 <input
+                  style={{ display: "inline-flex" }}
                   type="checkbox"
                   defaultChecked={this.state.choice[num].answer}
                   onChange={e => {
@@ -282,7 +294,7 @@ class CreateProblem extends Component {
   };
   render() {
     return this.state.complete === false ? (
-      <div>
+      <this.MainConatiner>
         <form>
           <label>
             <span>
@@ -325,12 +337,13 @@ class CreateProblem extends Component {
                 )
               });
             }}
-          ></FilePond>
+          />
           <h1>지문</h1>
 
           <div className="form-group">
-            <label htmlFor="" className="htmlFor"></label>
+            <label htmlFor="" className="htmlFor" />
             <textarea
+              // style={{ width: "80%" }}
               onChange={this.handleChange}
               type="text"
               className="form-control"
@@ -359,54 +372,57 @@ class CreateProblem extends Component {
             </div>
           </div>
           <div
+            style={{ overflow: "hidden" }}
             className="btn-group btn-group-lg"
             role="group"
             aria-label="Basic example"
           >
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={() => {
-                this.completeFun(this.state.Problems);
-              }}
-            >
-              제출
-            </button>
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={this.removeProblem}
-            >
-              삭제
-            </button>
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={this.saveProblem}
-            >
-              저장
-            </button>
-            <button
-              type="reset"
-              className="btn btn-secondary"
-              onClick={() => {
-                this.viewFunction(-1);
-              }}
-            >
-              이전문제
-            </button>
-            <button
-              type="reset"
-              className="btn btn-secondary"
-              onClick={() => {
-                this.viewFunction(1);
-              }}
-            >
-              다음문제
-            </button>
+            <span className="span_em_small">
+              <this.BottomButton
+                type="button"
+                className="nes-btn is-primary"
+                onClick={() => {
+                  this.completeFun(this.state.Problems);
+                }}
+              >
+                SUBMIT
+              </this.BottomButton>
+              <this.BottomButton
+                type="button"
+                className="nes-btn is-error"
+                onClick={this.removeProblem}
+              >
+                DELETE
+              </this.BottomButton>
+              <button
+                type="button"
+                className="nes-btn is-success"
+                onClick={this.saveProblem}
+              >
+                SAVE
+              </button>
+              <this.BottomButton
+                type="reset"
+                className="nes-btn"
+                onClick={() => {
+                  this.viewFunction(-1);
+                }}
+              >
+                PRIV
+              </this.BottomButton>
+              <this.BottomButton
+                type="reset"
+                className="nes-btn"
+                onClick={() => {
+                  this.viewFunction(1);
+                }}
+              >
+                NEXT
+              </this.BottomButton>
+            </span>
           </div>
         </form>
-      </div>
+      </this.MainConatiner>
     ) : (
       <CompleteProblem
         Problems={this.state.Problems}
