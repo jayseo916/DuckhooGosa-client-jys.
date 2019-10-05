@@ -1,6 +1,7 @@
 import React from "react";
 import { config, axiosInstance } from "../config";
 import styled from "styled-components";
+import EventListener, { withOptions } from "react-event-listener";
 
 let mainApi = "/problem/main";
 let searchApi = "/problem/search";
@@ -47,6 +48,7 @@ class Main extends React.Component {
         ? this.setState({ searchProblems: JSON.parse(data) })
         : this.setState({ problems: JSON.parse(data) });
     }
+
     window.addEventListener("scroll", this.handleScroll);
   };
   componentWillUnmount() {
@@ -57,7 +59,7 @@ class Main extends React.Component {
   handleScroll = async () => {
     const { innerHeight } = window;
     const { scrollHeight } = document.body;
-
+    console.log(innerHeight, scrollHeight);
     const scrollTop =
       (document.documentElement && document.documentElement.scrollTop) ||
       document.body.scrollTop;
@@ -306,6 +308,7 @@ class Main extends React.Component {
   }
   render() {
     // const { img, title, problem_id } = this.state.problems;
+    console.log(this.state.genreOn);
     const problems = this.state.search
       ? this.state.searchProblems
       : this.state.problems;
@@ -316,6 +319,7 @@ class Main extends React.Component {
     `;
 
     return (
+
       <div
         className="flex fdc"
         style={{
@@ -346,19 +350,20 @@ class Main extends React.Component {
                 }}
                 id="currentGenre default_select"
                 className="form-control flex"
+
                 onChange={e => {
                   this.handleSelect(e);
                 }}
               >
-                <option value="" disabled selected hidden>
-                  Select...
-                </option>
+
+                <option value="">Select...</option>
                 <option value="movie">영화</option>
                 <option value="animation">애니메이션</option>
                 <option value="game">게임</option>
                 <option value="sports">스포츠</option>
                 <option value="entertain">연예</option>
                 <option value="military">군사</option>
+
               </select>
             </div>
 
@@ -371,6 +376,7 @@ class Main extends React.Component {
                   "margin-left": "0.3em",
                   "margin-right": "0.3em"
                 }}
+
                 type="text"
                 id="inputTag inline_field"
                 className="nes-input flex"
@@ -379,16 +385,19 @@ class Main extends React.Component {
                 onChange={e => this.handleInput(e)}
               />
             </div>
+
             <button
               style={{
                 display: "flex !important",
                 height: "min-content",
                 "margin-left": "0.3em"
               }}
+
               className="nes-btn flex-fixer"
               onClick={() => this.search()}
             >
               FIND
+
             </button>
           </div>
           <div className="padding-zero nes-container with-title is-centered">
@@ -405,6 +414,7 @@ class Main extends React.Component {
                         <ImageBox className="flex-fixer main-thumbnail-wrap margin-center">
                           <img
                             style={{ "max-height": "20em" }}
+
                             className="thumbnail main-thumnail-img"
                             src={item.representImg}
                             alt="Responsive"
@@ -423,7 +433,9 @@ class Main extends React.Component {
                     <hr className="main-hr" />
                   </div>
                 ) : this.state.currentOption === item.genre ? (
-                  <div key={i + item._id + i} className="problems">
+
+                  <div key={item._id + i} className="problems">
+
                     <a href="/#">
                       <img
                         src={item.representImg}
@@ -442,10 +454,12 @@ class Main extends React.Component {
                   </div>
                 ) : null
               )}
+
             </div>
           </div>
         </div>
       </div>
+
     );
   }
 }

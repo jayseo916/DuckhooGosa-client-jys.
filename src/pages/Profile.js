@@ -3,7 +3,7 @@ import { axiosInstance, config } from "../config";
 import { Link } from "react-router-dom";
 import { GoogleLogin, GoogleLogout } from "react-google-login";
 import { Collapse } from "antd";
-
+import { UploadToS3 } from "../client/upLoad";
 import "antd/dist/antd.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "../shared/App.css";
@@ -105,25 +105,28 @@ class Profile extends Component {
   }
 
   profileImg(e) {
-    let img;
-    let target = e.target || window.event.srcElement,
-      files = target.files;
-    if (FileReader && files && files.length) {
-      let fr = new FileReader();
-      fr.onload = () => {
-        img = fr.result;
-        this.setState({
-          curImg: img
-        });
-      };
-      fr.readAsDataURL(files[0]);
-    }
+    this.setState({
+      curImg: e.target.files[0]
+    })
   }
-  uploadImage2() {
+  async uploadImage2() {
+    let memberImageDir = "memberImageDir";
     if (!this.state.curImg) {
       alert("사진을 업로드해 주세요.");
     } else {
-      axiosInstance
+      let img = await new Promise((resolve, reject) => {
+        try {
+          UploadToS3(memberImageDir, this.state.curImg, link => {
+            resolve(link)
+          })
+        } catch (err) {
+          reject(err);
+        }
+      })
+      await this.setState({
+        curImg: img
+      })
+      await axiosInstance
         .post(
           "/account/img",
           {
@@ -133,13 +136,14 @@ class Profile extends Component {
         )
         .then(res => console.log(res))
         .catch(err => console.log("사진 업로드 요청관련에러:" + err));
-      this.setState({ imageBtn: !this.state.imageBtn });
-      this.setState({
+      await this.setState({
         userInfo: {
           ...this.state.userInfo,
-          img: this.state.curImg
+          img: this.state.Img
         }
       });
+      await this.setState({ imageBtn: !this.state.imageBtn });
+      
     }
   }
   changeNick1() {
@@ -189,12 +193,39 @@ class Profile extends Component {
       return <div>LOADING</div>;
     } else {
       return (
+
         <this.MainConatiner>
           <this.CenterContainer>
             <span className="span_em_middle">Profile</span>
+
+//         <div>
+//           <div>
+//             {!imgBtn && img ? (
+//               <div>
+//                 <img src={img} alt="본인계정이미지" height="200" width="300" />
+//                 <button onClick={() => this.uploadImage1()}>이미지 변경</button>
+//               </div>
+//             ) : !imgBtn && !img ? (
+//               <div>
+//                 <div>계정에 설정한 이미지가 없습니다.(설정했는데 보이지 않는다면 새로고침을 해주세요)</div>
+//                 <button onClick={() => this.uploadImage1()}>이미지 설정</button>
+//               </div>
+//             ) : (
+//               <div>
+//                 <input type="file" onChange={e => this.profileImg(e)}></input>
+//                 <button onClick={() => this.uploadImage2()}>
+//                   이미지 업로드
+//                 </button>
+//               </div>
+//             )}
+//           </div>
+//           <div>
+//             <p>My Profile</p>
+
             <div>
               {!imgBtn && img ? (
                 <div>
+
                   <img
                     style={{
                       width: "100px",
@@ -213,9 +244,16 @@ class Profile extends Component {
                   >
                     이미지 변경
                   </this.ProfileButton>
+
+//                   닉네임: {nickname}
+//                   <button onClick={() => this.changeNick1()}>
+//                    닉네임 변경
+//                   </button>
+
                 </div>
               ) : !imgBtn && !img ? (
                 <div>
+
                   <div>
                     <span className="span_em_default">
                       {" "}
@@ -228,6 +266,12 @@ class Profile extends Component {
                   >
                     이미지 설정
                   </this.ProfileButton>
+
+  //                {this.props.email}님의 닉네임이 없습니다.
+//                   <button onClick={() => this.changeNick1()}>
+//                    닉네임 등록
+//                   </button>
+
                 </div>
               ) : (
                 <div>
