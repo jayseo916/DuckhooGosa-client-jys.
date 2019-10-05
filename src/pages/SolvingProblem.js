@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import Img from "react-image";
-import {axiosInstance, config} from "../config";
+import { axiosInstance, config } from "../config";
 import Scoring from "../components/Scoring";
 import "../../node_modules/nes.css/css/nes.css";
+import styled from "styled-components";
+
 import {
   Player,
   ControlBar,
@@ -89,10 +91,8 @@ export default class SolvingProblem extends Component {
       () => {
         const { nickname, answer, problem_id, email, date } = this.state;
         let obj = { nickname, answer, problem_id, email, date };
-        console.log("보내는 답", obj);
-        console.log("보내는 답", JSON.stringify(obj));
         axiosInstance
-          .post('/problem/solution', obj, config)
+          .post("/problem/solution", obj, config)
           .then(res => {
             console.log("답리절트", res);
             return res.data;
@@ -205,7 +205,8 @@ export default class SolvingProblem extends Component {
                 width: "280px",
                 position: "relative",
                 top: "13px",
-                left: "10px"
+                left: "10px",
+                marginRight: "2em"
               }}
               onChange={e => {
                 this.handleChoice(e, num);
@@ -250,7 +251,9 @@ export default class SolvingProblem extends Component {
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "column",
-            padding: "0 0 80px 0"
+            padding: "0 0 80px 0",
+            marginLeft: "auto",
+            marginRight: "auto"
           }}
         >
           <h3>{num + 1}번 </h3>
@@ -266,8 +269,20 @@ export default class SolvingProblem extends Component {
   };
 
   render() {
+    const SubmitButton = styled.button`
+                width: 15em
+                margin:0 auto 0 auto;
+`;
+    const ProblemBOX = styled.button`
+background-color: #383d41;
+`
+    const ProblemPageBOX = styled.button`
+background-color: #0f6674;
+
+`
+
     return !this.state.isLoading ? (
-      <div>
+      <div className="pageCSS-green container center-parent">
         <progress
           className="nes-progress is-success"
           value={this.state.progress}
@@ -275,23 +290,25 @@ export default class SolvingProblem extends Component {
         />
       </div>
     ) : (
-      <div>
+      <div
+        style={{ "height": "100%" }}
+        className="pageCSS-green container center-parent"
+      >
         {this.state.scoring === false ? (
-          <React.Fragment>
+          <ProblemBOX className="center-flex-container">
             {this.viewProblem()}
             <label style={{ padding: "0 0 40px 0" }}>
               남은문제 {this.state.total - this.state.solved} /{" "}
               {this.state.total}
             </label>
-            <button
+            <SubmitButton
+              className="margin-center flex-fixer nes-btn is-success"
               type="button"
-              className="nes-btn is-success"
               onClick={this.submit}
-              style={{ marginLeft: "50px" }}
             >
               제출
-            </button>
-          </React.Fragment>
+            </SubmitButton>
+          </ProblemBOX>
         ) : (
           <Scoring
             data={{
@@ -303,7 +320,7 @@ export default class SolvingProblem extends Component {
               email: this.state.email
             }}
             history={this.props.history}
-          /> //페이크 데이타 넘김
+          />
         )}
       </div>
     );

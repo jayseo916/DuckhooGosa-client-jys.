@@ -6,9 +6,10 @@ class FooterMenubar extends React.Component {
   constructor(props) {
     super(props);
   }
+
   render() {
     return (
-      <nav id="footer-menubar1">
+      <nav id="footer-menubar1" style={{ width: "0px" }}>
         <ul>
           <li className="menuLink1">
             <Link className="menuLink" to="/tttt3">

@@ -1,10 +1,48 @@
-import React from "react";
+import React, { Component } from "react";
+import { config, axiosInstance } from "../config";
 import { GoogleLogin, GoogleLogout } from "react-google-login";
+import Img from "react-image";
 import "bootstrap/dist/css/bootstrap.css";
 import "../shared/App.css";
-import { config, axiosInstance } from "../config";
-import FadeIn from "react-fade-in";
-import styled from "styled-components";
+
+class Linked extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: null,
+      representImg: null
+    };
+  }
+  componentDidMount = async () => {
+    try {
+      const { data } = await axiosInstance.get(
+        `http://localhost:8000/problem/${this.props.location.problemId}`,
+        config
+      );
+      const { title, representImg } = data;
+      this.setState(() => ({
+        title,
+        representImg
+      }));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  render() {
+    return this.state.title && this.state.representImg ? (
+      <React.Fragment>
+        <Img src={this.state.representImg} width={300} height={300} />
+        <div>{this.state.title}</div>
+        <Login
+          setUserInfo={this.props.location.setUserInfo}
+          problemId={this.props.location.problemId}
+          history={this.props.history}
+        />
+      </React.Fragment>
+    ) : null;
+  }
+}
 
 class Login extends React.Component {
   constructor(props) {
@@ -38,7 +76,7 @@ class Login extends React.Component {
       .then(res => {
         console.log(res, "요청결과 확인");
         if (res.data.result) {
-          this.props.history.push("/main");
+          this.props.history.push(`/SolvingProblem/${this.props.problemId}`);
         } else {
           console.log(res.data.reason);
           this.props.history.push("/login");
@@ -71,38 +109,18 @@ class Login extends React.Component {
   };
 
   render() {
-    const BottomTextBox = styled.div`
-      height: 10em;
-    `;
+    console.log("히스토리", this.props);
     return (
-      <div className="pageCSS container center-parent">
-        <div className="center-flex">
-          <h1 id="about">
-            <i className="snes-jp-logo brand-logo" />
-            <p>로그인</p>
-            <a href="#about" />
-          </h1>
-        </div>
-        <div className="button-box">
-          <GoogleLogin
-            clientId={process.env.REACT_APP_Google}
-            buttonText="Login"
-            onSuccess={this.responseGoogle}
-            onFailure={this.responseFail}
-          />
-          <span>{"  "}</span>
-          <GoogleLogout
-            clientId={process.env.REACT_APP_Google}
-            buttonText="Logout"
-            onLogoutSuccess={this.logout}
-          />
-        </div>
-        <BottomTextBox>
-          <span>{"  "}</span>
-        </BottomTextBox>
+      <div className="Login-page">
+        <GoogleLogin
+          clientId={process.env.REACT_APP_Google}
+          buttonText="문제풀러가기"
+          onSuccess={this.responseGoogle}
+          onFailure={this.responseFail}
+        />
       </div>
     );
   }
 }
 
-export default Login;
+export default Linked;
