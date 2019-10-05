@@ -321,5 +321,6 @@ label.dv-star-rating-full-star > i {
   margin-top: auto;
 }
 
-.form-control {
+.max-width {
+  max-width: 767px;
 }
