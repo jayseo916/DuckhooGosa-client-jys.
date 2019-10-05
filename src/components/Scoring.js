@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import "../../node_modules/nes.css/css/nes.css";
 import { Modal } from "antd";
-import {axiosInstance, config} from "../config";
-import StarRatingComponent from 'react-star-rating-component';
+import { axiosInstance, config } from "../config";
+import StarRatingComponent from "react-star-rating-component";
 import "../shared/App.css";
-
+import styled from "styled-components";
 
 export class Scoring extends Component {
   constructor(props) {
@@ -17,6 +17,26 @@ export class Scoring extends Component {
       email: this.props.data.email,
       visible2: false
     };
+    this.id = 0;
+    this.CommentBOX = styled.div`
+      vertical-align: center;
+    `;
+  }
+
+  componentDidMount() {
+    this.id = setInterval(() => {
+      let el = document.getElementsByClassName(
+        "pageCSS-green container center-parent"
+      )[0];
+      console.log(el, "어디보자!");
+      el.style.backgroundColor = "#72B332";
+      let element = document.querySelectorAll(".ant-btn");
+      if (element.length > 0) {
+        element[0].className = "nes-btn is-primary ";
+        element[1].className = "nes-btn is-success ";
+        clearInterval(this.id);
+      }
+    }, 100);
   }
 
   goComment = () => {
@@ -26,7 +46,7 @@ export class Scoring extends Component {
     this.setState({ visible: false });
     axiosInstance
       .post(
-          '/problem/evaluation',
+        "/problem/evaluation",
         {
           _id: this.props.data.problem_id,
           evalQ: this.state.evalQ,
@@ -60,16 +80,18 @@ export class Scoring extends Component {
     let viewProblem = checkProblem.map(v => {
       return v.ok === true ? (
         <div
+          className="span_em_default"
           key={v.num}
-          style={{ backgroundColor: "green", padding: "20px 0 20px 0" }}
+          style={{ backgroundColor: "green", padding: "0.5em 0 0.5em 0" }}
         >
           Number {v.num}. CORRECTED!! Average Correct Rate:{" "}
           {Math.round((v.okCount * 100) / v.tryCount)}%
         </div>
       ) : (
         <div
+          className="span_em_default"
           key={v.num}
-          style={{ backgroundColor: "red", padding: "20px 0px 20px 0px" }}
+          style={{ backgroundColor: "red", padding: "0.5em 0 0.5em 0" }}
         >
           Number {v.num}. WRONG!! Average Correct Rate:{" "}
           {Math.round((v.okCount * 100) / v.tryCount)}%
@@ -80,14 +102,14 @@ export class Scoring extends Component {
   };
 
   render() {
-    let { okCount, tryCount, commentCount, checkProblem } = this.props.data;
-    // checkProblem = [
-    //   //페이크 데이타
-    //   { num: 1, okCount: 300, tryCount: 530, ok: true },
-    //   { num: 2, okCount: 120, tryCount: 530, ok: false },
-    //   { num: 3, okCount: 160, tryCount: 530, ok: true },
-    //   { num: 4, okCount: 200, tryCount: 720, ok: false }
-    // ];
+    let {
+      okCount,
+      tryCount,
+      commentCount,
+      checkProblem,
+      nickname,
+      title
+    } = this.props.data;
     let correctProblem = checkProblem.filter(v => {
       //마자춘 문제수 측정용
       if (v.ok === true) {
@@ -96,14 +118,30 @@ export class Scoring extends Component {
     });
     let viewProblem = this.viewScoring(checkProblem); //만춘문제 틀린문제 뷰
     const { evalQ, evalD, comment } = this.state;
-
+    const UpperDiv = styled.div`
+      width: 100%;
+      margin-bottom: 2em;
+      background-color: white;
+    `;
+    const PageContainer = styled.div`
+      margin-top: 1em;
+    `;
+    const SecondPageContainer = styled.div``;
+    const AllChallengerContainer = styled.div`
+      background-color: white;
+      margin-bottom: 0.5em;
+    `;
+    const CommentContainer = styled.div`
+      min-width: 50%;
+      margin: 1em 0 1em 0;
+    `;
     return (
-      <div>
+      <PageContainer className="inline-flex">
         <Modal
-          title="해당 문제 평가"
+          title="🥕FEEDBACK"
           visible={this.state.visible}
-          okText="평가 완료"
-          cancelText="닫기"
+          okText="OK"
+          cancelText="CANCEL"
           onOk={() => this.evalSubmit()}
           onCancel={() => this.cancel()}
         >
@@ -131,43 +169,62 @@ export class Scoring extends Component {
               starColor="yellow"
             />
           </div>
-          <div className="input-comment">
-            의견:<textarea onChange={e => this.commentHandle(e)}></textarea>
-          </div>
+          <this.CommentBOX className="input-comment">
+            <span className="span_em_default">댓글:</span>
+            <textarea
+              style={{
+                height: "40px",
+                width: "280px"
+              }}
+              onChange={e => this.commentHandle(e)}
+            />
+          </this.CommentBOX>
         </Modal>
-        <div style={{ padding: "0 0 60px 30px" }}>
-          <div className="nes-container with-title is-centered">
-            <h1 className="title">SCORE!!</h1>
-            <p>Hello, it's your score!</p>
-          </div>
-          <div className="nes-container is-dark with-title">
-            <p className="title">correct!!</p>
+        <SecondPageContainer
+          className="center-parent fdc flex"
+          style={{ padding: "0 0 0 0" }}
+        >
+          <UpperDiv className="nes-container with-title is-centered ">
+            <p className="title"> SCORE! </p>
+            <i className="snes-jp-logo is-small" />{" "}
+            <span className="span_em_middle">
+              {" "}
+              {nickname}님의 {title} 점수
+            </span>
+          </UpperDiv>
+          <div className="padding-zero nes-container is-dark with-title is-centered">
             <p>
-              {correctProblem.length} / {checkProblem.length}
+              <span className="span_em_middle">
+                {correctProblem.length} / {checkProblem.length}
+              </span>
             </p>
-            <p>
+            <i className="nes-icon trophy is-small" />
+            <span className="span_em_middle">
               Your Correct Rate :{" "}
               {Math.round((correctProblem.length * 100) / checkProblem.length)}%
-            </p>
+            </span>
           </div>
 
-          <div className="nes-container is-rounded">
+          <AllChallengerContainer className="nes-container">
             <p>
-              Total Average Correct Rate :{" "}
-              {Math.round((okCount * 100) / tryCount)}%
+              <span className="span_em_middle">
+                Challenger's Average Correct Rate :{" "}
+                {Math.round((okCount * 100) / tryCount)}%
+              </span>
             </p>
-          </div>
-
-          <div className="nes-container is-rounded">{viewProblem}</div>
-          <button
-            type="button"
-            className="nes-btn is-primary"
-            onClick={this.goComment}
-          >
-            COMMENT [{commentCount}]
-          </button>
-        </div>
-      </div>
+          </AllChallengerContainer>
+          <div className="padding-zero nes-container">{viewProblem}</div>
+          <CommentContainer>
+            <button
+              className="margin-center flex nes-btn is-primary"
+              type="button"
+              onClick={this.goComment}
+            >
+              COMMENT [{commentCount}]
+            </button>
+          </CommentContainer>
+        </SecondPageContainer>
+      </PageContainer>
     );
   }
 }

@@ -3,7 +3,6 @@ import Img from "react-image";
 import { axiosInstance, config } from "../config";
 import Scoring from "../components/Scoring";
 import "../../node_modules/nes.css/css/nes.css";
-import styled from "styled-components";
 
 import {
   Player,
@@ -197,17 +196,12 @@ export default class SolvingProblem extends Component {
       if (choice.length === 1) {
         viewChoice = (
           <div>
-            <span>답</span>
             <textarea
               style={{
-                outlineColor: "black",
                 height: "40px",
-                width: "280px",
-                position: "relative",
-                top: "13px",
-                left: "10px",
-                marginRight: "2em"
+                width: "280px"
               }}
+              className="nes-input"
               onChange={e => {
                 this.handleChoice(e, num);
               }}
@@ -218,48 +212,71 @@ export default class SolvingProblem extends Component {
         viewChoice = choice.map((v, choiceNum) => {
           //v= 보기 객체 ,choiceNum = 보기의 번호
           return (
-            <div key={choiceNum} className="nes-container is-rounded">
-              {/* <button
-                type="button"
-                className="nes-text is-primary"
-                style={{ padding: "0 0 0 0", margin: "0 0 0 0" }}
-                onClick={e => {
-                  this.handleChoice(e, num, choiceNum);
-                }}
-              > */}
-              {/* </button> */}
-              <span>
-                {choiceNum + 1}번.{v.text}
-              </span>
+            <div
+              key={choiceNum}
+              style={{ "min-width": "80%", "vertical-align": "central" }}
+              className="flex"
+            >
               <input
+                style={{
+                  "-ms-transform": "scale(2)" /* IE */,
+                  "-moz-transform": "scale(2)" /* FF */,
+                  "-webkit-transform": "scale(2)" /* Safari and Chrome */,
+                  "-o-transform": "scale(2)" /* Opera */,
+                  transform: "scale(2)",
+                  margin: "0 1.2em 0",
+                  display: "flex"
+                }}
                 type="checkbox"
                 onChange={e => {
                   this.handleChoice(e, num, choiceNum);
                 }}
               />
-              <span>정답</span>
+              <span className="span_em_default" style={{ "word-break": "break-word" }}>
+                {choiceNum + 1}번.{v.text}
+              </span>
             </div>
           );
         });
+        viewChoice = (
+          <div
+            className="nes-container is-rounded"
+            style={{ "min-width": "90%" }}
+          >
+            {viewChoice}
+          </div>
+        );
       }
       /////////////////
       return (
         <div
-          key={num}
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "column",
-            padding: "0 0 80px 0",
-            marginLeft: "auto",
-            marginRight: "auto"
-          }}
+          className="problem-container flex"
+          style={{ width: "100%", display: "inline-flex" }}
         >
-          <h3>{num + 1}번 </h3>
-          {fileTag}
-          <h4 style={{ padding: "0 0 20px 0" }}>문제:{problem.problemText}</h4>
-          <h5>{viewChoice}</h5>
+          <div
+            className="problem-main"
+            key={num}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+              padding: "0 0 -1 0.5em",
+              marginLeft: "auto",
+              marginRight: "auto"
+            }}
+          >
+            <h3>{num + 1}번 </h3>
+            {fileTag}
+            <span
+                className="span_em_middle"
+              style={{ padding: "0.5em 0 0 0", "word-break": "break-word" }}
+            >
+              문제:{problem.problemText}
+            </span>
+            {viewChoice}
+            <hr className="main-hr" />
+          </div>
         </div>
       );
       ////////////////
@@ -269,46 +286,46 @@ export default class SolvingProblem extends Component {
   };
 
   render() {
-    const SubmitButton = styled.button`
-                width: 15em
-                margin:0 auto 0 auto;
-`;
-    const ProblemBOX = styled.button`
-background-color: #383d41;
-`
-    const ProblemPageBOX = styled.button`
-background-color: #0f6674;
-
-`
-
     return !this.state.isLoading ? (
       <div className="pageCSS-green container center-parent">
         <progress
-          className="nes-progress is-success"
+          className="nes-progress is-success center-item"
           value={this.state.progress}
           max="100"
         />
       </div>
     ) : (
       <div
-        style={{ "height": "100%" }}
+        style={{ height: "100%" }}
         className="pageCSS-green container center-parent"
       >
         {this.state.scoring === false ? (
-          <ProblemBOX className="center-flex-container">
+          // 문제집 감싸개.
+          <div
+            style={{
+              width: "100%",
+              padding: "3em"
+            }}
+            className="center-flex-container flex-fixer fdc"
+          >
             {this.viewProblem()}
-            <label style={{ padding: "0 0 40px 0" }}>
+            <label style={{ padding: "0 0 0 0" }}>
               남은문제 {this.state.total - this.state.solved} /{" "}
               {this.state.total}
             </label>
-            <SubmitButton
+            <br />
+            <button
               className="margin-center flex-fixer nes-btn is-success"
               type="button"
+              style={{
+                margin: "0 auto 0 auto",
+                width: "15em"
+              }}
               onClick={this.submit}
             >
               제출
-            </SubmitButton>
-          </ProblemBOX>
+            </button>
+          </div>
         ) : (
           <Scoring
             data={{
@@ -317,7 +334,9 @@ background-color: #0f6674;
               commentCount: this.state.resultData.commentCount,
               problem_id: this.state.problem_id,
               checkProblem: this.state.resultData.checkProblem,
-              email: this.state.email
+              email: this.state.email,
+              nickname: this.state.nickname,
+              title: this.state.title
             }}
             history={this.props.history}
           />
