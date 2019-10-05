@@ -84,38 +84,42 @@ export default class SolvingProblem extends Component {
   };
 
   submit = () => {
-    this.setState(
-      {
-        isLoading: false
-      },
-      () => {
-        const { nickname, answer, problem_id, email, date } = this.state;
-        let obj = { nickname, answer, problem_id, email, date };
-        axiosInstance
-          .post("/problem/solution", obj, config)
-          .then(res => {
-            console.log("답리절트", res);
-            return res.data;
-          })
-          .then(data => {
-            console.log("아이디", JSON.parse(data));
-            this.setState(
-              {
-                resultData: JSON.parse(data),
-                scoring: true,
-                isLoading: true
-              },
-              () => {
-                console.log(this.state.resultData);
-                console.log(this.state.scoring);
-              }
-            );
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      }
-    );
+    if (this.state.total - this.state.solved !== 0) {
+      alert("아직 풀지 않은 문제가 있습니다.");
+    } else {
+      this.setState(
+        {
+          isLoading: false
+        },
+        () => {
+          const { nickname, answer, problem_id, email, date } = this.state;
+          let obj = { nickname, answer, problem_id, email, date };
+          axiosInstance
+            .post("/problem/solution", obj, config)
+            .then(res => {
+              console.log("답리절트", res);
+              return res.data;
+            })
+            .then(data => {
+              console.log("아이디", JSON.parse(data));
+              this.setState(
+                {
+                  resultData: JSON.parse(data),
+                  scoring: true,
+                  isLoading: true
+                },
+                () => {
+                  console.log(this.state.resultData);
+                  console.log(this.state.scoring);
+                }
+              );
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        }
+      );
+    }
   };
 
   handleChoice = (e, num, choiceNum) => {
@@ -274,12 +278,11 @@ export default class SolvingProblem extends Component {
                 margin:0 auto 0 auto;
 `;
     const ProblemBOX = styled.button`
-background-color: #383d41;
-`
+      background-color: #383d41;
+    `;
     const ProblemPageBOX = styled.button`
-background-color: #0f6674;
-
-`
+      background-color: #0f6674;
+    `;
 
     return !this.state.isLoading ? (
       <div className="pageCSS-green container center-parent">
@@ -291,7 +294,7 @@ background-color: #0f6674;
       </div>
     ) : (
       <div
-        style={{ "height": "100%" }}
+        style={{ height: "100%" }}
         className="pageCSS-green container center-parent"
       >
         {this.state.scoring === false ? (
