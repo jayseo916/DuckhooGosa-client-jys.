@@ -308,6 +308,7 @@ class Main extends React.Component {
   }
   render() {
     // const { img, title, problem_id } = this.state.problems;
+    console.log(this.state.genreOn);
     const problems = this.state.search
       ? this.state.searchProblems
       : this.state.problems;
@@ -363,13 +364,12 @@ class Main extends React.Component {
                 required
                 id="currentGenre"
                 className="form-control flex"
+                value={this.state.currentOption}
                 onChange={e => {
                   this.handleSelect(e);
                 }}
               >
-                <option value="" defaultValue>
-                  Select...
-                </option>
+                <option value="">Select...</option>
                 <option value="movie">영화</option>
                 <option value="animation">애니메이션</option>
                 <option value="game">게임</option>
