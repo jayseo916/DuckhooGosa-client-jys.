@@ -1,8 +1,8 @@
 import React from "react";
-// import axiosInstance from "axios";
+import { formatRelative } from "date-fns";
 import { axiosInstance, config } from "../config";
 import "../shared/App.css";
-
+import styled from "styled-components";
 export default class Comment extends React.Component {
   constructor(props) {
     super(props);
@@ -10,6 +10,9 @@ export default class Comment extends React.Component {
       problem_id: this.props.match.params.id,
       comments: []
     };
+    this.MainSection = styled.section``;
+    this.TextPart = styled.section``;
+    this.BottomComp = styled.div``;
   }
   componentDidMount() {
     // console.log(this.props);
@@ -24,23 +27,52 @@ export default class Comment extends React.Component {
   }
   render() {
     const { comments } = this.state;
-    // console.log(comments);
     if (comments) {
       const list = comments.map((data, i) => (
-        <div key={i} className="nes-container is-rounded">
-          <div>
-            <span style={{ fontStyle: "Italic", color: "blue" }}>
-              {!data.nick ? "익명의 더쿠" : data.nick}
-            </span>
-            님의 의견:
-            <div style={{ fontSize: "20px" }}>{data.comment}</div>
-          </div>
-          날짜:{data.day}
-        </div>
+        <section key={i} className="message-left">
+          {data.img === null ? (
+            <i className="nes-bcrikko" />
+          ) : (
+            <img
+              className="thumbnail"
+              style={{
+                width: "100px",
+                height: "100px",
+                "object-fit": "cover",
+                "border-radius": "50%"
+              }}
+              src={data.img}
+              alt="image place"
+            />
+          )}
+          <this.TextPart>
+            <this.TopComp>
+              <span style={{ fontStyle: " Italic", color: " blue" }}>
+                {!data.nick ? " 익명의 더쿠" : data.nick}
+              </span>
+              <span className="span_em_small">
+                {" "}
+                {formatRelative(new Date(data.day), new Date())}
+              </span>
+            </this.TopComp>
+            <this.BottomComp>
+              <span className="span_em_default">{data.comment}</span>
+            </this.BottomComp>
+          </this.TextPart>
+        </section>
       ));
-      return <div>의견 모음{list}</div>;
+      return (
+        <this.MainSection className="message-list">
+          <div>Comments</div>
+          {list}
+        </this.MainSection>
+      );
     } else {
-      return <div>아직 해당문제에 대한 의견이 없습니다.</div>;
+      return (
+        <this.MainSection>
+          아직 해당문제에 대한 의견이 없습니다.
+        </this.MainSection>
+      );
     }
   }
 }

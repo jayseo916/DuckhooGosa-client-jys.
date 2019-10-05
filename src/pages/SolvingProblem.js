@@ -198,8 +198,8 @@ export default class SolvingProblem extends Component {
           <div>
             <textarea
               style={{
-                height: "40px",
-                width: "280px"
+                height: "2em",
+                width: "100%"
               }}
               className="nes-input"
               onChange={e => {
@@ -306,7 +306,7 @@ export default class SolvingProblem extends Component {
               width: "100%",
               padding: "3em"
             }}
-            className="center-flex-container flex-fixer fdc"
+            className="padding-zero center-flex-container flex-fixer fdc"
           >
             {this.viewProblem()}
             <label style={{ padding: "0 0 0 0" }}>

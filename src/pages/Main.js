@@ -310,145 +310,142 @@ class Main extends React.Component {
       ? this.state.searchProblems
       : this.state.problems;
 
-    const MainConatiner = styled.div`
-      flex-direction: column;
-      height: fit-content;
-    `;
-    const CenterContainer = styled.div`
-      flex-direction: column;
-      margin-left: auto;
-      margin-right: auto;
-      max-width: 767px;
-      flex-wrap: wrap;
-      background-color: #DDFFAD;
-    `;
-    const TopBox = styled.div`
-      padding: 0.75em 0 0.5em 0;
-    `;
-    const ProblemList = styled.div`
-      flex-direction: column;
-    `;
-    const SelectDiv = styled.select`
-      display: flex !important;
-      height: min-content;
-      width: 30%;
-    `;
-
-    const SearchInput = styled.input`
-      height: min-content;
-      display: flex !important;
-      width: 95%;
-      margin-left: 0.3em;
-      margin-right: 0.3em;
-    `;
-    const SearchButton = styled.button`
-      display: flex !important;
-      height: min-content;
-      margin-left: 0.3em;
-    `;
     const ImageBox = styled.div`
       height: 10em;
       width: 70%;
     `;
 
-    const ProblemListContainer = styled.div``;
     return (
-        <MainConatiner className="flex">
-          <CenterContainer className="flex-fixer">
-            <TopBox className="flex fdr">
-              <div className="nes-select flex">
-                <SelectDiv
-                    required
-                    id="currentGenre default_select"
-                    className="form-control flex"
-                    onChange={e => {
-                      this.handleSelect(e);
-                    }}
-                >
-                  <option value="" disabled selected hidden>
-                    Select...
-                  </option>
-                  <option value="movie">영화</option>
-                  <option value="animation">애니메이션</option>
-                  <option value="game">게임</option>
-                  <option value="sports">스포츠</option>
-                  <option value="entertain">연예</option>
-                  <option value="military">군사</option>
-                </SelectDiv>
-              </div>
-
-              <div className="nes-field is-inline flex">
-                <SearchInput
-                    type="text"
-                    id="inputTag inline_field"
-                    className="nes-input flex"
-                    value={this.state.input}
-                    size="40"
-                    onChange={e => this.handleInput(e)}
-                />
-              </div>
-              <SearchButton
-                  className="nes-btn flex-fixer"
-                  onClick={() => this.search()}
+      <div
+        className="flex fdc"
+        style={{
+          height: "fit-content"
+        }}
+      >
+        <div
+          className="flex-fixer fdc margin-center"
+          style={{
+            "flex-wrap": "wrap",
+            "background-color": "#ddffad",
+            "max-width": "767px"
+          }}
+        >
+          <div
+            className="flex fdr"
+            style={{
+              padding: "0.75em 0 0.5em 0"
+            }}
+          >
+            <div className="nes-select flex">
+              <select
+                required
+                style={{
+                  display: "flex !important",
+                  height: "min-content",
+                  width: "30%"
+                }}
+                id="currentGenre default_select"
+                className="form-control flex"
+                onChange={e => {
+                  this.handleSelect(e);
+                }}
               >
-                FIND
-              </SearchButton>
-            </TopBox>
-            <ProblemListContainer className="nes-container with-title is-centered">
-              <p className="title"> Click and Solve </p>
-              <ProblemList className="flex">
-                {problems.map((item, i) =>
-                    this.state.currentOption === "" ? (
-                        <div>
-                          <div
-                              key={i + item._id}
-                              className="flex margin-center fdc center-parent"
-                          >
-                            <a href="/#" className="flex">
-                              <ImageBox className="flex-fixer main-thumbnail-wrap margin-center">
-                                <img
-                                    style={{"max-height": "20em"}}
-                                    className="thumbnail main-thumnail-img"
-                                    src={item.representImg}
-                                    alt="Responsive"
-                                    width="100%"
-                                    onClick={e => this.solvedProblem(e, item._id)}
-                                />
-                              </ImageBox>
-                            </a>
-                            <a
-                                href="/#"
-                                onClick={e => this.solvedProblem(e, item._id)}
-                            >
-                              <h4>{item.title}</h4>
-                            </a>
-                          </div>
-                          <hr className="main-hr"/>
-                        </div>
-                    ) : this.state.currentOption === item.genre ? (
-                        <div key={i + item._id + i} className="problems">
-                          <a href="/#">
-                            <img
-                                src={item.representImg}
-                                alt="Responsive"
-                                height="200"
-                                width="300"
-                                onClick={e => this.solvedProblem(e, item._id)}
-                            />
-                          </a>
-                          <br></br>
-                          <a href="/#" onClick={e => this.solvedProblem(e, item._id)}>
-                            {item.title}
-                            <br></br>
-                            {/* {item.tags} */}
-                          </a>
-                        </div>
-                    ) : null
-                )}
-              </ProblemList>
-            </ProblemListContainer>
-          </CenterContainer>
-        </MainConatiner>
+                <option value="" disabled selected hidden>
+                  Select...
+                </option>
+                <option value="movie">영화</option>
+                <option value="animation">애니메이션</option>
+                <option value="game">게임</option>
+                <option value="sports">스포츠</option>
+                <option value="entertain">연예</option>
+                <option value="military">군사</option>
+              </select>
+            </div>
+
+            <div className="nes-field is-inline flex">
+              <input
+                style={{
+                  height: "min-content",
+                  display: "flex !important",
+                  width: "95%",
+                  "margin-left": "0.3em",
+                  "margin-right": "0.3em"
+                }}
+                type="text"
+                id="inputTag inline_field"
+                className="nes-input flex"
+                value={this.state.input}
+                size="40"
+                onChange={e => this.handleInput(e)}
+              />
+            </div>
+            <button
+              style={{
+                display: "flex !important",
+                height: "min-content",
+                "margin-left": "0.3em"
+              }}
+              className="nes-btn flex-fixer"
+              onClick={() => this.search()}
+            >
+              FIND
+            </button>
+          </div>
+          <div className="padding-zero nes-container with-title is-centered">
+            <p className="title"> Click and Solve </p>
+            <div className="flex fdc">
+              {problems.map((item, i) =>
+                this.state.currentOption === "" ? (
+                  <div>
+                    <div
+                      key={i + item._id}
+                      className="flex margin-center fdc center-parent"
+                    >
+                      <a href="/#" className="flex">
+                        <ImageBox className="flex-fixer main-thumbnail-wrap margin-center">
+                          <img
+                            style={{ "max-height": "20em" }}
+                            className="thumbnail main-thumnail-img"
+                            src={item.representImg}
+                            alt="Responsive"
+                            width="100%"
+                            onClick={e => this.solvedProblem(e, item._id)}
+                          />
+                        </ImageBox>
+                      </a>
+                      <a
+                        href="/#"
+                        onClick={e => this.solvedProblem(e, item._id)}
+                      >
+                        <h4>{item.title}</h4>
+                      </a>
+                    </div>
+                    <hr className="main-hr" />
+                  </div>
+                ) : this.state.currentOption === item.genre ? (
+                  <div key={i + item._id + i} className="problems">
+                    <a href="/#">
+                      <img
+                        src={item.representImg}
+                        alt="Responsive"
+                        height="200"
+                        width="300"
+                        onClick={e => this.solvedProblem(e, item._id)}
+                      />
+                    </a>
+                    <br></br>
+                    <a href="/#" onClick={e => this.solvedProblem(e, item._id)}>
+                      {item.title}
+                      <br></br>
+                      {/* {item.tags} */}
+                    </a>
+                  </div>
+                ) : null
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
     );
   }
 }
