@@ -51,7 +51,11 @@ class App extends React.Component {
   render() {
     const { email, expires_at } = this.state;
     return (
-      <div className="App">
+      <div
+        style={{
+        }}
+        className="App"
+      >
         <Switch>
           <Route path="/" exact component={Loading} />
           <Route path="/problem/main" component={Main} />

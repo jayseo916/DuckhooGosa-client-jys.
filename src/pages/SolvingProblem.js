@@ -3,6 +3,7 @@ import Img from "react-image";
 import { axiosInstance, config } from "../config";
 import Scoring from "../components/Scoring";
 import "../../node_modules/nes.css/css/nes.css";
+import styled from "styled-components";
 
 import {
   Player,
@@ -236,7 +237,10 @@ export default class SolvingProblem extends Component {
                   this.handleChoice(e, num, choiceNum);
                 }}
               />
-              <span className="span_em_default" style={{ "word-break": "break-word" }}>
+              <span
+                className="span_em_default"
+                style={{ "word-break": "break-word" }}
+              >
                 {choiceNum + 1}번.{v.text}
               </span>
             </div>
@@ -273,7 +277,7 @@ export default class SolvingProblem extends Component {
             <h3>{num + 1}번 </h3>
             {fileTag}
             <span
-                className="span_em_middle"
+              className="span_em_middle"
               style={{ padding: "0.5em 0 0 0", "word-break": "break-word" }}
             >
               문제:{problem.problemText}
@@ -290,6 +294,15 @@ export default class SolvingProblem extends Component {
   };
 
   render() {
+    const SubmitButton = styled.button`
+                width: 15em
+                margin:0 auto 0 auto;`;
+    const ProblemBOX = styled.button`
+      background-color: #383d41;
+    `;
+    const ProblemPageBOX = styled.button`
+      background-color: #0f6674;
+    `;
     return !this.state.isLoading ? (
       <div className="pageCSS-green container center-parent">
         <progress
