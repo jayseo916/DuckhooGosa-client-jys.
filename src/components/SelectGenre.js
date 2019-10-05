@@ -1,67 +1,60 @@
 import React from "react";
+import styled from "styled-components";
 
 class SelectGenre extends React.Component {
+  constructor(props) {
+    super(props);
+    this.MainConatiner = styled.div`
+      flex-direction: column;
+      width: 100%;
+      height: 100%
+      justify-content: center;
+      align-items: center;
+      vertical-align: center;
+      padding-top: 1em;
+    `;
+    this.Card = styled.div`
+      display: table;
+      margin-left: auto;
+      horiz-align: center;
+      margin-right: auto;
+      vertical-align: center;
+    `;
+    this.GenreImg = styled.img``;
+  }
   genreSubmit(paramGenre) {
     localStorage.setItem("genre", paramGenre);
     this.props.history.push("/selectTheme"); // 테마선택하는 페이지로 넘기기
   }
   render() {
     return (
-      <div className="select-genre">
-        <img
-          src="https://duckhoogosa.s3.ap-northeast-2.amazonaws.com/problem_1/movieSet.jpeg"
-          alt="영화"
-          height="10%"
-          width="20%"
-          onClick={() => this.genreSubmit("movie")}
-        />
-        영화
-        <br></br>
-        <img
-          src="https://duckhoogosa.s3.ap-northeast-2.amazonaws.com/problem_1/movieSet.jpeg"
-          alt="애니메이션"
-          height="10%"
-          width="20%"
-          onClick={() => this.genreSubmit("animation")}
-        />
-        애니메이션
-        <br></br>
-        <img
-          src="https://duckhoogosa.s3.ap-northeast-2.amazonaws.com/problem_1/gamePad.png"
-          alt="게임"
-          height="10%"
-          width="20%"
-          onClick={() => this.genreSubmit("game")}
-        />
-        게임
-        <br></br>
-        <img
-          src="https://duckhoogosa.s3.ap-northeast-2.amazonaws.com/problem_1/movieSet.jpeg"
-          alt="연예"
-          height="10%"
-          width="20%"
-          onClick={() => this.genreSubmit("entertain")}
-        />
-        연예
-        <br></br>
-        <img
-          src="https://duckhoogosa.s3.ap-northeast-2.amazonaws.com/problem_1/military.png"
-          alt="군사"
-          height="10%"
-          width="20%"
-          onClick={() => this.genreSubmit("military")}
-        />
-        군사
-        <br></br>
-        <img
-          src="https://duckhoogosa.s3.ap-northeast-2.amazonaws.com/problem_1/sports+balls.jpg"
-          alt="스포츠"
-          height="10%"
-          width="20%"
-          onClick={() => this.genreSubmit("sports")}
-        />
-        스포츠
-      </div>
+      <this.MainConatiner className="pageCSS-green">
+        <this.Card onClick={() => this.genreSubmit("movie")}>
+          <i className="nes-mario is-small" />
+          <span className="span_em_middle span_v"> 영화</span>
+        </this.Card>
+        <this.Card onClick={() => this.genreSubmit("animation")}>
+          <i className="nes-ash is-small" />
+          <span className="span_em_middle span_v"> 애니메이션 </span>
+        </this.Card>
+        <this.Card onClick={() => this.genreSubmit("game")}>
+          <i className="nes-pokeball is-small" />
+          <span className="span_em_middle span_v"> 게임 </span>
+        </this.Card>
+        <this.Card onClick={() => this.genreSubmit("entertain")}>
+          <i className="nes-bulbasaur is-small" />
+          <span className="span_em_middle span_v"> 연예 </span>
+        </this.Card>
+        <this.Card onClick={() => this.genreSubmit("military")}>
+          <i className="nes-kirby is-small" />
+          <span className="span_em_middle span_v"> 군사 </span>
+        </this.Card>
+
+        <this.Card onClick={() => this.genreSubmit("sports")}>
+          <i className="nes-squirtle is-small" />
+          <span className="span_em_middle span_v"> 스포츠 </span>
+        </this.Card>
+      </this.MainConatiner>
     );
   }
 }

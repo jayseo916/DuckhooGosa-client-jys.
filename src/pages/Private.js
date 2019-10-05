@@ -18,17 +18,19 @@ class Private extends React.Component {
       overflow: auto;
     `;
     return (
-      <IframeContainer className="nes-container with-title">
-        <Iframe
-          url="https://duckhoogosa-client-deploy.s3.ap-northeast-2.amazonaws.com/policy.html"
-          width="100%"
-          height="100%"
-          id="myId"
-          className="myClassname"
-          display="flex"
-          position="relative"
-        />
-      </IframeContainer>
+      <div>
+        <IframeContainer className="nes-container with-title">
+          <Iframe
+            url="https://duckhoogosa-client-deploy.s3.ap-northeast-2.amazonaws.com/policy.html"
+            width="100%"
+            height="100%"
+            id="myId"
+            className="myClassname"
+            display="flex"
+            position="relative"
+          />
+        </IframeContainer>
+      </div>
     );
   }
 }

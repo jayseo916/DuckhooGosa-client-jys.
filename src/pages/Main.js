@@ -1,7 +1,6 @@
 import React from "react";
 import { config, axiosInstance } from "../config";
 import styled from "styled-components";
-import EventListener, { withOptions } from "react-event-listener";
 
 let mainApi = "/problem/main";
 let searchApi = "/problem/search";
@@ -313,62 +312,49 @@ class Main extends React.Component {
       ? this.state.searchProblems
       : this.state.problems;
 
-    const MainConatiner = styled.div`
-      flex-direction: column;
-      height: fit-content;
-    `;
-    const CenterContainer = styled.div`
-      flex-direction: column;
-      margin-left: auto;
-      margin-right: auto;
-      max-width: 767px;
-      flex-wrap: wrap;
-      background-color: #ddffad;
-    `;
-    const TopBox = styled.div`
-      padding: 0.75em 0 0.5em 0;
-    `;
-    const ProblemList = styled.div`
-      flex-direction: column;
-    `;
-    const SelectDiv = styled.select`
-      display: flex !important;
-      height: min-content;
-      width: 30%;
-    `;
-
-    const SearchInput = styled.input`
-      height: min-content;
-      display: flex !important;
-      width: 95%;
-      margin-left: 0.3em;
-      margin-right: 0.3em;
-    `;
-    const SearchButton = styled.button`
-      display: flex !important;
-      height: min-content;
-      margin-left: 0.3em;
-    `;
     const ImageBox = styled.div`
       height: 10em;
       width: 70%;
     `;
 
-    const ProblemListContainer = styled.div``;
     return (
-      <MainConatiner className="flex">
-        <CenterContainer className="flex-fixer">
-          <TopBox className="flex fdr">
+
+      <div
+        className="flex fdc"
+        style={{
+          height: "fit-content"
+        }}
+      >
+        <div
+          className="flex-fixer fdc margin-center"
+          style={{
+            "flex-wrap": "wrap",
+            "background-color": "#ddffad",
+            "max-width": "767px"
+          }}
+        >
+          <div
+            className="flex fdr"
+            style={{
+              padding: "0.75em 0 0.5em 0"
+            }}
+          >
             <div className="nes-select flex">
-              <SelectDiv
+              <select
                 required
-                id="currentGenre"
+                style={{
+                  display: "flex !important",
+                  height: "min-content",
+                  width: "30%"
+                }}
+                id="currentGenre default_select"
                 className="form-control flex"
-                value={this.state.currentOption}
+
                 onChange={e => {
                   this.handleSelect(e);
                 }}
               >
+
                 <option value="">Select...</option>
                 <option value="movie">영화</option>
                 <option value="animation">애니메이션</option>
@@ -376,11 +362,20 @@ class Main extends React.Component {
                 <option value="sports">스포츠</option>
                 <option value="entertain">연예</option>
                 <option value="military">군사</option>
-              </SelectDiv>
+
+              </select>
             </div>
 
             <div className="nes-field is-inline flex">
-              <SearchInput
+              <input
+                style={{
+                  height: "min-content",
+                  display: "flex !important",
+                  width: "95%",
+                  "margin-left": "0.3em",
+                  "margin-right": "0.3em"
+                }}
+
                 type="text"
                 id="inputTag inline_field"
                 className="nes-input flex"
@@ -389,27 +384,36 @@ class Main extends React.Component {
                 onChange={e => this.handleInput(e)}
               />
             </div>
-            <SearchButton
+
+            <button
+              style={{
+                display: "flex !important",
+                height: "min-content",
+                "margin-left": "0.3em"
+              }}
+
               className="nes-btn flex-fixer"
               onClick={() => this.search()}
             >
               FIND
-            </SearchButton>
-          </TopBox>
-          <ProblemListContainer className="nes-container with-title is-centered">
+
+            </button>
+          </div>
+          <div className="padding-zero nes-container with-title is-centered">
             <p className="title"> Click and Solve </p>
-            <ProblemList className="flex">
+            <div className="flex fdc">
               {problems.map((item, i) =>
                 this.state.currentOption === "" ? (
-                  <div
-                    key={i + item._id}
-                    className="flex margin-center fdc center-parent"
-                  >
-                    <div>
+                  <div>
+                    <div
+                      key={i + item._id}
+                      className="flex margin-center fdc center-parent"
+                    >
                       <a href="/#" className="flex">
                         <ImageBox className="flex-fixer main-thumbnail-wrap margin-center">
                           <img
-                            style={{ maxHeight: "20em" }}
+                            style={{ "max-height": "20em" }}
+
                             className="thumbnail main-thumnail-img"
                             src={item.representImg}
                             alt="Responsive"
@@ -428,7 +432,9 @@ class Main extends React.Component {
                     <hr className="main-hr" />
                   </div>
                 ) : this.state.currentOption === item.genre ? (
+
                   <div key={item._id + i} className="problems">
+
                     <a href="/#">
                       <img
                         src={item.representImg}
@@ -447,10 +453,12 @@ class Main extends React.Component {
                   </div>
                 ) : null
               )}
-            </ProblemList>
-          </ProblemListContainer>
-        </CenterContainer>
-      </MainConatiner>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
     );
   }
 }

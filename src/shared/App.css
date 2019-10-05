@@ -114,7 +114,7 @@
 }
 .pageCSS-green {
   height: 100%;
-  background-color: #fcf7da;
+  background-color: #ddffad;
   flex-direction: column;
   flex: 1;
 }
@@ -304,4 +304,22 @@ label.dv-star-rating-full-star > i {
 
 .inline-flex {
   display: inline-flex;
+}
+
+.span_v {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.titleBox {
+  padding-top: 0.5em;
+  margin-bottom: auto;
+}
+
+.BottomBox {
+  padding-bottom: 0.5em;
+  margin-top: auto;
+}
+
+.form-control {
 }
