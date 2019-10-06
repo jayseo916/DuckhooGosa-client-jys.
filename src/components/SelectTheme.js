@@ -1,12 +1,13 @@
 import React from "react";
 import styled from "styled-components";
+import Img from "react-image";
 
 class SelectTheme extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       title: "",
-      selectedRepreFile: null
+      URL: null
     };
     this.MainConatiner = styled.div`
       flex-direction: column;
@@ -31,7 +32,7 @@ class SelectTheme extends React.Component {
   }
   fileUpload(e) {
     this.setState({
-      selectedFile: e.target.files[0]
+      URL: URL.createObjectURL(e.target.files[0])
     });
     this.props.setRepreImg(e.target.files[0]);
     let fileEl = document.getElementById("inputFile1");
@@ -46,7 +47,7 @@ class SelectTheme extends React.Component {
     }
   }
   render() {
-    const repreImg = this.state.selectedRepreFile;
+    const repreImg = this.state.URL;
     return (
       <this.MainConatiner className="pageCSS-green max-width center-parent">
         <div
@@ -57,11 +58,30 @@ class SelectTheme extends React.Component {
         >
           <p className="title title-hotpink font-2P">Title Setting</p>
 
+
           <div className="titleBox flex flex">
             <span className="span_em_middle">
               {" "}
               현재 장르: {localStorage.getItem("genre")}
             </span>
+      </div>
+
+        <this.TxtInput
+          type="text"
+          placeholder="문제 제목을 입력해주세요"
+          onChange={e => this.handleTitleChange(e)}
+        />
+        <div> 문제를 대표할 이미지 선택(필수 X )</div>
+        <this.ImgInput
+          id="inputFile1"
+          type="file"
+          name="files[]"
+          placeholder="파일을 선택해주세요"
+          onChange={e => this.fileUpload(e)}
+        />
+        {repreImg ? (
+          <div>
+            <Img src={repreImg} alt="대표이미지" height="200" width="300"></Img>
           </div>
 
           <this.TxtInput
