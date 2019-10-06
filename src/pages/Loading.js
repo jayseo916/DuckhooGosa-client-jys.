@@ -33,7 +33,7 @@ class Loading extends React.Component {
           this.setState({ done: true });
         }, 800);
       });
-    }, 2000);
+    }, 200000);
   }
 
   render() {
@@ -55,10 +55,10 @@ class Loading extends React.Component {
       }
     };
     return (
-      <div className="App-header max-width">
+      <div className="pageCSS-pink max-width center-parent">
         {!this.state.done ? (
-          <FadeIn>
-            <div className="d-flex justify-content-center align-items-center load-page">
+          <FadeIn className="margin-center-vertical flex">
+            <div className="load-page flex ">
               <p>
                 <h1> 덕후고사.app </h1>
               </p>

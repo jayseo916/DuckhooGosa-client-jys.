@@ -1,5 +1,5 @@
 html {
-  min-height: 100%;
+  min-height: 100%
   max-height: 100%;
   max-width: none;
   min-width: 100%;
@@ -18,7 +18,7 @@ body {
   display: flex !important;
   flex: 1;
   width: 100vh;
-  height: inherit;
+  height: 100vh;
 }
 
 * {
