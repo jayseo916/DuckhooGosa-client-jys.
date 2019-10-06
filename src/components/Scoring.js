@@ -40,7 +40,10 @@ export class Scoring extends Component {
   }
 
   goComment = () => {
-    this.props.history.push(`/comment/${this.props.data.problem_id}`);
+    this.props.history.push({
+      pathname: `/comment/${this.props.data.problem_id}`,
+      state: {email: this.state.email}
+    });
   };
   evalSubmit() {
     this.setState({ visible: false });

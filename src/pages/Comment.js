@@ -1,5 +1,5 @@
 import React from "react";
-import { formatRelative } from "date-fns";
+//import { formatRelative } from "date-fns";
 import { axiosInstance, config } from "../config";
 import "../shared/App.css";
 import cats100 from "../client/img/pixel-icon-creator-24.jpg";
@@ -10,19 +10,54 @@ export default class Comment extends React.Component {
       commentBtn: false,
       inputComment: "",
       problem_id: this.props.match.params.id,
+      email: this.props.history.location.state.email,
       comments: []
     };
   }
   componentDidMount() {
-    console.log(this.props);
-    // let temp;
+    //console.log(this.props);
     axiosInstance
       .get(`/comment/${this.state.problem_id}`, config)
       .then(res => {
-        // console.log("응답 response값:" + res.data);
         this.setState({ comments: JSON.parse(res.data) });
       })
       .catch(err => console.log(err));
+  }
+  inputCommentHandle(e) {
+    this.setState({ inputComment: e.target.value });
+  }
+  commentBtnHandle() {
+    this.setState({ commentBtn: !this.state.commentBtn });
+  }
+  submitComment = async() => {
+    axiosInstance
+      .post(
+        "/problem/evaluation",
+        {
+          problem_id: this.state.problem_id,
+          email: this.state.email,
+          evalQ: null,
+          evalD: null,
+          comment: this.state.inputComment
+        },
+        config
+      )
+      .then(res => console.log(res))
+      .catch(err => console.log(err));
+    await axiosInstance
+      .get(`/comment/${this.state.problem_id}`, config)
+      .then(res => {
+        this.setState({ comments: JSON.parse(res.data) });
+      })
+      .catch(err => console.log(err));
+    await this.setState({
+      commentBtn: false,
+      inputComment: ""
+    })
+    // this.props.history.replace({
+    //   pathname: `/comment/${this.state.problem_id}`,
+    //   state: { email: this.state.email }
+    // });
   }
   render() {
     let list;
@@ -72,7 +107,7 @@ export default class Comment extends React.Component {
               {data.comment}
               <br />
               <span className="span_em_small grey">
-                {formatRelative(new Date(data.day), new Date())}
+                {data.day}
               </span>
             </p>
           </div>
@@ -92,6 +127,26 @@ export default class Comment extends React.Component {
         >
           <div className="nes-container with-title is-centered padding-zero">
             <p className="title">Comments</p>
+            {commentBtn ? (
+              <div>
+                <textarea
+                  cols="40%"
+                  rows="4"
+                  onChange={e => this.inputCommentHandle(e)}
+                  placeholder="의견을 남겨주세요"
+                ></textarea>
+                <button onClick={() => this.submitComment()}>댓글 쓰기</button>
+                <button onClick={() => this.commentBtnHandle()}>
+                  댓글입력창없애기
+                </button>
+              </div>
+            ) : (
+              <div>
+                <button onClick={() => this.commentBtnHandle()}>
+                  댓글입력모드
+                </button>
+              </div>
+            )}
             {list ? list : <div>아직 해당문제에 대한 의견이 없습니다.</div>}
           </div>
         </section>
