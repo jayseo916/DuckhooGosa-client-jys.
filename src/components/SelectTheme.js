@@ -1,12 +1,13 @@
 import React from "react";
 import styled from "styled-components";
+import Img from "react-image";
 
 class SelectTheme extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       title: "",
-      selectedRepreFile: null
+      URL: null
     };
     this.MainConatiner = styled.div`
       flex-direction: column;
@@ -31,7 +32,7 @@ class SelectTheme extends React.Component {
   }
   fileUpload(e) {
     this.setState({
-      selectedFile: e.target.files[0]
+      URL: URL.createObjectURL(e.target.files[0])
     });
     this.props.setRepreImg(e.target.files[0]);
     let fileEl = document.getElementById("inputFile1");
@@ -46,7 +47,7 @@ class SelectTheme extends React.Component {
     }
   }
   render() {
-    const repreImg = this.state.selectedRepreFile;
+    const repreImg = this.state.URL;
     return (
       <this.MainConatiner className="max-width pageCSS-green center-parent ">
         <div className="titleBox flex flex">
@@ -71,7 +72,7 @@ class SelectTheme extends React.Component {
         />
         {repreImg ? (
           <div>
-            <img src={repreImg} alt="대표이미지" height="200" width="300"></img>
+            <Img src={repreImg} alt="대표이미지" height="200" width="300"></Img>
           </div>
         ) : (
           <span> 이미지 없음 </span>
