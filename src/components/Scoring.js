@@ -123,10 +123,6 @@ export class Scoring extends Component {
       margin-bottom: 2em;
       background-color: white;
     `;
-    const PageContainer = styled.div`
-      margin-top: 1em;
-    `;
-    const SecondPageContainer = styled.div``;
     const AllChallengerContainer = styled.div`
       background-color: white;
       margin-bottom: 0.5em;
@@ -136,7 +132,7 @@ export class Scoring extends Component {
       margin: 1em 0 1em 0;
     `;
     return (
-      <PageContainer className="inline-flex">
+      <div className="inline-flex" style={{ "margin-top": "1em" }}>
         <Modal
           title="🥕FEEDBACK"
           visible={this.state.visible}
@@ -180,10 +176,7 @@ export class Scoring extends Component {
             />
           </this.CommentBOX>
         </Modal>
-        <SecondPageContainer
-          className="center-parent fdc flex"
-          style={{ padding: "0 0 0 0" }}
-        >
+        <div className="center-parent fdc flex" style={{ padding: "0 0 0 0" }}>
           <UpperDiv className="nes-container with-title is-centered ">
             <p className="title"> SCORE! </p>
             <i className="snes-jp-logo is-small" />{" "}
@@ -223,8 +216,8 @@ export class Scoring extends Component {
               COMMENT [{commentCount}]
             </button>
           </CommentContainer>
-        </SecondPageContainer>
-      </PageContainer>
+        </div>
+      </div>
     );
   }
 }

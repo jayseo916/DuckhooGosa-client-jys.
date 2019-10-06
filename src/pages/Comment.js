@@ -2,7 +2,7 @@ import React from "react";
 import { formatRelative } from "date-fns";
 import { axiosInstance, config } from "../config";
 import "../shared/App.css";
-import styled from "styled-components";
+import cats100 from "../client/img/pixel-icon-creator-24.jpg";
 export default class Comment extends React.Component {
   constructor(props) {
     super(props);
@@ -12,9 +12,6 @@ export default class Comment extends React.Component {
       problem_id: this.props.match.params.id,
       comments: []
     };
-    this.MainSection = styled.section``;
-    this.TextPart = styled.section``;
-    this.BottomComp = styled.div``;
   }
   componentDidMount() {
     console.log(this.props);
@@ -28,93 +25,77 @@ export default class Comment extends React.Component {
       .catch(err => console.log(err));
   }
   render() {
+    let list;
     const { comments } = this.state;
     const commentBtn = this.state.commentBtn;
     // console.log(comments);
     if (comments) {
-      const list = comments.map((data, i) => (
-        <section key={i} className="message-left">
+      list = comments.map((data, i) => (
+        <section key={i} className="message-left flex">
+          {/*IMG삽입*/}
           {data.img === null ? (
-            <i className="nes-bcrikko" />
-          ) : (
             <img
-              className="thumbnail"
               style={{
                 width: "100px",
                 height: "100px",
                 "object-fit": "cover",
-                "border-radius": "50%"
+                "border-radius": "50%",
+                "margin-top": "auto"
+              }}
+              src={cats100}
+              alt="image place"
+            />
+          ) : (
+            <img
+              style={{
+                width: "100px",
+                height: "100px",
+                "object-fit": "cover",
+                "border-radius": "50%",
+                "margin-top": "auto"
               }}
               src={data.img}
               alt="image place"
             />
           )}
-          <this.TextPart>
-            <this.TopComp>
-              <span style={{ fontStyle: " Italic", color: " blue" }}>
-                {!data.nick ? " 익명의 더쿠" : data.nick}
-              </span>
+
+          <div
+            className="nes-balloon from-left padding-zero-only"
+            style={{
+              "padding-bottom": "1em"
+            }}
+          >
+            <p>
               <span className="span_em_small">
-                {" "}
+                {!data.nick ? " 익명의 더쿠" : data.nick}:{" "}
+              </span>
+              {data.comment}
+              <br />
+              <span className="span_em_small grey">
                 {formatRelative(new Date(data.day), new Date())}
               </span>
-            </this.TopComp>
-            <this.BottomComp>
-              <span className="span_em_default">{data.comment}</span>
-            </this.BottomComp>
-          </this.TextPart>
+            </p>
+          </div>
         </section>
       ));
-      return (
-        <this.MainSection className="message-list">
-          {/* {!commentBtn ? (
-            <div>
-              <textarea
-                cols="100"
-                rows="4"
-                placeholder="의견을 남겨주세요"
-              ></textarea>
-              <button onClick={() => this.submitComment()}>댓글 쓰기</button>
-              <button onClick={() => this.commentBtnHandle()}>
-                댓글입력창
-              </button>
-            </div>
-          ) : (
-            <div>
-              <button onClick={() => this.commentBtnHandle()}>
-                댓글입력창없애기
-              </button>
-            </div>
-          )} */}
-          <div>Comments</div>
-          {list}
-        </this.MainSection>
-      );
     } else {
-      return (
-        <this.MainSection>
-          {/* {!commentBtn ? (
-            <div>
-              <textarea
-                cols="100"
-                rows="4"
-                placeholder="의견을 남겨주세요"
-              ></textarea>
-              <button onClick={() => this.submitComment()}>댓글 쓰기</button>
-              <button onClick={() => this.commentBtnHandle()}>
-                댓글입력창
-              </button>
-            </div>
-          ) : (
-            <div>
-              <button onClick={() => this.commentBtnHandle()}>
-                댓글입력창없애기
-              </button>
-            </div>
-          )} */}
-          아직 해당문제에 대한 의견이 없습니다.
-        </this.MainSection>
-      );
+      list = undefined;
     }
+    return (
+      <div className="pageCSS-green max-width">
+        <section
+          className="message-list"
+          style={{
+            marginTop: "2em",
+            paddingBottom: "3em"
+          }}
+        >
+          <div className="nes-container with-title is-centered padding-zero">
+            <p className="title">Comments</p>
+            {list ? list : <div>아직 해당문제에 대한 의견이 없습니다.</div>}
+          </div>
+        </section>
+      </div>
+    );
   }
 }

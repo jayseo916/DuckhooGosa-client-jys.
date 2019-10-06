@@ -53,12 +53,6 @@ class CreateProblem extends Component {
       curProblem: 0, //현재 문제 번호 0~,
       subjectAnswer: ""
     };
-    this.MainConatiner = styled.div`
-      width: 100%;
-      height: 100%
-      padding-top: 1em;
-      padding-bottom: 3em;
-    `;
     this.BottomButton = styled.button`
       padding: 1px;
     `;
@@ -152,7 +146,7 @@ class CreateProblem extends Component {
 
     return (
       <React.Fragment>
-        <div className="form-group">
+        <div className="form-group center-parent flex">
           <label htmlFor="choiceName">
             {this.state.choice[1] === undefined ? "주관식정답" : label}
           </label>
@@ -174,8 +168,8 @@ class CreateProblem extends Component {
             />
             {/*{"                 "}*/}
             {this.state.choice[1] === undefined ? null : (
-              <React.Fragment>
-                <span className="span_em_small inline-flex">정답:</span>
+              <div className="checkBOX">
+                <span className="span_em_small">정답:</span>
                 <input
                   style={{ display: "inline-flex" }}
                   type="checkbox"
@@ -184,7 +178,7 @@ class CreateProblem extends Component {
                     this.handleChoiceAnswer(e, num);
                   }}
                 />
-              </React.Fragment>
+              </div>
             )}
           </span>
         </div>
@@ -294,7 +288,16 @@ class CreateProblem extends Component {
   };
   render() {
     return this.state.complete === false ? (
-      <this.MainConatiner>
+      <div
+        className="max-width pageCSS-green"
+        style={{
+          overflow: "auto",
+          width: "100%",
+          height: "100%",
+          "padding-top": "1em",
+          "padding-bottom": "5em"
+        }}
+      >
         <form>
           <label>
             <span>
@@ -422,9 +425,10 @@ class CreateProblem extends Component {
             </span>
           </div>
         </form>
-      </this.MainConatiner>
+      </div>
     ) : (
       <CompleteProblem
+        className="max-width"
         Problems={this.state.Problems}
         problemState={this.state}
         changeComplete={this.changeComplete}
