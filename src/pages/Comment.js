@@ -67,7 +67,7 @@ export default class Comment extends React.Component {
       ));
       return (
         <this.MainSection className="message-list">
-          {!commentBtn ? (
+          {/* {!commentBtn ? (
             <div>
               <textarea
                 cols="100"
@@ -85,7 +85,7 @@ export default class Comment extends React.Component {
                 댓글입력창없애기
               </button>
             </div>
-          )}
+          )} */}
           <div>Comments</div>
           {list}
         </this.MainSection>
@@ -93,7 +93,7 @@ export default class Comment extends React.Component {
     } else {
       return (
         <this.MainSection>
-          {!commentBtn ? (
+          {/* {!commentBtn ? (
             <div>
               <textarea
                 cols="100"
@@ -111,7 +111,7 @@ export default class Comment extends React.Component {
                 댓글입력창없애기
               </button>
             </div>
-          )}
+          )} */}
           아직 해당문제에 대한 의견이 없습니다.
         </this.MainSection>
       );
