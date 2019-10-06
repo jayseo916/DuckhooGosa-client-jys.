@@ -320,7 +320,7 @@ class Main extends React.Component {
 
     return (
       <div
-        className="flex fdc"
+        className="flex fdc max-width"
         style={{
           width: "fit-content",
           "overflow-scrolling": "auto",
@@ -332,7 +332,6 @@ class Main extends React.Component {
 
             "flex-wrap": "wrap",
             "background-color": "#ddffad",
-            "max-width": "767px"
           }}
         >
           <div

@@ -75,7 +75,7 @@ class Login extends React.Component {
       height: 10em;
     `;
     return (
-      <div className="pageCSS container center-parent">
+      <div className="pageCSS container center-parent max-width">
         <div className="center-flex">
           <h1 id="about">
             <i className="snes-jp-logo brand-logo" />

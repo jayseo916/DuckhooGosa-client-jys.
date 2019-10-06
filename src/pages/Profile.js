@@ -55,13 +55,13 @@ class Profile extends Component {
     this.MainConatiner = styled.div`
       flex-direction: column;
       width: 100%;
-      height: fit-content;
+      height: 100%;
     `;
     this.CenterContainer = styled.div`
       flex-direction: column;
+      height: 100%;
       margin-left: auto;
       margin-right: auto;
-      max-width: 767px;
       flex-wrap: wrap;
       background-color: #ddffad;
       padding-bottom: 3em;
@@ -107,25 +107,32 @@ class Profile extends Component {
   profileImg(e) {
     this.setState({
       curImg: e.target.files[0]
-    })
+    });
   }
   async uploadImage2() {
     let memberImageDir = "memberImageDir";
     if (!this.state.curImg) {
-      alert("사진을 업로드해 주세요.");
+      alert("사진을 선택해 주세요.");
     } else {
       let img = await new Promise((resolve, reject) => {
         try {
           UploadToS3(memberImageDir, this.state.curImg, link => {
-            resolve(link)
-          })
+            resolve(link);
+          });
         } catch (err) {
           reject(err);
         }
-      })
-      await this.setState({
-        curImg: img
-      })
+      });
+      console.log(1);
+      await this.setState(
+        {
+          curImg: img
+        },
+        () => {
+          console.log(2);
+        }
+      );
+      console.log(3);
       await axiosInstance
         .post(
           "/account/img",
@@ -134,16 +141,31 @@ class Profile extends Component {
           },
           config
         )
-        .then(res => console.log(res))
+        .then(res => console.log(res, "4"))
         .catch(err => console.log("사진 업로드 요청관련에러:" + err));
-      await this.setState({
-        userInfo: {
-          ...this.state.userInfo,
-          img: this.state.Img
+      await this.setState(
+        {
+          userInfo: {
+            ...this.state.userInfo,
+            img: this.state.Img
+          }
+        },
+        () => {
+          console.log(5);
         }
+      );
+      console.log(6);
+      await this.setState({ imageBtn: !this.state.imageBtn }, () => {
+        console.log(7);
       });
-      await this.setState({ imageBtn: !this.state.imageBtn });
 
+      axiosInstance
+        .get(`/account/info`, config)
+        .then(res => {
+          console.log("데이터 갱신측 콜");
+          this.setState({ userInfo: res.data, isLoading: true });
+        })
+        .catch(err => console.log("프로필가져오기에러:" + err));
     }
   }
   changeNick1() {
@@ -187,19 +209,17 @@ class Profile extends Component {
     const isLoading = this.state.isLoading;
     const imgBtn = this.state.imageBtn;
     const nickBtn = this.state.nickChangeBtn;
-    console.log(this.state.userInfo);
 
     if (!isLoading) {
       return <div>LOADING</div>;
     } else {
       return (
-        <this.MainConatiner>
+        <this.MainConatiner className="max-width">
           <this.CenterContainer>
             <span className="span_em_middle">Profile</span>
             <div>
               {!imgBtn && img ? (
                 <div>
-
                   <img
                     style={{
                       width: "100px",
@@ -218,11 +238,9 @@ class Profile extends Component {
                   >
                     이미지 변경
                   </this.ProfileButton>
-
                 </div>
               ) : !imgBtn && !img ? (
                 <div>
-
                   <div>
                     <span className="span_em_default">
                       {" "}
@@ -239,7 +257,10 @@ class Profile extends Component {
               ) : (
                 <div>
                   <input type="file" onChange={e => this.profileImg(e)}></input>
-                  <this.ProfileButton className="nes-btn" nClick={() => this.uploadImage2()}>
+                  <this.ProfileButton
+                    className="nes-btn"
+                    onClick={() => this.uploadImage2()}
+                  >
                     이미지 업로드
                   </this.ProfileButton>
                 </div>

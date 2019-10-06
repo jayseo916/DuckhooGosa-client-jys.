@@ -294,15 +294,6 @@ export default class SolvingProblem extends Component {
   };
 
   render() {
-    const SubmitButton = styled.button`
-                width: 15em
-                margin:0 auto 0 auto;`;
-    const ProblemBOX = styled.button`
-      background-color: #383d41;
-    `;
-    const ProblemPageBOX = styled.button`
-      background-color: #0f6674;
-    `;
     return !this.state.isLoading ? (
       <div className="pageCSS-green container center-parent">
         <progress
