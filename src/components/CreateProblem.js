@@ -19,6 +19,7 @@ import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import "filepond-plugin-image-edit/dist/filepond-plugin-image-edit.css";
 import "filepond-plugin-media-preview/dist/filepond-plugin-media-preview.css";
 import styled from "styled-components";
+import { Popover } from "antd";
 
 registerPlugin(
   FilePondPluginImageExifOrientation,
@@ -52,15 +53,13 @@ class CreateProblem extends Component {
       choiceInitialValue: "none",
       choice: [], //문제객체 배열  => {text:,answer:} 객체 저장
       curProblem: 0, //현재 문제 번호 0~,
-      subjectAnswer: ""
+      subjectAnswer: "",
+      popVisible: false
     };
     this.BottomButton = styled.button`
       padding: 1px;
     `;
   }
-  // problemTextSchema = {
-  //   Problemtext: Joi.string().required()
-  // };
 
   componentDidMount() {
     console.log(this.props);
@@ -68,6 +67,20 @@ class CreateProblem extends Component {
   handleInit() {
     // console.log("FilePond instance has initialised", this.pond);
   }
+
+  state = {
+    popVisible: false
+  };
+
+  hide = () => {
+    this.setState({
+      vpopVisible: false
+    });
+  };
+
+  handleVisibleChange = popVisible => {
+    this.setState({ popVisible });
+  };
 
   handleChange = e => {
     //문제의 지문 값 온체인지
@@ -147,13 +160,13 @@ class CreateProblem extends Component {
 
     return (
       <React.Fragment>
-        <div className="form-group center-parent flex">
-          <label htmlFor="choiceName">
+        <div className="form-group center-parent flex fdr margin-side_03em">
+          <label htmlFor="choiceName" className="margin-center-vertical">
             {this.state.choice[1] === undefined ? "주관식정답" : label}
           </label>
-          <span>
+          <span className="flex margin-side_03em" style={{ width: "100%" }}>
             <textarea
-              style={{ width: "60%" }}
+              // style={{ width: "60%" }}
               id="choiceName"
               onChange={e => {
                 this.handleChoiceAnswer(e, num);
@@ -167,21 +180,29 @@ class CreateProblem extends Component {
                   : this.state.choice[num].text
               }
             />
-            {/*{"                 "}*/}
-            {this.state.choice[1] === undefined ? null : (
-              <div className="checkBOX">
-                <span className="span_em_small">정답:</span>
-                <input
-                  style={{ display: "inline-flex" }}
-                  type="checkbox"
-                  defaultChecked={this.state.choice[num].answer}
-                  onChange={e => {
-                    this.handleChoiceAnswer(e, num);
-                  }}
-                />
-              </div>
-            )}
           </span>
+          {/*{"                 "}*/}
+          {this.state.choice[1] === undefined ? null : (
+            <div className="checkBOX margin-center-vertical">
+              <span className="span_em_small"> 정답:</span>
+              <input
+                style={{
+                  "-ms-transform": "scale(2)" /* IE */,
+                  "-moz-transform": "scale(2)" /* FF */,
+                  "-webkit-transform": "scale(2)" /* Safari and Chrome */,
+                  "-o-transform": "scale(2)" /* Opera */,
+                  transform: "scale(2)",
+                  margin: "0.5em 1.2em 0",
+                  display: "inline-flex"
+                }}
+                type="checkbox"
+                defaultChecked={this.state.choice[num].answer}
+                onChange={e => {
+                  this.handleChoiceAnswer(e, num);
+                }}
+              />
+            </div>
+          )}
         </div>
       </React.Fragment>
     );
@@ -290,7 +311,7 @@ class CreateProblem extends Component {
   render() {
     return this.state.complete === false ? (
       <div
-        className="max-width pageCSS-green"
+        className="max-width pageCSS-white"
         style={{
           overflow: "auto",
           width: "100%",
@@ -300,13 +321,39 @@ class CreateProblem extends Component {
         }}
       >
         <form>
-          <label>
-            <span>
-              <div className="d-inline p-2 bg-primary text-white">
+          <label
+            className="flex-container-row center-parent"
+            style={{
+              marginLeft: "0.5em",
+              marginRight: "0.5em",
+              marginBottom: "0.5em"
+            }}
+          >
+            <span className="span_em_middle">
+              <div className="d-inline p-2 bg-primary text-white flex">
                 {this.state.curProblem + 1}번
               </div>
             </span>
-            문제에 사용할 파일 - 최대 2MB / jpg,jpeg,png,mp3,mp4,avi
+            <span style={{ marginLeft: "auto" }}>
+              <Popover
+                content={<a onClick={this.hide}>Close</a>}
+                title="파일당 최대 2MB, 허용 확장자 jpg jpeg png mp3 mp4 avi"
+                trigger="click"
+                visible={this.state.popVisible}
+                onVisibleChange={this.handleVisibleChange}
+              >
+                <button
+                  type="primary"
+                  className="nes-btn padding-zero flex"
+                  style={{
+                    marginLeft: "auto",
+                    marginRight: "1em !important"
+                  }}
+                >
+                  ❓
+                </button>
+              </Popover>
+            </span>
           </label>
           <FilePond
             ref={ref => (this.pond = ref)}
@@ -342,41 +389,55 @@ class CreateProblem extends Component {
               });
             }}
           />
-          <h1>지문</h1>
+          <span className="span_em_middle"> 지문</span>
 
-          <div className="form-group">
-            <label htmlFor="" className="htmlFor" />
+          <div
+            className="form-group margin-zero-only"
+            style={{ padding: "0 0.3em 0 0.3em" }}
+          >
+            <label />
             <textarea
-              // style={{ width: "80%" }}
               onChange={this.handleChange}
               type="text"
+              placeholder="질문입력"
               className="form-control"
               defaultValue={this.state.problemText}
             />
           </div>
-          <div>
-            <div>
-              답안 :
+          <div className="fdr flex center-parent">
+            {/*<label htmlFor="default_select">답안지 선택 </label>*/}
+            <div
+              className="nes-select flex-fixer"
+              style={{
+                "max-width": "150px",
+                height: "2em"
+              }}
+            >
               <select
+                className="padding-zero-only"
+                required
+                id="default_select"
                 value={this.state.choiceInitialValue}
                 onChange={this.selectHandleChange}
               >
-                <option value="none">선택</option>
+                <option value="none">유형선택</option>
                 <option value="1">주관식</option>
                 <option value="2">보기 두개</option>
                 <option value="3">보기 세개</option>
                 <option value="4">보기 네개</option>
                 <option value="5">보기 다섯개</option>
               </select>
-              {this.state.choice[0] && this.formTag(0, "1번")}
-              {this.state.choice[1] && this.formTag(1, "2번")}
-              {this.state.choice[2] && this.formTag(2, "3번")}
-              {this.state.choice[3] && this.formTag(3, "4번")}
-              {this.state.choice[4] && this.formTag(4, "5번")}
             </div>
           </div>
+          <div>
+            {this.state.choice[0] && this.formTag(0, "1번")}
+            {this.state.choice[1] && this.formTag(1, "2번")}
+            {this.state.choice[2] && this.formTag(2, "3번")}
+            {this.state.choice[3] && this.formTag(3, "4번")}
+            {this.state.choice[4] && this.formTag(4, "5번")}
+          </div>
           <div
-            style={{ overflow: "hidden" }}
+            style={{ overflow: "hidden", marginTop: "1em" }}
             className="btn-group btn-group-lg"
             role="group"
             aria-label="Basic example"

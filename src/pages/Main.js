@@ -422,8 +422,14 @@ class Main extends React.Component {
             </button>
           </div>
           {/*메인 카드리스트*/}
-          <div className="padding-zero nes-container with-title is-centered">
-            <p className="title"> Click and Solve </p>
+          <div
+            className="nes-container with-title is-centered"
+            style={{
+              padding: "3em 0 0 0!important",
+              margin: "0 !important"
+            }}
+          >
+            <p className="title t-color font-2P"> Preview </p>
             <div className="flex fdc">
               {problems.map((item, i) =>
                 this.state.currentOption === "" ? (

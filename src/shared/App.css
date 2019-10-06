@@ -45,6 +45,11 @@
   margin-right: auto;
 }
 
+.margin-center-vertical {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
 .load-page {
   flex-direction: column;
   justify-content: center;
@@ -85,18 +90,54 @@
   color: #61dafb;
 }
 
-
 .pageCSS {
+  -ms-overflow-style: none !important;
   height: 100%;
   background-color: hotpink;
   flex-direction: column;
   flex: 1;
 }
 .pageCSS-green {
+  -ms-overflow-style: none !important;
   height: 100%;
   background-color: #ddffad;
   flex-direction: column;
   flex: 1;
+}
+
+.pageCSS-white {
+  -ms-overflow-style: none !important;
+  height: 100%;
+  background-color: white;
+  flex-direction: column;
+  flex: 1;
+}
+
+.pageCSS-pink {
+  -ms-overflow-style: none !important;
+  height: 100%;
+  background-color: #ff9fc9;
+  flex-direction: column;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+
+
+
+
+
+
+.pageCSS-paper {
+  -ms-overflow-style: none !important;
+  height: 100%;
+  background-image: url("../client/img/ODRAJ80.jpg");
+  flex-direction: column;
+  flex: 1;
+  image-rendering: pixelated;
 }
 
 @keyframes App-logo-spin {
@@ -249,8 +290,12 @@
 i {
   /*font-size: 75px;*/
   /*display: block;*/
-
+  margin: 0 !important;
   border: black 2px;
+}
+
+.dv-star-rating {
+  margin: -30px;
 }
 
 label.dv-star-rating-star > i {
@@ -315,4 +360,32 @@ label.dv-star-rating-full-star > i {
 .title-hotpink {
   background-color: #ddffad !important;
   color: black !important;
+}
+
+.margin-zero-only {
+  margin: 0;
+}
+
+.font-2P {
+  font-family: "Press Start 2P" !important;
+}
+
+.margin-side_03em {
+  margin: 0 0.3em 0 0.3em;
+}
+
+.t-color {
+  background: unset;
+}
+
+/*기타*/
+.rootX {
+  display: flex !important;
+  flex: 1;
+  height: 100%;
+  /*width: 100vh;*/
+}
+
+* {
+  outline: 1px dotted red;
 }

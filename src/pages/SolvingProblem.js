@@ -177,11 +177,27 @@ export default class SolvingProblem extends Component {
       let fileTag = null;
       if (url) {
         if (url.slice(-3) === "png" || url.slice(-3) === "jpg") {
-          fileTag = <Img src={url} />;
+          fileTag = (
+            <Img
+              className="flex"
+              style={{
+                height: "auto",
+                width: "100%"
+              }}
+              src={url}
+            />
+          );
         } else {
           fileTag = (
             <Player fluid={true}>
-              <source src={url} />
+              <source
+                className="flex"
+                style={{
+                  height: "auto",
+                  width: "100%"
+                }}
+                src={url}
+              />
               <ControlBar disableDefaultControls={false} autoHide={true}>
                 <VolumeMenuButton vertical />
                 <PlayToggle disabled />
@@ -225,7 +241,7 @@ export default class SolvingProblem extends Component {
                   "-webkit-transform": "scale(2)" /* Safari and Chrome */,
                   "-o-transform": "scale(2)" /* Opera */,
                   transform: "scale(2)",
-                  margin: "0 1.2em 0",
+                  margin: "0.5em 1.2em 0",
                   display: "flex"
                 }}
                 type="checkbox"
@@ -291,7 +307,7 @@ export default class SolvingProblem extends Component {
 
   render() {
     return !this.state.isLoading ? (
-      <div className="pageCSS-green container center-parent">
+      <div className="max-width pageCSS-green container center-parent">
         <progress
           className="nes-progress is-success center-item"
           value={this.state.progress}
@@ -300,17 +316,17 @@ export default class SolvingProblem extends Component {
       </div>
     ) : (
       <div
-        style={{ height: "100%" }}
-        className="pageCSS-green container center-parent"
+        style={{ height: "100%", padding: "0.2em" }}
+        className="max-width pageCSS-green center-parent"
       >
         {this.state.scoring === false ? (
           // 문제집 감싸개.
           <div
+            className="max-width center-flex-container flex-fixer fdc"
             style={{
               width: "100%",
-              padding: "3em"
+              padding: "0.5em 0 2em 0em"
             }}
-            className="padding-zero center-flex-container flex-fixer fdc"
           >
             {this.viewProblem()}
             <label style={{ padding: "0 0 0 0" }}>

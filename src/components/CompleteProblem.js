@@ -1,10 +1,7 @@
 import React from "react";
-import {axiosInstance, config} from "../config";
+import { axiosInstance, config } from "../config";
 import { Link } from "react-router-dom";
-import {
-  FilePond,
-  registerPlugin,
-} from "react-filepond";
+import { FilePond, registerPlugin } from "react-filepond";
 import FilePondPluginFilePoster from "filepond-plugin-file-poster";
 import "filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css";
 import "filepond/dist/filepond.min.css";
@@ -72,8 +69,9 @@ class CompleteProblem extends React.Component {
         // return null;
       }
     });
-    let representImg = "https://duckhoogosa.s3.ap-northeast-2.amazonaws.com/problem_1/problem!.jpg";
-    if(this.props.repreImg !== null){
+    let representImg =
+      "https://duckhoogosa.s3.ap-northeast-2.amazonaws.com/problem_1/problem!.jpg";
+    if (this.props.repreImg !== null) {
       representImg = await new Promise((resolve, reject) => {
         try {
           UploadToS3(dir, this.props.repreImg, link => {
@@ -104,7 +102,7 @@ class CompleteProblem extends React.Component {
           date: date,
           representImg: representImg,
           problems: problems
-        };      
+        };
         axiosInstance
           .post(`${process.env.REACT_APP_SERVER}/problem`, obj, config)
           .then(res => {
@@ -168,6 +166,7 @@ class CompleteProblem extends React.Component {
             {num + 1}번 문제: {problem.problemText}
           </div>
           <div>{choices}</div>
+          <hr className="main-hr" />
         </div>
       );
     });
@@ -179,35 +178,81 @@ class CompleteProblem extends React.Component {
     const problems = this.loadProblems();
 
     return (
-      <React.Fragment>
-        {problems}
+      <div
+        className="max-width pageCSS-white"
+        style={{
+          overflow: "auto",
+          width: "100%",
+          height: "100%",
+          "padding-top": "2em",
+          "padding-left": "0.5em",
+          "padding-right": "0.5em",
+          "padding-bottom": "3em"
+        }}
+      >
         <div
-          className="btn-group btn-group-lg"
-          role="group"
-          aria-label="Basic example"
+          className="nes-container with-title is-centered is-rounded padding-zero flex-container-col"
+          style={{
+            height: "100%"
+          }}
         >
-          <button
-            type="button"
-            className="btn btn-secondary"
-            onClick={() => {
-              this.modifyProblem();
+          <p className="title title-hotpink font-2P"> Preview </p>
+          <div
+            className="fdc flex"
+            style={{
+              height: "100%"
             }}
           >
-            수정
-          </button>
-
-          <Link
-            to="problem/main"
-            type="reset"
-            className="btn btn-primary"
-            onClick={() => {
-              this.postProblems();
-            }}
-          >
-            완료
-          </Link>
+            {problems}
+            <div
+              className="flex"
+              style={{
+                height: "auto",
+                marginTop: "auto",
+                marginBottom: "auto"
+              }}
+            />
+            <div
+              className="btn-group btn-group-lg flex-fixer margin-center center-parent"
+              style={{
+                width: "100%",
+                height: "fit-content",
+                marginBottom: "1em"
+              }}
+              role="group"
+              aria-label="Basic example"
+            >
+              <button
+                style={{
+                  maxWidth: "40%",
+                  minHeight: "2em"
+                }}
+                type="button"
+                className="nes-btn is-warning flex padding-zero-only"
+                onClick={() => {
+                  this.modifyProblem();
+                }}
+              >
+                <span className="span_em_default"> 수정</span>
+              </button>
+              <Link
+                style={{
+                  maxWidth: "40%",
+                  minHeight: "2em"
+                }}
+                to="problem/main"
+                type="reset"
+                className="nes-btn is-primary flex padding-zero-only"
+                onClick={() => {
+                  this.postProblems();
+                }}
+              >
+                <span className="span_em_default">완료 </span>
+              </Link>
+            </div>
+          </div>
         </div>
-      </React.Fragment>
+      </div>
     );
   }
 }
