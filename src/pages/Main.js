@@ -35,17 +35,21 @@ class Main extends React.Component {
     console.log("카운트로딩", countLoading);
     if (countLoading === 0 && this.state.search === false) {
       console.log("초기검색어", this.state.input);
-      const { data } = await axiosInstance.post(
-        this.state.search ? searchApi : mainApi,
-        {
-          next_problem: 0,
-          word: this.state.input
-        }
-      );
-      console.log("데이타", JSON.parse(data));
-      this.state.search
-        ? this.setState({ searchProblems: JSON.parse(data) })
-        : this.setState({ problems: JSON.parse(data) });
+      try {
+        const { data } = await axiosInstance.post(
+          this.state.search ? searchApi : mainApi,
+          {
+            next_problem: 0,
+            word: this.state.input
+          }
+        );
+        console.log("데이타", JSON.parse(data));
+        this.state.search
+          ? this.setState({ searchProblems: JSON.parse(data) })
+          : this.setState({ problems: JSON.parse(data) });
+      } catch (err) {
+        console.log(err);
+      }
     }
     console.log("붙었니?", "____________________");
     window.addEventListener("scroll", this.handleScroll);
@@ -72,27 +76,33 @@ class Main extends React.Component {
           loadingProblem = this.state.numberLoadingSearchProblem;
 
           while (!this.state.CurSearchNoData) {
-            var { data } = await axiosInstance.post(searchApi, {
-              next_problem: loadingProblem * countLoading,
-              word: this.state.input
-            });
-            data = JSON.parse(data);
-            if (data === "NoData") {
-              this.setState({
-                CurSearchNoData: true
+            try {
+              var { data } = await axiosInstance.post(searchApi, {
+                next_problem: loadingProblem * countLoading,
+                word: this.state.input
               });
-              break;
-            }
-            let origin = this.state.searchProblems.map(v => JSON.stringify(v));
-
-            var newData = data.filter(v => {
-              if (!origin.includes(JSON.stringify(v))) {
-                return v;
+              data = JSON.parse(data);
+              if (data === "NoData") {
+                this.setState({
+                  CurSearchNoData: true
+                });
+                break;
               }
-            });
-            countLoading += 1;
-            if (newData.length !== 0) {
-              break;
+              let origin = this.state.searchProblems.map(v =>
+                JSON.stringify(v)
+              );
+
+              var newData = data.filter(v => {
+                if (!origin.includes(JSON.stringify(v))) {
+                  return v;
+                }
+              });
+              countLoading += 1;
+              if (newData.length !== 0) {
+                break;
+              }
+            } catch (err) {
+              console.log(err);
             }
           }
 
@@ -116,26 +126,30 @@ class Main extends React.Component {
           countLoading = this.state.countLoading;
           loadingProblem = this.state.numberLoadingProblem;
           while (!this.state.MainNoData) {
-            var { data } = await axiosInstance.post(mainApi, {
-              next_problem: loadingProblem * countLoading
-            });
-
-            data = JSON.parse(data);
-            if (data === "NoData") {
-              this.setState({
-                MainNoData: true
+            try {
+              var { data } = await axiosInstance.post(mainApi, {
+                next_problem: loadingProblem * countLoading
               });
-              break;
-            }
-            let origin = this.state.problems.map(v => JSON.stringify(v));
-            var newData = data.filter(v => {
-              if (!origin.includes(JSON.stringify(v))) {
-                return v;
+
+              data = JSON.parse(data);
+              if (data === "NoData") {
+                this.setState({
+                  MainNoData: true
+                });
+                break;
               }
-            });
-            countLoading += 1;
-            if (newData.length !== 0) {
-              break;
+              let origin = this.state.problems.map(v => JSON.stringify(v));
+              var newData = data.filter(v => {
+                if (!origin.includes(JSON.stringify(v))) {
+                  return v;
+                }
+              });
+              countLoading += 1;
+              if (newData.length !== 0) {
+                break;
+              }
+            } catch (err) {
+              console.log(err);
             }
           }
           if (!this.state.MainNoData && data !== "NoData") {
@@ -152,30 +166,34 @@ class Main extends React.Component {
         loadingProblem = this.state.numberLoadingGenreProblem;
 
         while (!this.state.CurGenreNoData) {
-          var { data } = await axiosInstance.post(genreApi, {
-            next_problem: loadingProblem * countLoading,
-            genre: this.state.currentOption
-          });
-
-          data = JSON.parse(data);
-          console.log("데이터", data);
-          console.log("타입", typeof data);
-          if (data === "NoData") {
-            this.setState({
-              CurGenreNoData: true
+          try {
+            var { data } = await axiosInstance.post(genreApi, {
+              next_problem: loadingProblem * countLoading,
+              genre: this.state.currentOption
             });
-            break;
-          }
-          let origin = this.state.problems.map(v => JSON.stringify(v));
 
-          var newData = data.filter(v => {
-            if (!origin.includes(JSON.stringify(v))) {
-              return v;
+            data = JSON.parse(data);
+            console.log("데이터", data);
+            console.log("타입", typeof data);
+            if (data === "NoData") {
+              this.setState({
+                CurGenreNoData: true
+              });
+              break;
             }
-          });
-          countLoading += 1;
-          if (newData.length !== 0) {
-            break;
+            let origin = this.state.problems.map(v => JSON.stringify(v));
+
+            var newData = data.filter(v => {
+              if (!origin.includes(JSON.stringify(v))) {
+                return v;
+              }
+            });
+            countLoading += 1;
+            if (newData.length !== 0) {
+              break;
+            }
+          } catch (err) {
+            console.log(err);
           }
         }
         if (!this.state.CurGenreNoData && data !== "NoData") {
@@ -205,29 +223,35 @@ class Main extends React.Component {
           countGenreLoading: 0
         },
         async () => {
-          let { data } = await axiosInstance.post(genreApi, {
-            next_problem: 4,
-            genre: this.state.currentOption
-          });
-
-          data = JSON.parse(data);
-
-          if (data !== "NoData") {
-            let origin = [];
-            this.state.search
-              ? (origin = this.state.searchProblems.map(v => JSON.stringify(v)))
-              : (origin = this.state.problems.map(v => JSON.stringify(v)));
-
-            let newData = data.filter(v => {
-              if (!origin.includes(JSON.stringify(v))) {
-                return v;
-              }
+          try {
+            let { data } = await axiosInstance.post(genreApi, {
+              next_problem: 4,
+              genre: this.state.currentOption
             });
 
-            this.setState({
-              problems: [...this.state.problems, ...newData],
-              genreOn: true
-            });
+            data = JSON.parse(data);
+
+            if (data !== "NoData") {
+              let origin = [];
+              this.state.search
+                ? (origin = this.state.searchProblems.map(v =>
+                    JSON.stringify(v)
+                  ))
+                : (origin = this.state.problems.map(v => JSON.stringify(v)));
+
+              let newData = data.filter(v => {
+                if (!origin.includes(JSON.stringify(v))) {
+                  return v;
+                }
+              });
+
+              this.setState({
+                problems: [...this.state.problems, ...newData],
+                genreOn: true
+              });
+            }
+          } catch (err) {
+            console.log(err);
           }
         }
       );
@@ -267,22 +291,26 @@ class Main extends React.Component {
           let loadingProblem = this.state.numberLoadingSearchProblem;
 
           while (!this.state.CurSearchNoData) {
-            var { data } = await axiosInstance.post(searchApi, {
-              next_problem: loadingProblem * countLoading,
+            try {
+              var { data } = await axiosInstance.post(searchApi, {
+                next_problem: loadingProblem * countLoading,
 
-              word: this.state.input
-            });
-            data = JSON.parse(data);
-            if (data === "NoData") {
-              this.setState({
-                CurSearchNoData: true
+                word: this.state.input
               });
-              break;
-            }
+              data = JSON.parse(data);
+              if (data === "NoData") {
+                this.setState({
+                  CurSearchNoData: true
+                });
+                break;
+              }
 
-            countLoading += 1;
-            if (data !== "NoData") {
-              break;
+              countLoading += 1;
+              if (data !== "NoData") {
+                break;
+              }
+            } catch (err) {
+              console.log(err);
             }
           }
 
