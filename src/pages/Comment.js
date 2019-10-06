@@ -86,8 +86,10 @@ export default class Comment extends React.Component {
             paddingBottom: "3em"
           }}
         >
-          <div className="nes-container with-title is-centered padding-zero">
-            <p className="title">Comments</p>
+          <div className="nes-container with-title is-centered">
+            <p className="title">
+              <span className="font-2P"> Comments </span>
+            </p>
             {list ? list : <div>아직 해당문제에 대한 의견이 없습니다.</div>}
           </div>
         </section>

@@ -48,41 +48,51 @@ class SelectTheme extends React.Component {
   render() {
     const repreImg = this.state.selectedRepreFile;
     return (
-      <this.MainConatiner className="max-width pageCSS-green center-parent ">
-        <div className="titleBox flex flex">
-          <span className="span_em_middle">
-            {" "}
-            현재 장르: {localStorage.getItem("genre")}
-          </span>
-        </div>
-
-        <this.TxtInput
-          type="text"
-          placeholder="문제 제목을 입력해주세요"
-          onChange={e => this.handleTitleChange(e)}
-        />
-        <div> 문제를 대표할 이미지 선택(필수 X )</div>
-        <this.ImgInput
-          id="inputFile1"
-          type="file"
-          name="files[]"
-          placeholder="파일을 선택해주세요"
-          onChange={e => this.fileUpload(e)}
-        />
-        {repreImg ? (
-          <div>
-            <img src={repreImg} alt="대표이미지" height="200" width="300"></img>
-          </div>
-        ) : (
-          <span> 이미지 없음 </span>
-        )}
-
-        <button
-          className="nes-btn BottomBox"
-          onClick={() => this.clickHandler()}
+      <this.MainConatiner className="pageCSS-green max-width center-parent">
+        <div
+          className="nes-con tainer with-title is-centered is-rounded"
+          style={{
+            height: "100%"
+          }}
         >
-          문제 제작하기
-        </button>
+          <p className="title title-hotpink font-2P">Title Setting</p>
+
+          <div className="titleBox flex flex">
+            <span className="span_em_middle">
+              {" "}
+              현재 장르: {localStorage.getItem("genre")}
+            </span>
+          </div>
+
+          <this.TxtInput
+            type="text"
+            placeholder="문제 제목을 입력해주세요"
+            onChange={e => this.handleTitleChange(e)}
+          />
+          <div> 문제를 대표할 이미지 선택(필수 X )</div>
+          <this.ImgInput
+            id="inputFile1"
+            type="file"
+            name="files[]"
+            placeholder="파일을 선택해주세요"
+            onChange={e => this.fileUpload(e)}
+          />
+          {repreImg ? (
+            <div>
+              <img src={repreImg} alt="대표이미지" height="200" width="300" />
+            </div>
+          ) : (
+            <span> 이미지 없음 </span>
+          )}
+          <div style={{}}></div>
+
+          <button
+            className="nes-btn BottomBox"
+            onClick={() => this.clickHandler()}
+          >
+            문제 제작하기
+          </button>
+        </div>
       </this.MainConatiner>
     );
   }

@@ -30,7 +30,7 @@ class SelectGenre extends React.Component {
     return (
       <this.MainConatiner className="pageCSS-green max-width">
         <div className="nes-container with-title is-centered is-rounded">
-          <p className="title title-hotpink">Select genre</p>
+          <p className="title title-hotpink font-2P">Select genre</p>
           <this.Card onClick={() => this.genreSubmit("movie")}>
             <i className="nes-mario is-small" />
             <span className="span_em_middle span_v"> 영화</span>

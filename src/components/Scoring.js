@@ -29,7 +29,9 @@ export class Scoring extends Component {
         "pageCSS-green container center-parent"
       )[0];
       console.log(el, "어디보자!");
-      el.style.backgroundColor = "#72B332";
+      if (el !== undefined) {
+        el.style.backgroundColor = "#72B332";
+      }
       let element = document.querySelectorAll(".ant-btn");
       if (element.length > 0) {
         element[0].className = "nes-btn is-primary ";
@@ -165,12 +167,13 @@ export class Scoring extends Component {
               starColor="yellow"
             />
           </div>
-          <this.CommentBOX className="input-comment">
-            <span className="span_em_default">댓글:</span>
+          <this.CommentBOX className="input-comment" style={{}}>
+            <span className="span_em_default">댓글</span>
             <textarea
+              className="flex"
               style={{
-                height: "40px",
-                width: "280px"
+                height: "2em",
+                width: "100%"
               }}
               onChange={e => this.commentHandle(e)}
             />
