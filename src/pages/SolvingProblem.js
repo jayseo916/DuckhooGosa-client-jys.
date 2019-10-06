@@ -8,8 +8,10 @@ import styled from "styled-components";
 import {
   Player,
   ControlBar,
+  PlayToggle,
   ReplayControl,
   ForwardControl,
+  BigPlayButton,
   CurrentTimeDisplay,
   TimeDivider,
   PlaybackRateMenuButton,
@@ -180,16 +182,10 @@ export default class SolvingProblem extends Component {
           fileTag = (
             <Player fluid={true}>
               <source src={url} />
-              <ControlBar>
-                <ReplayControl seconds={10} order={1.1} />
-                <ForwardControl seconds={10} order={1.2} />
-                <CurrentTimeDisplay order={4.1} />
-                <TimeDivider order={4.2} />
-                <PlaybackRateMenuButton
-                  rates={[5, 2, 1, 0.5, 0.1]}
-                  order={7.1}
-                />
-                <VolumeMenuButton />
+              <ControlBar disableDefaultControls={false} autoHide={true}>
+                <VolumeMenuButton vertical />
+                <PlayToggle disabled />
+                <BigPlayButton position="center" />
               </ControlBar>
             </Player>
           );

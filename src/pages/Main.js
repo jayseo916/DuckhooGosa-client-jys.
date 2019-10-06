@@ -323,15 +323,14 @@ class Main extends React.Component {
         className="flex fdc max-width"
         style={{
           width: "fit-content",
-          "overflow-scrolling": "auto",
+          "overflow-scrolling": "auto"
         }}
       >
         <div
           className="flex-fixer flex fdc margin-center"
           style={{
-
             "flex-wrap": "wrap",
-            "background-color": "#ddffad",
+            "background-color": "#ddffad"
           }}
         >
           <div
@@ -348,7 +347,7 @@ class Main extends React.Component {
                   height: "min-content",
                   width: "30%"
                 }}
-                id="currentGenre default_select"
+                id="currentGenre"
                 className="form-control flex"
                 onChange={e => {
                   this.handleSelect(e);
