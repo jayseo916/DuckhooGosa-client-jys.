@@ -33,7 +33,7 @@ class Loading extends React.Component {
           this.setState({ done: true });
         }, 800);
       });
-    }, 200000);
+    }, 2000);
   }
 
   render() {
