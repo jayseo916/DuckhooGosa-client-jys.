@@ -55,7 +55,7 @@ class Loading extends React.Component {
       }
     };
     return (
-      <div className="App-header">
+      <div className="App-header max-width">
         {!this.state.done ? (
           <FadeIn>
             <div className="d-flex justify-content-center align-items-center load-page">

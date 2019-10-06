@@ -35,7 +35,7 @@ class SelectTheme extends React.Component {
     });
     this.props.setRepreImg(e.target.files[0]);
     let fileEl = document.getElementById("inputFile1");
-    console.log(fileEl)
+    console.log(fileEl);
   }
   clickHandler() {
     if (this.state.title === "") {
@@ -48,7 +48,7 @@ class SelectTheme extends React.Component {
   render() {
     const repreImg = this.state.selectedRepreFile;
     return (
-      <this.MainConatiner className="pageCSS-green container center-parent">
+      <this.MainConatiner className="max-width pageCSS-green center-parent ">
         <div className="titleBox flex flex">
           <span className="span_em_middle">
             {" "}

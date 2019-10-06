@@ -31,7 +31,7 @@ class Linked extends Component {
 
   render() {
     return this.state.title && this.state.representImg ? (
-      <React.Fragment>
+      <React.Fragment className="max-width">
         <Img src={this.state.representImg} width={300} height={300} />
         <div>{this.state.title}</div>
         <Login
