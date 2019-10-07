@@ -33,7 +33,7 @@ class Loading extends React.Component {
           this.setState({ done: true });
         }, 800);
       });
-    }, 200000);
+    }, 2000);
   }
 
   render() {
@@ -60,14 +60,17 @@ class Loading extends React.Component {
           <FadeIn className="margin-center-vertical flex">
             <div className="load-page flex ">
               <p>
-                <h1> 덕후고사.app </h1>
+                <span className="span_em_vl text-strike_white">
+                  {" "}
+                  덕후고사.app
+                </span>
               </p>
               {!this.state.loading ? (
                 <Lottie options={defaultOptions} height={240} width={240} />
               ) : (
                 <Lottie options={defaultOptions2} height={240} width={240} />
               )}
-              <h2> studio TheKOO </h2>
+              <span className="span_em_l text-strike_white">TheKOO.studio</span>
             </div>
           </FadeIn>
         ) : (

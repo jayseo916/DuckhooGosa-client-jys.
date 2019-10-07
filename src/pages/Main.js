@@ -343,12 +343,12 @@ class Main extends React.Component {
 
     const ImageBox = styled.div`
       height: 10em;
-      width: 70%;
+      width: 95%;
     `;
 
     return (
       <div
-        className="flex fdc max-width"
+        className="flex fdc max-width pageCSS-white"
         style={{
           width: "fit-content",
           "overflow-scrolling": "auto"
@@ -357,8 +357,7 @@ class Main extends React.Component {
         <div
           className="flex-fixer flex fdc margin-center"
           style={{
-            "flex-wrap": "wrap",
-            "background-color": "#ddffad"
+            "flex-wrap": "wrap"
           }}
         >
           <div
@@ -422,13 +421,7 @@ class Main extends React.Component {
             </button>
           </div>
           {/*메인 카드리스트*/}
-          <div
-            className="nes-container with-title is-centered"
-            style={{
-              padding: "3em 0 0 0!important",
-              margin: "0 !important"
-            }}
-          >
+          <div className="nes-container-card nes-container with-title is-centered">
             <p className="title t-color font-2P"> Preview </p>
             <div className="flex fdc">
               {problems.map((item, i) =>
@@ -441,8 +434,10 @@ class Main extends React.Component {
                       <a href="/#" className="flex">
                         <ImageBox className="flex-fixer main-thumbnail-wrap margin-center">
                           <img
-                            style={{ maxheight: "20em" }}
-                            className="thumbnail main-thumnail-img"
+                            style={{
+                              maxheight: "20em"
+                            }}
+                            className="thumbnail main-thumnail-img img_border_5"
                             src={item.representImg}
                             alt="Responsive"
                             width="100%"

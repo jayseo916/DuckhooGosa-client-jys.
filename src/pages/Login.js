@@ -75,11 +75,14 @@ class Login extends React.Component {
       height: 10em;
     `;
     return (
-      <div className="pageCSS container center-parent max-width">
+      <div className="max-width pageCSS center-parent ">
         <div className="center-flex">
           <h1 id="about">
             <i className="snes-jp-logo brand-logo" />
-            <p>로그인</p>
+            <span className="span_em_middle text-strike_white">
+              {" "}
+              <p>로그인</p>{" "}
+            </span>
             <a href="#about" />
           </h1>
         </div>

@@ -117,7 +117,7 @@ export default class Comment extends React.Component {
       list = undefined;
     }
     return (
-      <div className="pageCSS-green max-width">
+      <div className="pageCSS-white max-width">
         <section
           className="message-list"
           style={{

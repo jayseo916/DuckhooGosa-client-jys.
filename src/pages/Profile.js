@@ -52,20 +52,6 @@ class Profile extends Component {
         totalProblemCount: null
       }
     };
-    this.MainConatiner = styled.div`
-      flex-direction: column;
-      width: 100%;
-      height: 100%;
-    `;
-    this.CenterContainer = styled.div`
-      flex-direction: column;
-      height: 100%;
-      margin-left: auto;
-      margin-right: auto;
-      flex-wrap: wrap;
-      background-color: #ddffad;
-      padding-bottom: 3em;
-    `;
     this.ProfileButton = styled.div`
       margin: 0.3em 0 0.5em 0;
     `;
@@ -214,9 +200,17 @@ class Profile extends Component {
       return <div>LOADING</div>;
     } else {
       return (
-        <this.MainConatiner className="max-width">
-          <this.CenterContainer>
-            <span className="span_em_middle">Profile</span>
+        <div className="max-width pageCSS-white fdc filling_parent">
+          <div
+            className="nes-container nes-container-normal with-title is-centered margin-center filling_parent"
+            style={{
+              "flex-wrap": "wrap",
+              "padding-bottom": "3em"
+            }}
+          >
+            <p className="title font-2P">
+              <span className="title span_em_middle">Profile</span>
+            </p>
             <div>
               {!imgBtn && img ? (
                 <div>
@@ -256,7 +250,7 @@ class Profile extends Component {
                 </div>
               ) : (
                 <div>
-                  <input type="file" onChange={e => this.profileImg(e)}></input>
+                  <input type="file" onChange={e => this.profileImg(e)} />
                   <this.ProfileButton
                     className="nes-btn"
                     onClick={() => this.uploadImage2()}
@@ -267,6 +261,7 @@ class Profile extends Component {
               )}
             </div>
             <div>
+              <hr className="hr-green" />
               <div>
                 {!nickBtn && nickname ? (
                   <div>
@@ -310,6 +305,7 @@ class Profile extends Component {
                   </div>
                 )}
               </div>
+              <hr className="hr-green" />
               <a href="#" className="nes-badge is-splited">
                 <span className="is-dark">정답률</span>
                 <span className="is-success">
@@ -320,11 +316,13 @@ class Profile extends Component {
               <div>
                 {totalProblemCount}문제 중 {answerCount}문제를 맞히셨습니다.
               </div>
+              <hr className="hr-green" />
               <span className="span_em_default">
                 <p style={{ "margin-bottom": 0 }}>My Tier</p>
               </span>
               <span className="span_em_default">{tier}</span>
             </div>
+            <hr className="hr-green" />
             <div>
               <Link
                 to={{
@@ -336,7 +334,7 @@ class Profile extends Component {
               >
                 <this.ProfileButton
                   className="nes-btn"
-                  style={{ width: "49%" }}
+                  style={{ width: "40%" }}
                 >
                   <span className="span_em_small">풀었던 문제들</span>
                 </this.ProfileButton>
@@ -351,12 +349,13 @@ class Profile extends Component {
               >
                 <this.ProfileButton
                   className="nes-btn"
-                  style={{ width: "49%" }}
+                  style={{ width: "40%" }}
                 >
                   <span className="span_em_small">만든문제들</span>
                 </this.ProfileButton>
               </Link>
             </div>
+            <hr className="hr-green" />
             <GoogleLogout
               style={{ border: "4px" }}
               clientId={process.env.REACT_APP_Google}
@@ -364,7 +363,7 @@ class Profile extends Component {
               onLogoutSuccess={this.logout}
             />
             <div style={{ padding: "0.5em" }} />
-            <hr className="main-hr" />
+            <hr className="hr-green" />
             <Collapse accordion onChange={callback}>
               <Panel
                 className="nes-container padding-zero"
@@ -425,8 +424,8 @@ class Profile extends Component {
                 </span>
               </Panel>
             </Collapse>
-          </this.CenterContainer>
-        </this.MainConatiner>
+          </div>
+        </div>
       );
     }
   }

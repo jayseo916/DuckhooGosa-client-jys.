@@ -125,12 +125,6 @@
   color: white;
 }
 
-
-
-
-
-
-
 .pageCSS-paper {
   -ms-overflow-style: none !important;
   height: 100%;
@@ -270,6 +264,15 @@
   margin-right: auto;
 }
 
+.hr-green {
+  width: 95%;
+  border-width: 2px;
+  border-color: #489c26;
+  margin-top: 5px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 /*썸네일표현*/
 .eval-quality {
   text-align: center;
@@ -310,6 +313,13 @@ label.dv-star-rating-full-star > i {
   font-size: 17px;
 }
 
+.span_em_vl {
+  font-size: 2em;
+}
+
+.span_em_l {
+  font-size: 1.75em;
+}
 .span_em_middle {
   font-size: 1.4em;
 }
@@ -344,14 +354,24 @@ label.dv-star-rating-full-star > i {
   vertical-align: middle;
 }
 
+.text-strike_white {
+  /*color: #f00;*/
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+    1px 1px 0 #000;
+  border: 1px;
+  color: white;
+}
+
 .titleBox {
   padding-top: 0.5em;
   margin-bottom: auto;
 }
 
 .BottomBox {
-  padding-bottom: 0.5em;
+  padding-bottom: 5vh;
   margin-top: auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .max-width {
@@ -386,6 +406,71 @@ label.dv-star-rating-full-star > i {
   /*width: 100vh;*/
 }
 
+.radius50 {
+  border-radius: 50px;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+}
+
+.img_border_5 {
+  border: 5px solid #000000;
+}
+
+.filling_parent {
+  height: 100%;
+  width: 100%;
+}
+
 * {
   outline: 1px dotted red;
+}
+
+.nes-container-card {
+  padding: 3em 0 0 0 !important;
+  margin: 0 !important;
+}
+
+.nes-container-normal {
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+}
+
+.center-center-series {
+  justify-content: center;
+  align-items: center;
+  vertical-align: center;
+}
+
+.myINPUT {
+  border-color: black !important;
+  border-width: 5px !important;
+}
+
+.filebox {
+  display: inline-block;
+  padding: 0.5em 0.75em;
+  color: #fbfdff;
+  font-size: inherit;
+  line-height: normal;
+  vertical-align: middle;
+  background-color: #fd62a0;
+  cursor: pointer;
+  border: 4px solid #4a4a4a;
+  border-bottom-color: #150007;
+  border-radius: 0.25em;
+}
+
+.label-input {
+  margin-bottom: 0;
+  /*display: inline-block;*/
+  /*padding: 0.5em 0.75em;*/
+  /*color: #999;*/
+  /*font-size: inherit;*/
+  /*line-height: normal;*/
+  /*vertical-align: middle;*/
+  /*background-color: #fdfdfd;*/
+  /*cursor: pointer;*/
+  /*border: 1px solid #ebebeb;*/
+  /*border-bottom-color: #e2e2e2;*/
+  /*border-radius: 0.25em;*/
 }

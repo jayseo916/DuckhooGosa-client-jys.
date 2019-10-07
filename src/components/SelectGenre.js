@@ -4,15 +4,6 @@ import styled from "styled-components";
 class SelectGenre extends React.Component {
   constructor(props) {
     super(props);
-    this.MainConatiner = styled.div`
-      flex-direction: column;
-      width: 100%;
-      height: 100%
-      justify-content: center;
-      align-items: center;
-      vertical-align: center;
-      padding-top: 1em;
-    `;
     this.Card = styled.div`
       display: table;
       margin-left: auto;
@@ -28,9 +19,18 @@ class SelectGenre extends React.Component {
   }
   render() {
     return (
-      <this.MainConatiner className="pageCSS-green max-width">
-        <div className="nes-container with-title is-centered is-rounded">
-          <p className="title title-hotpink font-2P">Select genre</p>
+      <div className="max-width center-series pageCSS-white fdc filling_parent">
+        <div
+          className="nes-container nes-container-normal with-title is-centered margin-center filling_parent"
+          style={{
+            "flex-wrap": "wrap",
+            "padding-bottom": "3em"
+          }}
+        >
+          <p className="title font-2P">
+            <span className="title span_em_middle">Select genre</span>
+          </p>
+
           <this.Card onClick={() => this.genreSubmit("movie")}>
             <i className="nes-mario is-small" />
             <span className="span_em_middle span_v"> 영화</span>
@@ -57,7 +57,7 @@ class SelectGenre extends React.Component {
             <span className="span_em_middle span_v"> 스포츠 </span>
           </this.Card>
         </div>
-      </this.MainConatiner>
+      </div>
     );
   }
 }
