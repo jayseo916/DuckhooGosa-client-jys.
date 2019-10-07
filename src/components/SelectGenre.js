@@ -10,7 +10,6 @@ class SelectGenre extends React.Component {
       horiz-align: center;
       margin-right: auto;
       vertical-align: center;
-      margin-bottom: 45px;
     `;
     this.GenreImg = styled.img``;
   }

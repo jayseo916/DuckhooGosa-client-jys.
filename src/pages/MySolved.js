@@ -80,7 +80,9 @@ class MySolved extends React.Component {
       <div className="nes-container with-title">
         <p className="title"> 풀었던 문제들 </p>
         <div className="top-container">{null}</div>
-        <div className="middle-container">{historyList}</div>
+        <div className="middle-container" style={{ marginBottom: "45px" }}>
+          {historyList}
+        </div>
         <div className="bottom-container">{null}</div>
       </div>
     );

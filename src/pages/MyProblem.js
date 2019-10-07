@@ -62,7 +62,16 @@ class MyProblem extends React.Component {
     ));
 
     if (problems.length !== 0) {
-      return <div>{cards}</div>;
+      return (
+        <div className="nes-container with-title">
+          <p className="title"> 만들었던 문제들 </p>
+          <div className="top-container">{null}</div>
+          <div className="middle-container" style={{ marginBottom: "45px" }}>
+            {cards}
+          </div>
+          <div className="bottom-container">{null}</div>
+        </div>
+      );
     } else {
       return (
         <div className="nes-container with-title is-rounded">
