@@ -16,7 +16,8 @@ export class Scoring extends Component {
       evalD: 3,
       comment: "",
       email: this.props.data.email,
-      visible2: false
+      visible2: false,
+      nickname: ""
     };
     this.id = 0;
     this.CommentBOX = styled.div`
@@ -40,6 +41,9 @@ export class Scoring extends Component {
         clearInterval(this.id);
       }
     }, 100);
+    axiosInstance.get("/account/info", config)
+    .then(res => this.setState({nickname: res.data.nickname}))
+    .catch(err => console.log(err));
   }
 
   goComment = () => {
@@ -113,9 +117,9 @@ export class Scoring extends Component {
       tryCount,
       commentCount,
       checkProblem,
-      nickname,
       title
     } = this.props.data;
+    let nickname = this.state.nickname;
     let correctProblem = checkProblem.filter(v => {
       //마자춘 문제수 측정용
       return v.ok === true;
@@ -187,7 +191,12 @@ export class Scoring extends Component {
             <i className="snes-jp-logo is-small" />{" "}
             <span className="span_em_middle">
               {" "}
-              {nickname}님의 {title} 점수
+              <span 
+                style={{
+                  fontStyle: "Italic"
+                }}
+              >
+              {nickname ? nickname:"익명의 더쿠"}</span>님의 {title} 점수
             </span>
           </UpperDiv>
           <div className="padding-zero nes-container is-dark with-title is-centered">

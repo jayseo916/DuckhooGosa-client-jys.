@@ -475,7 +475,7 @@ class CreateProblem extends Component {
                   this.viewFunction(-1);
                 }}
               >
-                PRIV
+                PREV
               </this.BottomButton>
               <this.BottomButton
                 type="reset"

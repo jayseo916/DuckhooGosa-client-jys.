@@ -167,11 +167,13 @@
     position: fixed;
     left: 0%;
     width: 20%;
+    pointer-events: none;
   }
   .menuLink2 {
     position: fixed;
     left: 20%;
     width: 20%;
+    pointer-events: none;
   }
   .menuLink3 {
     position: fixed;

@@ -70,7 +70,7 @@ class CompleteProblem extends React.Component {
       }
     });
     let representImg =
-      "https://duckhoogosa.s3.ap-northeast-2.amazonaws.com/problem_1/problem!.jpg";
+      "https://duckhoogosa.s3.ap-northeast-2.amazonaws.com/memberImageDir/image.png";
     if (this.props.repreImg !== null) {
       representImg = await new Promise((resolve, reject) => {
         try {
