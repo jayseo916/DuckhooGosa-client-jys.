@@ -84,7 +84,12 @@ class SelectTheme extends React.Component {
             </div>
           )}
           <div className="filebox">
-            <label htmlFor="inputFile1" className="label-input">
+
+            <label
+              htmlFor="inputFile1"
+              className="label-input"
+            >
+
               업로드
             </label>
             <input
