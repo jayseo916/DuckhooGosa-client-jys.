@@ -4,9 +4,6 @@ import Iframe from "react-iframe";
 import styled from "styled-components";
 
 class Private extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     const IframeContainer = styled.div`

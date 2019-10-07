@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { config, axiosInstance } from "../config";
-import { GoogleLogin, GoogleLogout } from "react-google-login";
+import { GoogleLogin } from "react-google-login";
 import Img from "react-image";
 import "bootstrap/dist/css/bootstrap.css";
 import "../shared/App.css";

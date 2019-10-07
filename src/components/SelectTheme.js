@@ -1,6 +1,7 @@
 import React from "react";
-import Img from "react-image";
 import "../shared/App.css";
+
+
 
 class SelectTheme extends React.Component {
   constructor(props) {
@@ -19,9 +20,11 @@ class SelectTheme extends React.Component {
     this.setState({
       URL: URL.createObjectURL(e.target.files[0])
     });
-    this.props.setRepreImg(e.target.files[0]);
-    let fileEl = document.getElementById("inputFile1");
-    console.log(fileEl);
+    // eslint-disable-next-line react/prop-types
+    const { setRepreImg } = this.props;
+    setRepreImg(e.target.files[0]);
+    // let fileEl = document.getElementById("inputFile1");
+    // console.log(fileEl);
   }
   clickHandler() {
     if (this.state.title === "") {
@@ -38,8 +41,8 @@ class SelectTheme extends React.Component {
         <div
           className="nes-container nes-container-normal with-title is-centered margin-center filling_parent"
           style={{
-            "flex-wrap": "wrap",
-            "padding-bottom": "3em"
+            flexWrap: "wrap",
+            paddingBottom: "3em"
           }}
         >
           <p className="title font-2P">
@@ -81,19 +84,13 @@ class SelectTheme extends React.Component {
             </div>
           )}
           <div className="filebox">
-            <label
-              for="inputFile1"
-              className="label-input"
-              // style={{
-              //   border: "5px"
-              // }}
-            >
+            <label htmlFor="inputFile1" className="label-input">
               업로드
             </label>
             <input
               id="inputFile1"
               type="file"
-              hidden="true"
+              hidden={true}
               // placeholder="파일을 선택해주세요"
               onChange={e => this.fileUpload(e)}
             />
