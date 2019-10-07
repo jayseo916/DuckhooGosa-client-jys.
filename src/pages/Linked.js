@@ -16,7 +16,7 @@ class Linked extends Component {
   componentDidMount = async () => {
     try {
       const { data } = await axiosInstance.get(
-        `http://localhost:8000/problem/${this.props.location.problemId}`,
+        `/problem/${this.props.location.problemId}`,
         config
       );
       const { title, representImg } = data;
