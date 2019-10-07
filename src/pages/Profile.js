@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { axiosInstance, config } from "../config";
 import { Link } from "react-router-dom";
-import { GoogleLogin, GoogleLogout } from "react-google-login";
+import { GoogleLogout } from "react-google-login";
 import { Collapse } from "antd";
 import { UploadToS3 } from "../client/upLoad";
 import "antd/dist/antd.css";
@@ -10,30 +10,10 @@ import "../shared/App.css";
 import styled from "styled-components";
 
 const { Panel } = Collapse;
-//FAQ&문의메일 설명 내용
-const text =
-  " 사용방법\n기본적으로 로그인이 필요하고 편하게 구글로그인 하시면 됩니당";
-// 문제 만드는법
-// 1.로그인
-// 2.만들기
-// 3.문제에 필요한 파일(사진,오디오,동영상)을 업로드 후 문제 작성
-// 4.보기는 주관식과 2지선다부터 5지선다까지 있다. 원하는 걸 골라서 만들면 된다.
-// 5.문제를 작성했으면 다음문제 버튼을 눌러 다음 문제를 작성한다. 이때 다음문제 버튼을 누르면 자동으로 저장이 된다.
-// 6.수정을 원하면 이전문제 버튼을 누르고 수정을 하면된다. 수정을 반영하려면 저장버튼을 꼭 누른다.
-// 7.현재 작성중인 문제를 반영하려면 저장을 누른후 제출한다. 저장을 누르지 않고 작성도중에 제출하면 작성중인 문제는 저장되지 않는다.
-// 8.작성한 문제를 확인하고 완료를 누르면 문제지 작성이 완료된다. 수정을 원하면 수정버튼을 눌르고 수정을 한다. 이때도 수정한 문제는 저장버튼을 눌러준다.
-
-// 문제 푸는법
-// 1. 로그인
-// 2. 문제 클릭
-// 3. 해당 문제를 푼다. 객관식의 경우 답이 여러개일 수 있다.
-// 4. 모두 풀고 제출하면 채점후 결과가 나오는데 난이도와 문제 퀄리티 두종류의 평점을 을 매기고 코멘트를 달 수 있다.
-
-// 이멜: 111@gmail.com
-// "
+let isDev = process.env.REACT_APP_LOG;
 
 function callback(key) {
-  console.log(key);
+  isDev && console.log(key);
 }
 class Profile extends Component {
   constructor(props) {
@@ -62,10 +42,10 @@ class Profile extends Component {
     axiosInstance
       .get(`/account/info`, config)
       .then(res => {
-        console.log(res.data);
+        isDev && console.log(res.data);
         this.setState({ userInfo: res.data, isLoading: true });
       })
-      .catch(err => console.log("프로필가져오기에러:" + err));
+      .catch(err => isDev && console.log("프로필가져오기에러:" + err));
   }
 
   logout = () => {
@@ -73,15 +53,15 @@ class Profile extends Component {
       .post("/logout", {}, config)
       .then(res => {
         if (res.data.result) {
-          console.log(res.data.result);
+          isDev && console.log(res.data.result);
         } else {
-          console.log(res.data.reason);
+          isDev && console.log(res.data.reason);
         }
       })
       .catch(err => {
-        console.log(err, "ERROR in logout SEQ");
+        isDev && console.log(err, "ERROR in logout SEQ");
       });
-    console.log("로그아웃");
+    isDev && console.log("로그아웃");
     this.props.emptyEmail();
     localStorage.removeItem("authData");
   };
@@ -109,16 +89,16 @@ class Profile extends Component {
           reject(err);
         }
       });
-      console.log(1);
+      isDev && console.log(1);
       await this.setState(
         {
           curImg: img
         },
         () => {
-          console.log(2);
+          isDev && console.log(2);
         }
       );
-      console.log(3);
+      isDev && console.log(3);
       await axiosInstance
         .post(
           "/account/img",
@@ -127,8 +107,8 @@ class Profile extends Component {
           },
           config
         )
-        .then(res => console.log(res, "4"))
-        .catch(err => console.log("사진 업로드 요청관련에러:" + err));
+        .then(res => isDev && console.log(res, "4"))
+        .catch(err => isDev && console.log("사진 업로드 요청관련에러:" + err));
       await this.setState(
         {
           userInfo: {
@@ -137,21 +117,21 @@ class Profile extends Component {
           }
         },
         () => {
-          console.log(5);
+          isDev && console.log(5);
         }
       );
-      console.log(6);
+      isDev && console.log(6);
       await this.setState({ imageBtn: !this.state.imageBtn }, () => {
-        console.log(7);
+        isDev && console.log(7);
       });
 
       axiosInstance
         .get(`/account/info`, config)
         .then(res => {
-          console.log("데이터 갱신측 콜");
+          isDev && console.log("데이터 갱신측 콜");
           this.setState({ userInfo: res.data, isLoading: true });
         })
-        .catch(err => console.log("프로필가져오기에러:" + err));
+        .catch(err => isDev && console.log("프로필가져오기에러:" + err));
     }
   }
   changeNick1() {
@@ -173,8 +153,8 @@ class Profile extends Component {
           },
           config
         )
-        .then(res => console.log(res))
-        .catch(err => console.log("닉 변경 요청 관련 에러:" + err));
+        .then(res => isDev && console.log(res))
+        .catch(err => isDev && console.log("닉 변경 요청 관련 에러:" + err));
       this.setState({ nickChangeBtn: !this.state.nickChangeBtn });
       this.setState({
         userInfo: {
@@ -202,10 +182,10 @@ class Profile extends Component {
       return (
         <div className="max-width pageCSS-white fdc filling_parent">
           <div
-            className="nes-container nes-container-normal with-title is-centered margin-center filling_parent"
+            className="nes-container nes-container-normal with-title is-centered margin-center filling_child"
             style={{
-              "flex-wrap": "wrap",
-              "padding-bottom": "3em"
+              flexWrap: "wrap",
+              paddingBottom: "3em"
             }}
           >
             <p className="title font-2P">
@@ -218,8 +198,8 @@ class Profile extends Component {
                     style={{
                       width: "100px",
                       height: "100px",
-                      "object-fit": "cover",
-                      "border-radius": "50%"
+                      objectFit: "cover",
+                      borderRadius: "50%"
                     }}
                     src={img}
                     alt="본인계정이미지"
@@ -250,12 +230,17 @@ class Profile extends Component {
                 </div>
               ) : (
                 <div>
-                  <input type="file" onChange={e => this.profileImg(e)} />
+                  <label htmlFor="fileX" className="label-input" />
+                  <input
+                    type="file"
+                    id="fileX"
+                    onChange={e => this.profileImg(e)}
+                  />
                   <this.ProfileButton
-                    className="nes-btn"
+                    className="nes-btn is-success"
                     onClick={() => this.uploadImage2()}
                   >
-                    이미지 업로드
+                    <span style={{ color: "white" }}> Upload</span>
                   </this.ProfileButton>
                 </div>
               )}
@@ -305,8 +290,8 @@ class Profile extends Component {
                   </div>
                 )}
               </div>
-              <hr className="hr-green" />
-              <a href="#" className="nes-badge is-splited">
+              <hr className="hr-green" id="#self" />
+              <a href="#self" className="nes-badge is-splited">
                 <span className="is-dark">정답률</span>
                 <span className="is-success">
                   {Math.floor((answerCount / totalProblemCount) * 100)}%
@@ -318,7 +303,7 @@ class Profile extends Component {
               </div>
               <hr className="hr-green" />
               <span className="span_em_default">
-                <p style={{ "margin-bottom": 0 }}>My Tier</p>
+                <p style={{ marginBottom: 0 }}>My Tier</p>
               </span>
               <span className="span_em_default">{tier}</span>
             </div>
@@ -364,66 +349,75 @@ class Profile extends Component {
             />
             <div style={{ padding: "0.5em" }} />
             <hr className="hr-green" />
-            <Collapse accordion onChange={callback}>
-              <Panel
-                className="nes-container padding-zero"
-                header=" FAQ"
-                key="
+            <div className="flex">
+              <Collapse
+                accordion
+                onChange={callback}
+                className="filling_parent"
+              >
+                <Panel
+                  className="nes-container padding-zero"
+                  header=" FAQ"
+                  key="
                         1"
-              >
-                <p>사용방법</p>
-                <p>
-                  기본적으로 로그인이 필요하고 편하게 구글로그인 하시면 됩니당
-                </p>
-                <p> 문제 만드는법</p>
-                <p>1.로그인</p>
-                <p>2.만들기</p>
-                <p>
-                  3.문제에 필요한 파일(사진,오디오,동영상)을 업로드 후 문제 작성
-                </p>
-                <p>
-                  4.보기는 주관식과 2지선다부터 5지선다까지 있다. 원하는 걸
-                  골라서 만들면 된다.
-                </p>
-                <p>
-                  5.문제를 작성했으면 다음문제 버튼을 눌러 다음 문제를 작성한다.
-                  이때 다음문제 버튼을 누르면 자동으로 저장이 된다.
-                </p>
-                <p>
-                  6.수정을 원하면 이전문제 버튼을 누르고 수정을 하면된다. 수정을
-                  반영하려면 저장버튼을 꼭 누른다.
-                </p>
-                <p>
-                  7.현재 작성중인 문제를 반영하려면 저장을 누른후 제출한다.
-                  저장을 누르지 않고 작성도중에 제출하면 작성중인 문제는
-                  저장되지 않는다.
-                </p>
-                <p>
-                  8.작성한 문제를 확인하고 완료를 누르면 문제지 작성이 완료된다.
-                  수정을 원하면 수정버튼을 눌르고 수정을 한다. 이때도 수정한
-                  문제는 저장버튼을 눌러준다.
-                </p>
+                >
+                  <p>사용방법</p>
+                  <p>
+                    기본적으로 로그인이 필요하고 편하게 구글로그인 하시면 됩니당
+                  </p>
+                  <p> 문제 만드는법</p>
+                  <p>1.로그인</p>
+                  <p>2.만들기</p>
+                  <p>
+                    3.문제에 필요한 파일(사진,오디오,동영상)을 업로드 후 문제
+                    작성
+                  </p>
+                  <p>
+                    4.보기는 주관식과 2지선다부터 5지선다까지 있다. 원하는 걸
+                    골라서 만들면 된다.
+                  </p>
+                  <p>
+                    5.문제를 작성했으면 다음문제 버튼을 눌러 다음 문제를
+                    작성한다. 이때 다음문제 버튼을 누르면 자동으로 저장이 된다.
+                  </p>
+                  <p>
+                    6.수정을 원하면 이전문제 버튼을 누르고 수정을 하면된다.
+                    수정을 반영하려면 저장버튼을 꼭 누른다.
+                  </p>
+                  <p>
+                    7.현재 작성중인 문제를 반영하려면 저장을 누른후 제출한다.
+                    저장을 누르지 않고 작성도중에 제출하면 작성중인 문제는
+                    저장되지 않는다.
+                  </p>
+                  <p>
+                    8.작성한 문제를 확인하고 완료를 누르면 문제지 작성이
+                    완료된다. 수정을 원하면 수정버튼을 눌르고 수정을 한다.
+                    이때도 수정한 문제는 저장버튼을 눌러준다.
+                  </p>
 
-                <p>문제 푸는법</p>
-                <p>1. 로그인</p>
-                <p>2. 문제 클릭</p>
-                <p>3. 해당 문제를 푼다. 객관식의 경우 답이 여러개일 수 있다.</p>
-                <p>
-                  4. 모두 풀고 제출하면 채점후 결과가 나오는데 난이도와 문제
-                  퀄리티 두종류의 평점을 을 매기고 코멘트를 달 수 있다.
-                </p>
-              </Panel>
-              <Panel
-                header="문의"
-                key="2"
-                className="nes-container padding-zero"
-              >
-                <p>문의사항: jadetypehoon@gmail.com</p>
-                <span className="span_em_default">
-                  어떤 문의사항이든 소중하게 받아들이는 The KOO되겠습니다.
-                </span>
-              </Panel>
-            </Collapse>
+                  <p>문제 푸는법</p>
+                  <p>1. 로그인</p>
+                  <p>2. 문제 클릭</p>
+                  <p>
+                    3. 해당 문제를 푼다. 객관식의 경우 답이 여러개일 수 있다.
+                  </p>
+                  <p>
+                    4. 모두 풀고 제출하면 채점후 결과가 나오는데 난이도와 문제
+                    퀄리티 두종류의 평점을 을 매기고 코멘트를 달 수 있다.
+                  </p>
+                </Panel>
+                <Panel
+                  header="문의"
+                  key="2"
+                  className="nes-container padding-zero"
+                >
+                  <p>문의사항: jadetypehoon@gmail.com</p>
+                  <span className="span_em_default">
+                    어떤 문의사항이든 소중하게 받아들이는 The KOO되겠습니다.
+                  </span>
+                </Panel>
+              </Collapse>
+            </div>
           </div>
         </div>
       );

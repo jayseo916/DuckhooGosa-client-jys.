@@ -1,10 +1,12 @@
 import React from "react";
-import { config, axiosInstance } from "../config";
+import { axiosInstance } from "../config";
 import styled from "styled-components";
 
 let mainApi = "/problem/main";
 let searchApi = "/problem/search";
 let genreApi = "/problem/genre";
+let isDev = process.env.REACT_APP_LOG;
+
 class Main extends React.Component {
   constructor(props) {
     super(props);
@@ -32,9 +34,9 @@ class Main extends React.Component {
       ? (countLoading = this.state.countSearchLoading)
       : (countLoading = this.state.countLoading);
 
-    console.log("카운트로딩", countLoading);
+    isDev && console.log("카운트로딩", countLoading);
     if (countLoading === 0 && this.state.search === false) {
-      console.log("초기검색어", this.state.input);
+      isDev && console.log("초기검색어", this.state.input);
       try {
         const { data } = await axiosInstance.post(
           this.state.search ? searchApi : mainApi,
@@ -43,15 +45,14 @@ class Main extends React.Component {
             word: this.state.input
           }
         );
-        console.log("데이타", JSON.parse(data));
+        isDev && console.log("데이타", JSON.parse(data));
         this.state.search
           ? this.setState({ searchProblems: JSON.parse(data) })
           : this.setState({ problems: JSON.parse(data) });
       } catch (err) {
-        console.log(err);
+        isDev && console.log(err);
       }
     }
-    console.log("붙었니?", "____________________");
     window.addEventListener("scroll", this.handleScroll);
   };
   componentWillUnmount() {
@@ -62,7 +63,6 @@ class Main extends React.Component {
   handleScroll = async () => {
     const { innerHeight } = window;
     const { scrollHeight } = document.body;
-    console.log(innerHeight, scrollHeight, "실시간 조회검사");
     const scrollTop =
       (document.documentElement && document.documentElement.scrollTop) ||
       document.body.scrollTop;
@@ -173,8 +173,8 @@ class Main extends React.Component {
             });
 
             data = JSON.parse(data);
-            console.log("데이터", data);
-            console.log("타입", typeof data);
+            isDev && console.log("데이터", data);
+            isDev && console.log("타입", typeof data);
             if (data === "NoData") {
               this.setState({
                 CurGenreNoData: true
@@ -197,7 +197,7 @@ class Main extends React.Component {
           }
         }
         if (!this.state.CurGenreNoData && data !== "NoData") {
-          console.log("화긴", data);
+          isDev && console.log("화긴", data);
           let problems = [...this.state.problems, ...newData];
           this.setState({
             problems: problems,
@@ -215,7 +215,7 @@ class Main extends React.Component {
       let choiceOpt =
         curr.options[document.getElementById("currentGenre").selectedIndex]
           .value;
-      // console.log(choiceOpt);
+      isDev && console.log(choiceOpt);
       this.setState(
         {
           currentOption: choiceOpt,
@@ -286,7 +286,8 @@ class Main extends React.Component {
           CurSearchNoData: false
         },
         async () => {
-          console.log("카운트로딩검색시", this.state.countSearchLoading);
+          isDev &&
+            console.log("카운트로딩검색시", this.state.countSearchLoading);
           let countLoading = 0;
           let loadingProblem = this.state.numberLoadingSearchProblem;
 
@@ -331,12 +332,12 @@ class Main extends React.Component {
   }
   solvedProblem(e, id) {
     e.preventDefault();
-    console.log(`/SolvingProblem/${id}`, "으로 보내줌");
+    isDev && console.log(`/SolvingProblem/${id}`, "으로 보내줌");
     this.props.history.push(`/SolvingProblem/${id}`);
   }
   render() {
     // const { img, title, problem_id } = this.state.problems;
-    console.log(this.state.genreOn);
+    isDev && console.log(this.state.genreOn);
     const problems = this.state.search
       ? this.state.searchProblems
       : this.state.problems;
@@ -351,13 +352,13 @@ class Main extends React.Component {
         className="flex fdc max-width pageCSS-white"
         style={{
           width: "fit-content",
-          "overflow-scrolling": "auto"
+          overflowScrolling: "auto"
         }}
       >
         <div
           className="flex-fixer flex fdc margin-center"
           style={{
-            "flex-wrap": "wrap"
+            flexWrap: "wrap"
           }}
         >
           <div

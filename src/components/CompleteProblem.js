@@ -184,10 +184,10 @@ class CompleteProblem extends React.Component {
           overflow: "auto",
           width: "100%",
           height: "100%",
-          "padding-top": "2em",
-          "padding-left": "0.5em",
-          "padding-right": "0.5em",
-          "padding-bottom": "3em"
+          paddingTop: "2em",
+          paddingLeft: "0.5em",
+          paddingRight: "0.5em",
+          paddingBottom: "3em"
         }}
       >
         <div
