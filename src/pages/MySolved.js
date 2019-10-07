@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { formatRelative } from "date-fns";
 import { Popconfirm } from "antd";
 import "../shared/App.css";
+import CopyUrl from "../components/CopyUrl";
 
 let uniqid = require("uniqid");
 
@@ -63,6 +64,7 @@ class MySolved extends React.Component {
             <p className="title"> {el.title} </p>
             <div className="flex-container-row is-rounded is-centered">
               <div className="left-col flex-container-col">
+                <CopyUrl id={el.problem_id} />
                 <span className="nes-text is-error flex">
                   님 정답률!{el.successRate}%
                 </span>

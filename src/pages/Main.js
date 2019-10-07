@@ -1,10 +1,12 @@
 import React from "react";
 import { config, axiosInstance } from "../config";
 import styled from "styled-components";
+import CopyUrl from "../components/CopyUrl";
 
 let mainApi = "/problem/main";
 let searchApi = "/problem/search";
 let genreApi = "/problem/genre";
+
 class Main extends React.Component {
   constructor(props) {
     super(props);
@@ -426,11 +428,12 @@ class Main extends React.Component {
             <div className="flex fdc">
               {problems.map((item, i) =>
                 this.state.currentOption === "" ? (
-                  <div>
-                    <div
-                      key={i + item._id}
-                      className="flex margin-center fdc center-parent"
-                    >
+                  <div
+                    key={i + item._id}
+                    className="flex margin-center fdc center-parent"
+                  >
+                    <div>
+                      <CopyUrl id={item._id} />
                       <a href="/#" className="flex">
                         <ImageBox className="flex-fixer main-thumbnail-wrap margin-center">
                           <img
@@ -445,6 +448,7 @@ class Main extends React.Component {
                           />
                         </ImageBox>
                       </a>
+
                       <a
                         href="/#"
                         onClick={e => this.solvedProblem(e, item._id)}
@@ -455,22 +459,35 @@ class Main extends React.Component {
                     <hr className="main-hr" />
                   </div>
                 ) : this.state.currentOption === item.genre ? (
-                  <div key={item._id + i} className="problems">
-                    <a href="/#">
-                      <img
-                        src={item.representImg}
-                        alt="Responsive"
-                        height="200"
-                        width="300"
+                  <div
+                    key={i + item._id}
+                    className="flex margin-center fdc center-parent"
+                  >
+                    <div>
+                      <CopyUrl id={item._id} />
+                      <a href="/#" className="flex">
+                        <ImageBox className="flex-fixer main-thumbnail-wrap margin-center">
+                          <img
+                            style={{
+                              maxheight: "20em"
+                            }}
+                            className="thumbnail main-thumnail-img img_border_5"
+                            src={item.representImg}
+                            alt="Responsive"
+                            width="100%"
+                            onClick={e => this.solvedProblem(e, item._id)}
+                          />
+                        </ImageBox>
+                      </a>
+
+                      <a
+                        href="/#"
                         onClick={e => this.solvedProblem(e, item._id)}
-                      />
-                    </a>
-                    <br></br>
-                    <a href="/#" onClick={e => this.solvedProblem(e, item._id)}>
-                      {item.title}
-                      <br></br>
-                      {/* {item.tags} */}
-                    </a>
+                      >
+                        <h4>{item.title}</h4>
+                      </a>
+                    </div>
+                    <hr className="main-hr" />
                   </div>
                 ) : null
               )}

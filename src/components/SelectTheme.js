@@ -82,7 +82,7 @@ class SelectTheme extends React.Component {
           )}
           <div className="filebox">
             <label
-              for="inputFile1"
+              htmlFor="inputFile1"
               className="label-input"
               // style={{
               //   border: "5px"
