@@ -12,7 +12,6 @@ body {
   display: flex;
   justify-content: center;
   flex-direction: initial;
-  margin-bottom: 45px;
 }
 
 .rootX{
