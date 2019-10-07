@@ -423,6 +423,11 @@ label.dv-star-rating-full-star > i {
   width: 100%;
 }
 
+.filling_child {
+  height: fit-content;
+  width: 100%;
+}
+
 * {
   outline: 1px dotted red;
 }
@@ -475,4 +480,9 @@ label.dv-star-rating-full-star > i {
   /*border: 1px solid #ebebeb;*/
   /*border-bottom-color: #e2e2e2;*/
   /*border-radius: 0.25em;*/
+}
+
+.ant-collapse-content-box {
+  padding-left: 4px !important;
+  padding-right: 4px !important;
 }

@@ -23,8 +23,8 @@ class SelectGenre extends React.Component {
         <div
           className="nes-container nes-container-normal with-title is-centered margin-center filling_parent"
           style={{
-            "flex-wrap": "wrap",
-            "padding-bottom": "3em"
+            flexWrap: "wrap",
+            paddingBottom: "3em"
           }}
         >
           <p className="title font-2P">
