@@ -152,11 +152,12 @@
 @media screen and (min-width: 0px) {
   /*@media screen and (min-width: 768px) {*/
   #footer-menubar1 ul li {
+    margin-top: 45px;
     list-style: none;
     color: white;
     background-color: #222222;
     float: left;
-    line-height: 30px;
+    line-height: 45px;
     vertical-align: middle;
     text-align: center;
     position: fixed;
