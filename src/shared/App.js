@@ -37,14 +37,14 @@ class App extends React.Component {
 
   setUserInfo = data => {
     this.setState({ email: data.email, expires_at: data.expires_at }, () => {
-      let { email, expires_at } = this.state;
-      console.log(`${email}님 로그인 ${expires_at}에 토큰 만료`);
+      // let { email, expires_at } = this.state;
+      // console.log(`${email}님 로그인 ${expires_at}에 토큰 만료`);
     });
   };
 
   setRepreImg = repreImg => {
     this.setState({ repreImg: repreImg }, () => {
-      console.log("이미지 설정 완료");
+      // console.log("이미지 설정 완료");
     });
   };
 

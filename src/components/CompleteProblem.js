@@ -70,7 +70,7 @@ class CompleteProblem extends React.Component {
       }
     });
     let representImg =
-      "https://duckhoogosa.s3.ap-northeast-2.amazonaws.com/problem_1/problem!.jpg";
+      "https://duckhoogosa.s3.ap-northeast-2.amazonaws.com/memberImageDir/image.png";
     if (this.props.repreImg !== null) {
       representImg = await new Promise((resolve, reject) => {
         try {
@@ -184,10 +184,10 @@ class CompleteProblem extends React.Component {
           overflow: "auto",
           width: "100%",
           height: "100%",
-          "padding-top": "2em",
-          "padding-left": "0.5em",
-          "padding-right": "0.5em",
-          "padding-bottom": "3em"
+          paddingTop: "2em",
+          paddingLeft: "0.5em",
+          paddingRight: "0.5em",
+          paddingBottom: "3em"
         }}
       >
         <div

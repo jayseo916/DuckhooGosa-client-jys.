@@ -53,7 +53,7 @@ class MyProblem extends React.Component {
                 <CopyUrl id={items._id} />
               </div>
               <ImageBox className="flex-fixer thumbnail-wrap">
-                <img className="thumbnail" src={items.img} alt="image place" />
+                <img className="thumbnail" src={items.img} alt="place" />
               </ImageBox>
             </div>
           </Card>

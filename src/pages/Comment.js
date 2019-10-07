@@ -3,6 +3,7 @@ import React from "react";
 import { axiosInstance, config } from "../config";
 import "../shared/App.css";
 import cats100 from "../client/img/pixel-icon-creator-24.jpg";
+import { formatRelative } from "date-fns";
 export default class Comment extends React.Component {
   constructor(props) {
     super(props);
@@ -14,14 +15,18 @@ export default class Comment extends React.Component {
       comments: []
     };
   }
-  componentDidMount() {
-    //console.log(this.props);
+
+  getComments = () => {
     axiosInstance
       .get(`/comment/${this.state.problem_id}`, config)
       .then(res => {
         this.setState({ comments: JSON.parse(res.data) });
       })
       .catch(err => console.log(err));
+  };
+
+  componentDidMount() {
+    this.getComments();
   }
   inputCommentHandle(e) {
     this.setState({ inputComment: e.target.value });
@@ -29,19 +34,17 @@ export default class Comment extends React.Component {
   commentBtnHandle() {
     this.setState({ commentBtn: !this.state.commentBtn });
   }
-  submitComment = async() => {
+
+  submitComment = async () => {
+    let obj = {
+      _id: this.state.problem_id,
+      email: this.state.email,
+      evalQ: null,
+      evalD: null,
+      comments: this.state.inputComment
+    };
     axiosInstance
-      .post(
-        "/problem/evaluation",
-        {
-          problem_id: this.state.problem_id,
-          email: this.state.email,
-          evalQ: null,
-          evalD: null,
-          comment: this.state.inputComment
-        },
-        config
-      )
+      .post("/problem/evaluation", obj, config)
       .then(res => console.log(res))
       .catch(err => console.log(err));
     await axiosInstance
@@ -53,12 +56,9 @@ export default class Comment extends React.Component {
     await this.setState({
       commentBtn: false,
       inputComment: ""
-    })
-    // this.props.history.replace({
-    //   pathname: `/comment/${this.state.problem_id}`,
-    //   state: { email: this.state.email }
-    // });
-  }
+    });
+    this.getComments();
+  };
   render() {
     let list;
     const { comments } = this.state;
@@ -73,31 +73,31 @@ export default class Comment extends React.Component {
               style={{
                 width: "100px",
                 height: "100px",
-                "object-fit": "cover",
-                "border-radius": "50%",
-                "margin-top": "auto"
+                objectFit: "cover",
+                borderRadius: "50%",
+                marginTop: "auto"
               }}
               src={cats100}
-              alt="image place"
+              alt="place"
             />
           ) : (
             <img
               style={{
                 width: "100px",
                 height: "100px",
-                "object-fit": "cover",
-                "border-radius": "50%",
-                "margin-top": "auto"
+                objectFit: "cover",
+                borderRadius: "50%",
+                marginTop: "auto"
               }}
               src={data.img}
-              alt="image place"
+              alt="place"
             />
           )}
 
           <div
             className="nes-balloon from-left padding-zero-only"
             style={{
-              "padding-bottom": "1em"
+              paddingBottom: "1em"
             }}
           >
             <p>
@@ -107,7 +107,8 @@ export default class Comment extends React.Component {
               {data.comment}
               <br />
               <span className="span_em_small grey">
-                {data.day}
+                {/*{data.day}*/}
+                {formatRelative(new Date(data.day), new Date())}
               </span>
             </p>
           </div>
@@ -134,8 +135,13 @@ export default class Comment extends React.Component {
                   rows="4"
                   onChange={e => this.inputCommentHandle(e)}
                   placeholder="의견을 남겨주세요"
-                ></textarea>
-                <button onClick={() => this.submitComment()}>댓글 쓰기</button>
+                />
+                <button
+                  className="nes-btn"
+                  onClick={() => this.submitComment()}
+                >
+                  댓글 쓰기
+                </button>
                 <button onClick={() => this.commentBtnHandle()}>
                   댓글입력창없애기
                 </button>

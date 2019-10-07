@@ -2,11 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "../shared/App.css";
 
-class FooterMenubar extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
+class FooterMenubar extends React.Component {
   render() {
     return (
       <nav id="footer-menubar1" style={{ width: "0px" }}>

@@ -11,7 +11,7 @@ export function UploadToS3(problemTitle, file, callback) {
   } else {
     throw Error("로그인 필요함");
   }
-  console.log("자격증명 토큰", { "accounts.google.com": authData.tokenId });
+  // console.log("자격증명 토큰", { "accounts.google.com": authData.tokenId });
   AWS.config.update({
     region: bucketRegion,
     credentials: new AWS.CognitoIdentityCredentials({

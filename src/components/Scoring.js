@@ -5,6 +5,7 @@ import { axiosInstance, config } from "../config";
 import StarRatingComponent from "react-star-rating-component";
 import "../shared/App.css";
 import styled from "styled-components";
+const isDev = process.env.REACT_APP_LOG;
 
 export class Scoring extends Component {
   constructor(props) {
@@ -15,7 +16,8 @@ export class Scoring extends Component {
       evalD: 3,
       comment: "",
       email: this.props.data.email,
-      visible2: false
+      visible2: false,
+      nickname: ""
     };
     this.id = 0;
     this.CommentBOX = styled.div`
@@ -28,7 +30,7 @@ export class Scoring extends Component {
       let el = document.getElementsByClassName(
         "pageCSS-white container center-parent"
       )[0];
-      console.log(el, "어디보자!");
+      isDev && console.log(el, "어디보자!");
       if (el !== undefined) {
         el.style.backgroundColor = "#72B332";
       }
@@ -39,12 +41,15 @@ export class Scoring extends Component {
         clearInterval(this.id);
       }
     }, 100);
+    axiosInstance.get("/account/info", config)
+    .then(res => this.setState({nickname: res.data.nickname}))
+    .catch(err => console.log(err));
   }
 
   goComment = () => {
     this.props.history.push({
       pathname: `/comment/${this.props.data.problem_id}`,
-      state: {email: this.state.email}
+      state: { email: this.state.email }
     });
   };
   evalSubmit() {
@@ -112,17 +117,15 @@ export class Scoring extends Component {
       tryCount,
       commentCount,
       checkProblem,
-      nickname,
       title
     } = this.props.data;
+    let nickname = this.state.nickname;
     let correctProblem = checkProblem.filter(v => {
       //마자춘 문제수 측정용
-      if (v.ok === true) {
-        return v;
-      }
+      return v.ok === true;
     });
     let viewProblem = this.viewScoring(checkProblem); //만춘문제 틀린문제 뷰
-    const { evalQ, evalD, comment } = this.state;
+    // const { evalQ, evalD, comment } = this.state;
     const UpperDiv = styled.div`
       width: 100%;
       margin-bottom: 2em;
@@ -137,7 +140,7 @@ export class Scoring extends Component {
       margin: 1em 0 1em 0;
     `;
     return (
-      <div className="inline-flex" style={{ "margin-top": "1em" }}>
+      <div className="inline-flex" style={{ "marginTop": "1em" }}>
         <Modal
           title="🥕FEEDBACK"
           visible={this.state.visible}
@@ -188,7 +191,12 @@ export class Scoring extends Component {
             <i className="snes-jp-logo is-small" />{" "}
             <span className="span_em_middle">
               {" "}
-              {nickname}님의 {title} 점수
+              <span 
+                style={{
+                  fontStyle: "Italic"
+                }}
+              >
+              {nickname ? nickname:"익명의 더쿠"}</span>님의 {title} 점수
             </span>
           </UpperDiv>
           <div className="padding-zero nes-container is-dark with-title is-centered">
