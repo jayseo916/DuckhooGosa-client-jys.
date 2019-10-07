@@ -1,6 +1,6 @@
 import React from "react";
-import styled from "styled-components";
 import Img from "react-image";
+import "../shared/App.css";
 
 class SelectTheme extends React.Component {
   constructor(props) {
@@ -9,21 +9,6 @@ class SelectTheme extends React.Component {
       title: "",
       URL: null
     };
-    this.MainConatiner = styled.div`
-      flex-direction: column;
-      width: 100%;
-      justify-content: center;
-      align-items: center;
-      padding: 3em 0 7em;
-    `;
-    this.ImgInput = styled.input`
-      min-width: 300px;
-      width: 70%;
-    `;
-    this.TxtInput = styled.input`
-      min-width: 300px;
-      width: 70%;
-    `;
   }
   handleTitleChange(e) {
     this.setState({
@@ -49,71 +34,86 @@ class SelectTheme extends React.Component {
   render() {
     const repreImg = this.state.URL;
     return (
-      <this.MainConatiner className="pageCSS-green max-width center-parent">
+      <div className="max-width center-series pageCSS-white fdc filling_parent">
         <div
-          className="nes-con tainer with-title is-centered is-rounded"
+          className="nes-container nes-container-normal with-title is-centered margin-center filling_parent"
           style={{
-            height: "100%"
+            "flex-wrap": "wrap",
+            "padding-bottom": "3em"
           }}
         >
-          <p className="title title-hotpink font-2P">Title Setting</p>
+          <p className="title font-2P">
+            <span className="title span_em_middle">Title INFO</span>
+          </p>
 
-
-          <div className="titleBox flex flex">
-            <span className="span_em_middle">
+          <div className="titleBox flex center-flex-container">
+            <span className="span_em_middle margin-center">
               {" "}
               현재 장르: {localStorage.getItem("genre")}
             </span>
-      </div>
-
-        <this.TxtInput
-          type="text"
-          placeholder="문제 제목을 입력해주세요"
-          onChange={e => this.handleTitleChange(e)}
-        />
-        <div> 문제를 대표할 이미지 선택(필수 X )</div>
-        <this.ImgInput
-          id="inputFile1"
-          type="file"
-          name="files[]"
-          placeholder="파일을 선택해주세요"
-          onChange={e => this.fileUpload(e)}
-        />
-        {repreImg ? (
-          <div>
-            <Img src={repreImg} alt="대표이미지" height="200" width="300"></Img>
           </div>
-
-          <this.TxtInput
-            type="text"
-            placeholder="문제 제목을 입력해주세요"
-            onChange={e => this.handleTitleChange(e)}
-          />
-          <div> 문제를 대표할 이미지 선택(필수 X )</div>
-          <this.ImgInput
-            id="inputFile1"
-            type="file"
-            name="files[]"
-            placeholder="파일을 선택해주세요"
-            onChange={e => this.fileUpload(e)}
-          />
+          <hr className="hr-green" />
+          <div
+            className="flex fdr"
+            style={{
+              maxHeight: "2em"
+            }}
+          >
+            <span className="span_em_middle inline-flex">제목:</span>
+            <input
+              className="flex"
+              type="text"
+              placeholder="문제 제목을 입력해주세요"
+              onChange={e => this.handleTitleChange(e)}
+            />
+          </div>
+          <hr className="hr-green" />
+          <div>
+            <span className="span_em_small">대표 이미지 선택 (필수 X)</span>
+          </div>
           {repreImg ? (
             <div>
               <img src={repreImg} alt="대표이미지" height="200" width="300" />
             </div>
           ) : (
-            <span> 이미지 없음 </span>
+            <div>
+              <span> 이미지 없음 </span>
+            </div>
           )}
-          <div style={{}}></div>
-
-          <button
-            className="nes-btn BottomBox"
-            onClick={() => this.clickHandler()}
+          <div className="filebox">
+            <label
+              for="inputFile1"
+              className="label-input"
+              // style={{
+              //   border: "5px"
+              // }}
+            >
+              업로드
+            </label>
+            <input
+              id="inputFile1"
+              type="file"
+              hidden="true"
+              // placeholder="파일을 선택해주세요"
+              onChange={e => this.fileUpload(e)}
+            />
+          </div>
+          <hr className="hr-green" />
+          <div
+            className="BottomBox flex center-parent"
+            style={{
+              width: "fit-contents"
+            }}
           >
-            문제 제작하기
-          </button>
+            <button
+              className="nes-btn BottomBox "
+              onClick={() => this.clickHandler()}
+            >
+              문제만들기
+            </button>
+          </div>
         </div>
-      </this.MainConatiner>
+      </div>
     );
   }
 }

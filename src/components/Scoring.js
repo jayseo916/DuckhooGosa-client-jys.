@@ -26,7 +26,7 @@ export class Scoring extends Component {
   componentDidMount() {
     this.id = setInterval(() => {
       let el = document.getElementsByClassName(
-        "pageCSS-green container center-parent"
+        "pageCSS-white container center-parent"
       )[0];
       console.log(el, "어디보자!");
       if (el !== undefined) {
