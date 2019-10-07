@@ -3,7 +3,6 @@ import { GoogleLogin, GoogleLogout } from "react-google-login";
 import "bootstrap/dist/css/bootstrap.css";
 import "../shared/App.css";
 import { config, axiosInstance } from "../config";
-import FadeIn from "react-fade-in";
 import styled from "styled-components";
 
 class Login extends React.Component {
@@ -75,7 +74,7 @@ class Login extends React.Component {
       height: 10em;
     `;
     return (
-      <div className="max-width pageCSS center-parent ">
+      <div className="max-width pageCSS center-parent" id="#about">
         <div className="center-flex">
           <h1 id="about">
             <i className="snes-jp-logo brand-logo" />
@@ -83,7 +82,6 @@ class Login extends React.Component {
               {" "}
               <p>로그인</p>{" "}
             </span>
-            <a href="#about" />
           </h1>
         </div>
         <div className="button-box">

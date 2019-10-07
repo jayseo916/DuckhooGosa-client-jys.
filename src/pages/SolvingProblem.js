@@ -3,18 +3,12 @@ import Img from "react-image";
 import { axiosInstance, config } from "../config";
 import Scoring from "../components/Scoring";
 import "../../node_modules/nes.css/css/nes.css";
-import styled from "styled-components";
 
 import {
   Player,
   ControlBar,
   PlayToggle,
-  ReplayControl,
-  ForwardControl,
   BigPlayButton,
-  CurrentTimeDisplay,
-  TimeDivider,
-  PlaybackRateMenuButton,
   VolumeMenuButton
 } from "video-react";
 import "../../node_modules/video-react/dist/video-react.css";
@@ -76,7 +70,7 @@ export default class SolvingProblem extends Component {
           total: data.problems.length //추후 실제데이터 시 사용
         },
         () => {
-          console.log(this.state, "현재 받아온 데이터");
+          // console.log(this.state, "현재 받아온 데이터");
           clearInterval(id);
         }
       );
@@ -231,15 +225,15 @@ export default class SolvingProblem extends Component {
           return (
             <div
               key={choiceNum}
-              style={{ "min-width": "80%", "vertical-align": "central" }}
+              style={{ "minWidth": "80%", "verticalAlign": "central" }}
               className="flex"
             >
               <input
                 style={{
-                  "-ms-transform": "scale(2)" /* IE */,
-                  "-moz-transform": "scale(2)" /* FF */,
-                  "-webkit-transform": "scale(2)" /* Safari and Chrome */,
-                  "-o-transform": "scale(2)" /* Opera */,
+                  "MsTransform": "scale(2)" /* IE */,
+                  "MozTransform": "scale(2)" /* FF */,
+                  "WebkitTransform": "scale(2)" /* Safari and Chrome */,
+                  "OTransform": "scale(2)" /* Opera */,
                   transform: "scale(2)",
                   margin: "0.5em 1.2em 0",
                   display: "flex"
@@ -251,7 +245,7 @@ export default class SolvingProblem extends Component {
               />
               <span
                 className="span_em_default"
-                style={{ "word-break": "break-word" }}
+                style={{ "breadWord": "break-word" }}
               >
                 {choiceNum + 1}번.{v.text}
               </span>
@@ -261,7 +255,7 @@ export default class SolvingProblem extends Component {
         viewChoice = (
           <div
             className="nes-container is-rounded"
-            style={{ "min-width": "90%" }}
+            style={{ "minWidth": "90%" }}
           >
             {viewChoice}
           </div>
@@ -290,7 +284,7 @@ export default class SolvingProblem extends Component {
             {fileTag}
             <span
               className="span_em_middle"
-              style={{ padding: "0.5em 0 0 0", "word-break": "break-word" }}
+              style={{ padding: "0.5em 0 0 0", "wordBreak": "break-word" }}
             >
               문제:{problem.problemText}
             </span>

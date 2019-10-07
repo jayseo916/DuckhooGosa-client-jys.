@@ -7,16 +7,12 @@ import "../shared/App.css";
 let uniqid = require("uniqid");
 
 class MySolved extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   confirm(problemId) {
     this.props.history.push("/SolvingProblem/" + problemId);
   }
 
   static cancel() {
-    console.log("취소");
+    // console.log("취소");
   }
 
   //     const Box = styled.div`
@@ -71,7 +67,7 @@ class MySolved extends React.Component {
                 </span>
               </div>
               <ImageBox className="flex-fixer thumbnail-wrap">
-                <img className="thumbnail" src={el.img} alt="image place" />
+                <img className="thumbnail" src={el.img} alt="place" />
               </ImageBox>
             </div>
           </Card>

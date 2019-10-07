@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FilePond, registerPlugin, File } from "react-filepond";
+import { FilePond, registerPlugin } from "react-filepond";
 import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import FilePondPluginMediaPreview from "filepond-plugin-media-preview";
@@ -11,7 +11,6 @@ import FilePondPluginImageResize from "filepond-plugin-image-resize";
 import FilePondPluginImageCrop from "filepond-plugin-image-crop";
 import FilePondPluginImageTransform from "filepond-plugin-image-transform";
 
-import Joi from "joi-browser";
 import CompleteProblem from "./CompleteProblem";
 
 import "filepond/dist/filepond.min.css";
@@ -62,7 +61,7 @@ class CreateProblem extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
+    // console.log(this.props);
   }
   handleInit() {
     // console.log("FilePond instance has initialised", this.pond);
@@ -187,10 +186,10 @@ class CreateProblem extends Component {
               <span className="span_em_small"> 정답:</span>
               <input
                 style={{
-                  "-ms-transform": "scale(2)" /* IE */,
-                  "-moz-transform": "scale(2)" /* FF */,
-                  "-webkit-transform": "scale(2)" /* Safari and Chrome */,
-                  "-o-transform": "scale(2)" /* Opera */,
+                  MsTransform: "scale(2)",
+                  MozTransform: "scale(2)",
+                  WebkitTransform: "scale(2)",
+                  OTransform: "scale(2)",
                   transform: "scale(2)",
                   margin: "0.5em 1.2em 0",
                   display: "inline-flex"
@@ -316,8 +315,8 @@ class CreateProblem extends Component {
           overflow: "auto",
           width: "100%",
           height: "100%",
-          "padding-top": "1em",
-          "padding-bottom": "5em"
+          paddingTop: "1em",
+          paddingBottom: "5em"
         }}
       >
         <form>
@@ -336,7 +335,7 @@ class CreateProblem extends Component {
             </span>
             <span style={{ marginLeft: "auto" }}>
               <Popover
-                content={<a onClick={this.hide}>Close</a>}
+                // content={<a onClick={this.hide}>Close</a>}
                 title="파일당 최대 2MB, 허용 확장자 jpg jpeg png mp3 mp4 avi"
                 trigger="click"
                 visible={this.state.popVisible}
@@ -350,7 +349,10 @@ class CreateProblem extends Component {
                     marginRight: "1em !important"
                   }}
                 >
-                  ❓
+                  <span role="img" alt={"?"}>
+                    {" "}
+                    ❓
+                  </span>
                 </button>
               </Popover>
             </span>
@@ -409,7 +411,7 @@ class CreateProblem extends Component {
             <div
               className="nes-select flex-fixer"
               style={{
-                "max-width": "150px",
+                maxWidth: "150px",
                 height: "2em"
               }}
             >
