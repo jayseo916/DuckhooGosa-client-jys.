@@ -3,6 +3,7 @@ import { Popconfirm } from "antd";
 import "../shared/App.css";
 import { formatRelative } from "date-fns";
 import styled from "styled-components";
+import CopyUrl from "../components/CopyUrl";
 
 let uniqid = require("uniqid");
 
@@ -49,6 +50,7 @@ class MyProblem extends React.Component {
                   문제 발행일:{" "}
                   {formatRelative(new Date(items.date), new Date())}
                 </span>
+                <CopyUrl id={items._id} />
               </div>
               <ImageBox className="flex-fixer thumbnail-wrap">
                 <img className="thumbnail" src={items.img} alt="place" />
