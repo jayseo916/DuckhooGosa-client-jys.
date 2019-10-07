@@ -307,7 +307,7 @@ export default class SolvingProblem extends Component {
 
   render() {
     return !this.state.isLoading ? (
-      <div className="max-width pageCSS-green container center-parent">
+      <div className="max-width pageCSS-white container center-parent">
         <progress
           className="nes-progress is-success center-item"
           value={this.state.progress}
@@ -317,7 +317,7 @@ export default class SolvingProblem extends Component {
     ) : (
       <div
         style={{ height: "100%", padding: "0.2em" }}
-        className="max-width pageCSS-green center-parent"
+        className="max-width pageCSS-white center-parent"
       >
         {this.state.scoring === false ? (
           // 문제집 감싸개.
