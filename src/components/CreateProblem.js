@@ -10,7 +10,7 @@ import FilePondPluginImageEdit from "filepond-plugin-image-edit";
 import FilePondPluginImageResize from "filepond-plugin-image-resize";
 import FilePondPluginImageCrop from "filepond-plugin-image-crop";
 import FilePondPluginImageTransform from "filepond-plugin-image-transform";
-
+import Joi from "joi-browser";
 import CompleteProblem from "./CompleteProblem";
 
 import "filepond/dist/filepond.min.css";
@@ -47,7 +47,7 @@ class CreateProblem extends Component {
       date: new Date(),
       Problems: [], //문제 객체의 목록
       problemText: "", //현재 문제의 지문
-      problemTextErrors: {},
+      errors: {},
       complete: false,
       choiceInitialValue: "none",
       choice: [], //문제객체 배열  => {text:,answer:} 객체 저장
@@ -83,9 +83,23 @@ class CreateProblem extends Component {
 
   handleChange = e => {
     //문제의 지문 값 온체인지
-    this.setState({
-      problemText: e.target.value
-    });
+
+    let problemText = e.target.value;
+    this.setState(
+      {
+        problemText
+      },
+      () => {
+        const errors = { ...this.state.errors };
+        const errMsg = this.validate();
+        if (errMsg) errors.problemText = errMsg.problemText;
+        else delete errors.problemText;
+        this.setState({
+          errors
+        });
+      }
+    );
+    console.log(this.state.problemText);
   };
 
   removeProblem = () => {
@@ -119,9 +133,11 @@ class CreateProblem extends Component {
     //주관식 답변 저장
     let answer = [...this.state.choice];
     answer[v].answer = e.target.value;
+    answer[v].answer = answer[v].answer.trim();
     this.setState({
       choice: answer
     });
+    console.log("왓더", this.state.choice);
   };
 
   handleChoiceAnswer = (e, v) => {
@@ -135,15 +151,51 @@ class CreateProblem extends Component {
       });
     } else if (e.target.type === "textarea" && answer.length === 1) {
       answer[v].answer = e.target.value;
-      this.setState({
-        choice: answer,
-        subjectAnswer: e.target.value
+      let arr = answer[v].answer.split("");
+      let temp = arr.filter(v => {
+        if (v !== " ") {
+          return v;
+        }
       });
+      answer[v].answer = temp.join("");
+
+      this.setState(
+        {
+          choice: answer,
+          subjectAnswer: e.target.value
+        },
+        () => {
+          console.log("주관답", this.state.choice);
+          const errors = { ...this.state.errors };
+          const errMsg = this.validateChoice();
+          console.log("주관식?", errMsg);
+          if (errMsg) errors[v] = errMsg[v];
+          else delete errors[v];
+
+          console.log(errors);
+          console.log("번호", v);
+          this.setState({
+            errors
+          });
+        }
+      );
     } else {
       answer[v].text = e.target.value;
-      this.setState({
-        choice: answer
-      });
+      this.setState(
+        {
+          choice: answer
+        },
+        () => {
+          const errors = { ...this.state.errors };
+          const errMsg = this.validateChoice();
+          if (errMsg) errors[v] = errMsg[v];
+          else delete errors[v];
+          console.log("번호", v);
+          this.setState({
+            errors
+          });
+        }
+      );
     }
   };
 
@@ -209,14 +261,18 @@ class CreateProblem extends Component {
 
   selectHandleChange = event => {
     //답안 타입 선택
-
+    let errors = {};
+    if (this.state.errors.problemText) {
+      errors.problemText = this.state.errors.problemText;
+    }
     let type = parseInt(event.target.value);
     let arr = [];
     for (let i = 0; i < type; i++) {
       arr.push({ text: "", answer: false });
     }
     this.setState({
-      choice: arr
+      choice: arr,
+      errors
     });
   };
 
@@ -228,6 +284,7 @@ class CreateProblem extends Component {
     }
     if (!this.state.Problems[ProblemNum]) {
       //새로운 문제를 생성하는 경우
+
       let newProblem = {
         fileLink1: (this.state.files && this.state.files[0]) || null,
         subjectAnswer:
@@ -266,7 +323,56 @@ class CreateProblem extends Component {
       });
     }
   };
+
+  validate = () => {
+    const errors = {};
+
+    const { problemText } = this.state;
+
+    if (problemText.trim() === "") {
+      errors.problemText = "지문을 적어야 합니다.";
+    }
+
+    return Object.keys(errors).length === 0 ? null : errors;
+  };
+
+  validateChoice = () => {
+    const errors = {};
+    const { choice } = this.state;
+    if (choice.length === 1) {
+      if (choice[0].answer.trim() === "") {
+        if (choice.length === 1) {
+          errors[0] = `주관식 답변을 작성해주세요`;
+        }
+      }
+    } else {
+      for (let i = 0; i < choice.length; i++) {
+        if (choice[i].text.trim() === "") {
+          errors[i] = `${i + 1}번 보기를 채워주세요`;
+        }
+      }
+    }
+
+    return Object.keys(errors).length === 0 ? null : errors;
+  };
+
   saveProblem = () => {
+    const errorsOne = this.validate();
+    const errorsTwo = this.validateChoice();
+    let errors = {};
+    if (errorsOne) {
+      errors = { ...errorsOne };
+    }
+    if (errorsTwo) {
+      errors = { ...errors, ...errorsTwo };
+    }
+    console.log("hi", errors, Object.keys(errors).length);
+    this.setState({ errors: errors });
+
+    if (Object.keys(errors).length !== 0) {
+      console.log(errors);
+      return;
+    }
     let newProblem = {
       fileLink1: (this.state.files && this.state.files[0]) || null,
       subjectAnswer:
@@ -397,7 +503,6 @@ class CreateProblem extends Component {
             className="form-group margin-zero-only"
             style={{ padding: "0 0.3em 0 0.3em" }}
           >
-            <label />
             <textarea
               onChange={this.handleChange}
               type="text"
@@ -405,6 +510,11 @@ class CreateProblem extends Component {
               className="form-control"
               defaultValue={this.state.problemText}
             />
+            {this.state.errors.problemText && (
+              <div className="alert alert-danger">
+                {this.state.errors.problemText}
+              </div>
+            )}
           </div>
           <div className="fdr flex center-parent">
             {/*<label htmlFor="default_select">답안지 선택 </label>*/}
@@ -433,10 +543,25 @@ class CreateProblem extends Component {
           </div>
           <div>
             {this.state.choice[0] && this.formTag(0, "1번")}
+            {this.state.errors[0] && (
+              <div className="alert alert-danger">{this.state.errors[0]}</div>
+            )}
             {this.state.choice[1] && this.formTag(1, "2번")}
+            {this.state.errors[1] && (
+              <div className="alert alert-danger">{this.state.errors[1]}</div>
+            )}
             {this.state.choice[2] && this.formTag(2, "3번")}
+            {this.state.errors[2] && (
+              <div className="alert alert-danger">{this.state.errors[2]}</div>
+            )}
             {this.state.choice[3] && this.formTag(3, "4번")}
+            {this.state.errors[3] && (
+              <div className="alert alert-danger">{this.state.errors[3]}</div>
+            )}
             {this.state.choice[4] && this.formTag(4, "5번")}
+            {this.state.errors[4] && (
+              <div className="alert alert-danger">{this.state.errors[4]}</div>
+            )}
           </div>
           <div
             style={{ overflow: "hidden", marginTop: "1em" }}
