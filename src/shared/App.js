@@ -15,6 +15,7 @@ import SolvingProblem from "../pages/SolvingProblem";
 import Comment from "../pages/Comment";
 import NotFound from "../pages/NotFound";
 import Linked from "../pages/Linked";
+import LoadingComponent from "../components/LoadingComponent";
 import "./App.css";
 
 const isDev = process.env.REACT_APP_LOG;
@@ -57,6 +58,7 @@ class App extends React.Component {
         <Switch>
           <Route path="/" exact component={Loading} />
           <Route path="/problem/main" component={Main} />
+          <Route path="/loading" component={LoadingComponent} />
           <Route
             path="/selectGenre"
             render={props => {
@@ -129,6 +131,7 @@ class App extends React.Component {
           <Route
             path="/SolvingProblem/:id"
             render={props => {
+              console.log(email, "어디보자");
               if (!email)
                 return (
                   <Redirect

@@ -55,12 +55,16 @@ class MySolved extends React.Component {
         >
           <Card
             key={el.problem_id + "_Card" + uniqid("k")}
-            className="nes-container with-title is-rounded"
+            style={{
+              marginBottom: "2em"
+            }}
+            className="nes-container with-title is-rounded is-centered"
           >
-            <p className="title"> {el.title} </p>
+            <p className="title">
+              <span className="span_em_default"> {el.title} </span>
+            </p>
             <div className="flex-container-row is-rounded is-centered">
               <div className="left-col flex-container-col">
-                <CopyUrl id={el.problem_id} />
                 <span className="nes-text is-error flex">
                   님 정답률!{el.successRate}%
                 </span>
@@ -69,6 +73,7 @@ class MySolved extends React.Component {
                 </span>
               </div>
               <ImageBox className="flex-fixer thumbnail-wrap">
+                <CopyUrl id={el.problem_id} />
                 <img className="thumbnail" src={el.img} alt="place" />
               </ImageBox>
             </div>
@@ -77,8 +82,10 @@ class MySolved extends React.Component {
       );
     });
     return (
-      <div className="nes-container with-title">
-        <p className="title"> 풀었던 문제들 </p>
+      <div className="nes-container with-title is-centered">
+        <p className="title">
+          <span className="font-2P span_em_default"> HISTORY </span>
+        </p>
         <div className="top-container">{null}</div>
         <div className="middle-container">{historyList}</div>
         <div className="bottom-container">{null}</div>
