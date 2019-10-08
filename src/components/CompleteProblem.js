@@ -1,6 +1,6 @@
 import React from "react";
 import { axiosInstance, config } from "../config";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { FilePond, registerPlugin } from "react-filepond";
 import FilePondPluginFilePoster from "filepond-plugin-file-poster";
 import "filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css";
@@ -29,7 +29,7 @@ class CompleteProblem extends React.Component {
     super(props);
 
     this.state = {
-      files: []
+      files: [],
     };
   }
   //제출 = Problems 를 이용하여 쭉 출력 => 완료버튼 : POST 하고 main으로 이동
@@ -107,6 +107,7 @@ class CompleteProblem extends React.Component {
           .post(`${process.env.REACT_APP_SERVER}/problem`, obj, config)
           .then(res => {
             // console.log(res, "업로드결과");
+            this.props.history.push('/main')
           })
           .catch(err => {
             console.log(err);
@@ -191,7 +192,7 @@ class CompleteProblem extends React.Component {
         }}
       >
         <div
-          className="nes-container with-title is-centered is-rounded padding-zero flex-container-col"
+          className="nes-container max-width nes-container-normal with-title is-centered flex-container-col"
           style={{
             height: "100%"
           }}
@@ -213,10 +214,10 @@ class CompleteProblem extends React.Component {
               }}
             />
             <div
-              className="btn-group btn-group-lg flex-fixer margin-center center-parent"
+              className=" flex-fixer margin-center center-parent"
               style={{
                 width: "100%",
-                height: "fit-content",
+                // height: "fit-content",
                 marginBottom: "1em"
               }}
               role="group"
@@ -233,22 +234,27 @@ class CompleteProblem extends React.Component {
                   this.modifyProblem();
                 }}
               >
-                <span className="span_em_default"> 수정</span>
+                <span className="span_em_default margin-center"> 수정</span>
               </button>
-              <Link
+              <button
                 style={{
                   maxWidth: "40%",
                   minHeight: "2em"
                 }}
-                to="problem/main"
-                type="reset"
-                className="nes-btn is-primary flex padding-zero-only"
+                className="nes-btn is-primary flex "
                 onClick={() => {
                   this.postProblems();
                 }}
               >
-                <span className="span_em_default">완료 </span>
-              </Link>
+                <span
+                  className="span_em_default margin-center"
+                  style={{
+                    color: "black"
+                  }}
+                >
+                  완료
+                </span>
+              </button>
             </div>
           </div>
         </div>

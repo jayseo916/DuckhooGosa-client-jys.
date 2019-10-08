@@ -12,6 +12,7 @@ import {
   VolumeMenuButton
 } from "video-react";
 import "../../node_modules/video-react/dist/video-react.css";
+import LoadingComponent from "../components/LoadingComponent";
 
 export default class SolvingProblem extends Component {
   constructor(props) {
@@ -225,15 +226,15 @@ export default class SolvingProblem extends Component {
           return (
             <div
               key={choiceNum}
-              style={{ "minWidth": "80%", "verticalAlign": "central" }}
+              style={{ minWidth: "80%", verticalAlign: "central" }}
               className="flex"
             >
               <input
                 style={{
-                  "MsTransform": "scale(2)" /* IE */,
-                  "MozTransform": "scale(2)" /* FF */,
-                  "WebkitTransform": "scale(2)" /* Safari and Chrome */,
-                  "OTransform": "scale(2)" /* Opera */,
+                  MsTransform: "scale(2)" /* IE */,
+                  MozTransform: "scale(2)" /* FF */,
+                  WebkitTransform: "scale(2)" /* Safari and Chrome */,
+                  OTransform: "scale(2)" /* Opera */,
                   transform: "scale(2)",
                   margin: "0.5em 1.2em 0",
                   display: "flex"
@@ -245,7 +246,7 @@ export default class SolvingProblem extends Component {
               />
               <span
                 className="span_em_default"
-                style={{ "breadWord": "break-word" }}
+                style={{ breadWord: "break-word" }}
               >
                 {choiceNum + 1}번.{v.text}
               </span>
@@ -253,10 +254,7 @@ export default class SolvingProblem extends Component {
           );
         });
         viewChoice = (
-          <div
-            className="nes-container is-rounded"
-            style={{ "minWidth": "90%" }}
-          >
+          <div className="nes-container is-rounded" style={{ minWidth: "90%" }}>
             {viewChoice}
           </div>
         );
@@ -284,7 +282,7 @@ export default class SolvingProblem extends Component {
             {fileTag}
             <span
               className="span_em_middle"
-              style={{ padding: "0.5em 0 0 0", "wordBreak": "break-word" }}
+              style={{ padding: "0.5em 0 0 0", wordBreak: "break-word" }}
             >
               문제:{problem.problemText}
             </span>
@@ -302,11 +300,7 @@ export default class SolvingProblem extends Component {
   render() {
     return !this.state.isLoading ? (
       <div className="max-width pageCSS-white container center-parent">
-        <progress
-          className="nes-progress is-success center-item"
-          value={this.state.progress}
-          max="100"
-        />
+        <LoadingComponent />
       </div>
     ) : (
       <div
@@ -331,10 +325,6 @@ export default class SolvingProblem extends Component {
             <button
               className="margin-center flex-fixer nes-btn is-success"
               type="button"
-              style={{
-                margin: "0 auto 0 auto",
-                width: "15em"
-              }}
               onClick={this.submit}
             >
               제출

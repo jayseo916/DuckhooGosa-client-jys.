@@ -1,8 +1,6 @@
 import React from "react";
 import "../shared/App.css";
 
-
-
 class SelectTheme extends React.Component {
   constructor(props) {
     super(props);
@@ -84,12 +82,7 @@ class SelectTheme extends React.Component {
             </div>
           )}
           <div className="filebox">
-
-            <label
-              htmlFor="inputFile1"
-              className="label-input"
-            >
-
+            <label htmlFor="inputFile1" className="label-input">
               업로드
             </label>
             <input
@@ -101,13 +94,11 @@ class SelectTheme extends React.Component {
             />
           </div>
           <hr className="hr-green" />
-          <div
-            className="BottomBox flex center-parent"
-            style={{
-              width: "fit-contents"
-            }}
-          >
+          <div className="ToBottom flex center-parent">
             <button
+              style={{
+                height: "1em"
+              }}
               className="nes-btn BottomBox "
               onClick={() => this.clickHandler()}
             >

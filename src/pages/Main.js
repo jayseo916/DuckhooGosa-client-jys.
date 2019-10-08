@@ -2,12 +2,12 @@ import React from "react";
 import { axiosInstance } from "../config";
 import styled from "styled-components";
 import CopyUrl from "../components/CopyUrl";
+import LoadingComponent from "../components/LoadingComponent";
 
 let mainApi = "/problem/main";
 let searchApi = "/problem/search";
 let genreApi = "/problem/genre";
 let isDev = process.env.REACT_APP_LOG;
-
 
 class Main extends React.Component {
   constructor(props) {
@@ -27,7 +27,8 @@ class Main extends React.Component {
       genreOn: false,
       CurGenreNoData: false,
       CurSearchNoData: false,
-      MainNoData: false
+      MainNoData: false,
+      isLoading: false
     };
   }
   componentDidMount = async () => {
@@ -56,6 +57,7 @@ class Main extends React.Component {
       }
     }
     window.addEventListener("scroll", this.handleScroll);
+    this.setState({ isLoading: true });
   };
   componentWillUnmount() {
     // 언마운트 될때에, 스크롤링 이벤트 제거
@@ -354,155 +356,185 @@ class Main extends React.Component {
       width: 95%;
     `;
 
-    return (
-      <div
-        className="flex fdc max-width pageCSS-white"
-        style={{
-          width: "fit-content",
-          overflowScrolling: "auto"
-        }}
-      >
+    if (this.state.isLoading === false) {
+      // LOADING SERVICE
+      return (
         <div
-          className="flex-fixer flex fdc margin-center"
+          className="flex fdc max-width pageCSS-white"
           style={{
-            flexWrap: "wrap"
+            width: "fit-content",
+            overflowScrolling: "auto"
           }}
         >
           <div
-            className="flex fdr"
+            className="flex-fixer flex fdc filling_parent margin-center-vertical"
             style={{
-              padding: "0.75em 0 0.5em 0"
+              flexWrap: "wrap",
+              padding: "1em"
             }}
           >
-            <div className="nes-select flex">
-              <select
-                required
+            <LoadingComponent />
+          </div>
+        </div>
+      );
+    } else {
+      // MAIN SERVICE
+      return (
+        <div
+          className="flex fdc max-width pageCSS-white"
+          style={{
+            width: "fit-content",
+          }}
+        >
+          <div
+            className="flex-fixer flex fdc margin-center"
+            style={{
+
+              flexWrap: "wrap"
+            }}
+          >
+            <div
+              className="inline-flex fdr"
+              style={{
+                padding: "0.75em 0 0.5em 0"
+              }}
+            >
+              <div className="nes-select flex filling_child">
+                <select
+                  required
+                  style={{
+                    display: "flex !important",
+                    width: "30%",
+                    backgroundColor: "white",
+                    padding: "0 0.3em 0 0.2em"
+                  }}
+                  id="currentGenre"
+                  className="flex"
+                  onChange={e => {
+                    this.handleSelect(e);
+                  }}
+                >
+                  <option value="">Select...</option>
+                  <option value="movie">영화</option>
+                  <option value="animation">애니메이션</option>
+                  <option value="game">게임</option>
+                  <option value="sports">스포츠</option>
+                  <option value="entertain">연예</option>
+                  <option value="military">군사</option>
+                </select>
+              </div>
+
+              <div
+                className="nes-field is-inline flex filling_child"
                 style={{
-                  display: "flex !important",
-                  height: "min-content",
-                  width: "30%"
-                }}
-                id="currentGenre"
-                className="form-control flex"
-                onChange={e => {
-                  this.handleSelect(e);
+                  height: "fit-content"
                 }}
               >
-                <option value="">Select...</option>
-                <option value="movie">영화</option>
-                <option value="animation">애니메이션</option>
-                <option value="game">게임</option>
-                <option value="sports">스포츠</option>
-                <option value="entertain">연예</option>
-                <option value="military">군사</option>
-              </select>
-            </div>
+                <input
+                  style={{
+                    display: "flex !important",
+                    width: "95%",
+                    marginLeft: "0.3em",
+                    marginRight: "0.3em",
+                    padding: "0"
+                  }}
+                  type="text"
+                  id="inputTag inline_field"
+                  className="padding-zero-only nes-input flex"
+                  value={this.state.input}
+                  size="40"
+                  onChange={e => this.handleInput(e)}
+                />
+              </div>
 
-            <div className="nes-field is-inline flex">
-              <input
+              <button
                 style={{
-                  height: "min-content",
                   display: "flex !important",
-                  width: "95%",
+                  height: "min-content",
                   marginLeft: "0.3em",
-                  marginRight: "0.3em"
+                  padding: "0"
                 }}
-                type="text"
-                id="inputTag inline_field"
-                className="nes-input flex"
-                value={this.state.input}
-                size="40"
-                onChange={e => this.handleInput(e)}
-                onKeyUp={() => this.enterKey()}
-              />
+                className="nes-btn inline-flex flex-fixer"
+                onClick={() => this.search()}
+              >
+                FIND
+              </button>
             </div>
+            {/*메인 카드리스트*/}
+            <div className="nes-container-card nes-container with-title is-centered">
+              <p className="title t-color font-2P"> Preview </p>
+              <div className="flex fdc">
+                {problems.map((item, i) =>
+                  this.state.currentOption === "" ? (
+                    <div
+                      key={i + item._id}
+                      className="flex margin-center fdc center-parent"
+                    >
+                      <div>
+                        <CopyUrl id={item._id} />
+                        <a href="/#" className="flex">
+                          <ImageBox className="flex-fixer main-thumbnail-wrap margin-center">
+                            <img
+                              style={{
+                                maxheight: "20em"
+                              }}
+                              className="thumbnail main-thumnail-img img_border_5"
+                              src={item.representImg}
+                              alt="Responsive"
+                              width="100%"
+                              onClick={e => this.solvedProblem(e, item._id)}
+                            />
+                          </ImageBox>
+                        </a>
 
-            <button
-              style={{
-                display: "flex !important",
-                height: "min-content",
-                marginLeft: "0.3em"
-              }}
-              className="nes-btn flex-fixer"
-              onClick={() => this.search()}
-            >
-              FIND
-            </button>
-          </div>
-          {/*메인 카드리스트*/}
-          <div className="nes-container-card nes-container with-title is-centered">
-            <p className="title t-color font-2P"> Preview </p>
-            <div className="flex fdc">
-              {problems.map((item, i) =>
-                this.state.currentOption === "" ? (
-                  <div
-                    key={i + item._id}
-                    className="flex margin-center fdc center-parent"
-                  >
-                    <div>
-                      <CopyUrl id={item._id} />
-                      <a href="/#" className="flex">
-                        <ImageBox className="flex-fixer main-thumbnail-wrap margin-center">
-                          <img
-                            style={{
-                              maxheight: "20em"
-                            }}
-                            className="thumbnail main-thumnail-img img_border_5"
-                            src={item.representImg}
-                            alt="Responsive"
-                            width="100%"
-                            onClick={e => this.solvedProblem(e, item._id)}
-                          />
-                        </ImageBox>
-                      </a>
-
-                      <a
-                        href="/#"
-                        onClick={e => this.solvedProblem(e, item._id)}
-                      >
-                        <h4>{item.title}</h4>
-                      </a>
+                        <a
+                          href="/#"
+                          onClick={e => this.solvedProblem(e, item._id)}
+                        >
+                          <h4>{item.title}</h4>
+                        </a>
+                      </div>
+                      <hr className="main-hr" />
                     </div>
-                    <hr className="main-hr" />
-                  </div>
-                ) : this.state.currentOption === item.genre ? (
-                  <div
-                    key={i + item._id}
-                    className="flex margin-center fdc center-parent"
-                  >
-                    <div>
-                      <CopyUrl id={item._id} />
-                      <a href="/#" className="flex">
-                        <ImageBox className="flex-fixer main-thumbnail-wrap margin-center">
-                          <img
-                            style={{
-                              maxheight: "20em"
-                            }}
-                            className="thumbnail main-thumnail-img img_border_5"
-                            src={item.representImg}
-                            alt="Responsive"
-                            width="100%"
-                            onClick={e => this.solvedProblem(e, item._id)}
-                          />
-                        </ImageBox>
-                      </a>
+                  ) : this.state.currentOption === item.genre ? (
+                    <div
+                      key={i + item._id}
+                      className="flex margin-center fdc center-parent"
+                    >
+                      <div>
+                        <CopyUrl id={item._id} />
+                        <a href="/#" className="flex">
+                          <ImageBox className="flex-fixer main-thumbnail-wrap margin-center">
+                            <img
+                              style={{
+                                maxheight: "20em"
+                              }}
+                              className="thumbnail main-thumnail-img img_border_5"
+                              src={item.representImg}
+                              alt="Responsive"
+                              width="100%"
+                              onClick={e => this.solvedProblem(e, item._id)}
+                            />
+                          </ImageBox>
+                        </a>
 
-                      <a
-                        href="/#"
-                        onClick={e => this.solvedProblem(e, item._id)}
-                      >
-                        <h4>{item.title}</h4>
-                      </a>
+                        <a
+                          href="/#"
+                          onClick={e => this.solvedProblem(e, item._id)}
+                        >
+                          <h4>{item.title}</h4>
+                        </a>
+                      </div>
+                      <hr className="main-hr" />
                     </div>
-                    <hr className="main-hr" />
-                  </div>
-                ) : null
-              )}
+                  ) : null
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 }
 

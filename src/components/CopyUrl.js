@@ -5,9 +5,6 @@ const clientURL = "localhost:3000";
 const chainImg = require("../client/img/link-1271843.svg");
 
 class CopyUrl extends Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
     const _id = this.props.id;
     return (
@@ -22,7 +19,12 @@ class CopyUrl extends Component {
         <ReactSVG
           src={chainImg}
           alt="link"
-          style={{ height: 30, width: 30 }}
+          style={{
+            height: 30,
+            width: 30,
+            position: "absolute",
+            backgroundColor: "white"
+          }}
           // className="clip-board"
         >
           링크복사
