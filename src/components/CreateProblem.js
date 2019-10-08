@@ -167,6 +167,7 @@ class CreateProblem extends Component {
         () => {
           console.log("주관답", this.state.choice[0].answer);
           console.log("프라블럼스의 답", this.state.Problems);
+          console.log(this.state.subjectAnswer);
           const errors = { ...this.state.errors };
           const errMsg = this.validateChoice();
           console.log("주관식?", errMsg);
@@ -366,6 +367,8 @@ class CreateProblem extends Component {
 
     if (problemText.trim() === "") {
       errors.problemText = "지문을 적어야 합니다.";
+    } else if (problemText.length > process.env.REACT_APP_Q) {
+      errors.problemText = `${process.env.REACT_APP_Q}자 이하로 적어주세요`;
     }
 
     return Object.keys(errors).length === 0 ? null : errors;
@@ -378,11 +381,15 @@ class CreateProblem extends Component {
       console.log("??", choice);
       if (choice[0].answer === false || choice[0].answer.trim() === "") {
         errors[0] = `주관식 답변을 작성해주세요`;
+      } else if (choice[0].answer.length > process.env.REACT_APP_NARRATIVE) {
+        errors[0] = `${process.env.REACT_APP_NARRATIVE}자 이하로 적어주세요`;
       }
     } else {
       for (let i = 0; i < choice.length; i++) {
         if (choice[i].text.trim() === "") {
           errors[i] = `${i + 1}번 보기를 채워주세요`;
+        } else if (choice[i].text.length > process.env.REACT_APP_CHOICE) {
+          errors[i] = `${process.env.REACT_APP_CHOICE}자 이하로 적어주세요`;
         }
       }
     }
