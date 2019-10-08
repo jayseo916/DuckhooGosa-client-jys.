@@ -4,7 +4,6 @@ import { axiosInstance, config } from "../config";
 import Scoring from "../components/Scoring";
 import "../../node_modules/nes.css/css/nes.css";
 
-
 import {
   Player,
   ControlBar,
@@ -164,7 +163,6 @@ export default class SolvingProblem extends Component {
         solved
       });
     }); ///////////////done
-
   };
   viewProblem = () => {
     const { problems } = this.state;
@@ -172,7 +170,11 @@ export default class SolvingProblem extends Component {
       let url = problem.fileLink1 || null;
       let fileTag = null;
       if (url) {
-        if (url.slice(-3) === "png" || url.slice(-3) === "jpg") {
+        if (
+          url.slice(-3) === "png" ||
+          url.slice(-3) === "jpg" ||
+          url.slice(-4) === "jpeg"
+        ) {
           fileTag = (
             <Img
               className="flex"
