@@ -15,8 +15,10 @@ import SolvingProblem from "../pages/SolvingProblem";
 import Comment from "../pages/Comment";
 import NotFound from "../pages/NotFound";
 import Linked from "../pages/Linked";
+import LoadingComponent from "../components/LoadingComponent";
 import "./App.css";
 
+const isDev = process.env.REACT_APP_LOG;
 class App extends React.Component {
   constructor(prop) {
     super(prop);
@@ -37,28 +39,26 @@ class App extends React.Component {
 
   setUserInfo = data => {
     this.setState({ email: data.email, expires_at: data.expires_at }, () => {
-      // let { email, expires_at } = this.state;
-      // console.log(`${email}님 로그인 ${expires_at}에 토큰 만료`);
+      let { email, expires_at } = this.state;
+      let time = new Date(expires_at + 3600);
+      isDev && console.log(`${email}님 로그인 ${time}에 토큰 만료`);
     });
   };
 
   setRepreImg = repreImg => {
     this.setState({ repreImg: repreImg }, () => {
-      // console.log("이미지 설정 완료");
+      isDev && console.log("이미지 설정 완료");
     });
   };
 
   render() {
     const { email, expires_at } = this.state;
     return (
-      <div
-        style={{
-        }}
-        className="App"
-      >
+      <div style={{}} className="App">
         <Switch>
           <Route path="/" exact component={Loading} />
           <Route path="/problem/main" component={Main} />
+          <Route path="/loading" component={LoadingComponent} />
           <Route
             path="/selectGenre"
             render={props => {
@@ -131,6 +131,7 @@ class App extends React.Component {
           <Route
             path="/SolvingProblem/:id"
             render={props => {
+              console.log(email, "어디보자");
               if (!email)
                 return (
                   <Redirect

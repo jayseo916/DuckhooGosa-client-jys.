@@ -22,7 +22,12 @@ class CopyUrl extends Component {
         <ReactSVG
           src={chainImg}
           alt="link"
-          style={{ height: 30, width: 30 }}
+          style={{
+            height: 30,
+            width: 30,
+            position: "absolute",
+            backgroundColor: "white"
+          }}
           // className="clip-board"
         >
           링크복사
