@@ -5,9 +5,6 @@ const clientURL = "localhost:3000";
 const chainImg = require("../client/img/link-1271843.svg");
 
 class CopyUrl extends Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
     const _id = this.props.id;
     return (

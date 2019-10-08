@@ -19,7 +19,6 @@ import "filepond-plugin-image-edit/dist/filepond-plugin-image-edit.css";
 import "filepond-plugin-media-preview/dist/filepond-plugin-media-preview.css";
 import styled from "styled-components";
 import { Popover } from "antd";
-
 registerPlugin(
   FilePondPluginImageExifOrientation,
   FilePondPluginImagePreview,
@@ -492,6 +491,7 @@ class CreateProblem extends Component {
       </div>
     ) : (
       <CompleteProblem
+          history={this.props.history}
         className="max-width"
         Problems={this.state.Problems}
         problemState={this.state}

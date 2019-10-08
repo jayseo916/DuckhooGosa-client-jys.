@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { config, axiosInstance } from "../config";
-import {GoogleLogin, GoogleLogout} from "react-google-login";
+import { GoogleLogin } from "react-google-login";
 import Img from "react-image";
 import "bootstrap/dist/css/bootstrap.css";
 import "../shared/App.css";
@@ -16,7 +16,7 @@ class Linked extends Component {
   componentDidMount = async () => {
     try {
       const { data } = await axiosInstance.get(
-          `/problem/${this.props.location.problemId}`,
+        `/problem/${this.props.location.problemId}`,
         config
       );
       const { title, representImg } = data;
@@ -31,40 +31,42 @@ class Linked extends Component {
 
   render() {
     return this.state.title && this.state.representImg ? (
-        <div className="max-width pageCSS center-parent center-flex" id="#about">
-          <div className="fdc">
-            <i className="snes-jp-logo brand-logo"/><br/>
-            <span className="span_em_vl text-strike_white"> 덕후고사</span><br/>
+      <div className="max-width pageCSS center-parent center-flex" id="#about">
+        <div className="fdc">
+          <i className="snes-jp-logo brand-logo" />
+          <br />
+          <span className="span_em_vl text-strike_white"> 덕후고사</span>
+          <br />
           <span className="span_em_small text-strike_white">
             덕후들을 위한 덕후들의 퀴즈놀이터
           </span>
-          </div>
-
-          <div
-              className="filling_child"
-              style={{
-                outlineColor: "white",
-                outlineWidth: "4px",
-                outlineStyle: "solid"
-              }}
-          >
-            <Img src={this.state.representImg} width={300} height={300}/>
-          </div>
-
-          <div className="center-flex">
-            <span className="span_em_default text-strike_white">
-              {this.state.title}
-            </span>
-          </div>
-
-          <div className="button-box">
-            <Login
-                setUserInfo={this.props.location.setUserInfo}
-                problemId={this.props.location.problemId}
-                history={this.props.history}
-            />
-          </div>
         </div>
+
+        <div
+          className="filling_child"
+          style={{
+            outlineColor: "white",
+            outlineWidth: "4px",
+            outlineStyle: "solid"
+          }}
+        >
+          <Img src={this.state.representImg} width={300} height={300} />
+        </div>
+
+        <div className="center-flex">
+          <span className="span_em_default text-strike_white">
+            {this.state.title}
+          </span>
+        </div>
+
+        <div className="button-box">
+          <Login
+            setUserInfo={this.props.location.setUserInfo}
+            problemId={this.props.location.problemId}
+            history={this.props.history}
+          />
+        </div>
+      </div>
     ) : null;
   }
 }
