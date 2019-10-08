@@ -15,12 +15,23 @@ class SelectTheme extends React.Component {
     });
   }
   fileUpload(e) {
-    this.setState({
-      URL: URL.createObjectURL(e.target.files[0])
-    });
-    // eslint-disable-next-line react/prop-types
-    const { setRepreImg } = this.props;
-    setRepreImg(e.target.files[0]);
+    let fileKind = e.target.value.lastIndexOf(".");
+    let fileName = e.target.value.substring(fileKind + 1, e.length);
+    let fileType = fileName.toLowerCase();
+    let checkFileType = ["jpg", "gif", "png", "jpeg", "bmp"];
+
+    if (checkFileType.indexOf(fileType) === -1) {
+      alert("확장자가 jpg, gif, png, jpeg, bmp인 이미지 파일만 올려주세요.");
+      e.target.value = "";
+      return false;
+    } else {
+      this.setState({
+        URL: URL.createObjectURL(e.target.files[0])
+      });
+      // eslint-disable-next-line react/prop-types
+      const { setRepreImg } = this.props;
+      setRepreImg(e.target.files[0]);
+    }
     // let fileEl = document.getElementById("inputFile1");
     // console.log(fileEl);
   }
@@ -88,8 +99,8 @@ class SelectTheme extends React.Component {
             <input
               id="inputFile1"
               type="file"
+              accept="image/jpeg, image/gif, image/png, image/jpg, image/bmp"
               hidden={true}
-              // placeholder="파일을 선택해주세요"
               onChange={e => this.fileUpload(e)}
             />
           </div>

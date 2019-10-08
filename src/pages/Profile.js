@@ -71,9 +71,20 @@ class Profile extends Component {
   }
 
   profileImg(e) {
-    this.setState({
-      curImg: e.target.files[0]
-    });
+    let fileKind = e.target.value.lastIndexOf(".");
+    let fileName = e.target.value.substring(fileKind + 1, e.length);
+    let fileType = fileName.toLowerCase();
+    let checkFileType = ["jpg", "gif", "png", "jpeg", "bmp"];
+
+    if (checkFileType.indexOf(fileType) === -1) {
+      alert("확장자가 jpg, gif, png, jpeg, bmp인 이미지 파일만 올려주세요.");
+      e.target.value = "";
+      return false;
+    } else {
+      this.setState({
+        curImg: e.target.files[0]
+      });
+    }
   }
   async uploadImage2() {
     let memberImageDir = "memberImageDir";
@@ -235,6 +246,7 @@ class Profile extends Component {
                   <input
                     type="file"
                     id="fileX"
+                    accept="image/*"
                     onChange={e => this.profileImg(e)}
                   />
                   <this.ProfileButton
@@ -242,6 +254,12 @@ class Profile extends Component {
                     onClick={() => this.uploadImage2()}
                   >
                     <span style={{ color: "white" }}> Upload</span>
+                  </this.ProfileButton>
+                  <this.ProfileButton
+                    className="nes-btn is-warning"
+                    onClick={() => this.uploadImage1()}
+                  >
+                    이미지 변경취소
                   </this.ProfileButton>
                 </div>
               )}
