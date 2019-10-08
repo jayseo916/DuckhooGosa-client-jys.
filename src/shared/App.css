@@ -30,7 +30,6 @@
 }
 
 .bottom-text-container {
-
 }
 
 .fdr {
@@ -230,7 +229,6 @@
 .thumbnail-wrap {
   width: 300px; /*container-width*/
   overflow: hidden; /*hide bounds of image */
-  margin: 0; /*reset margin of figure tag*/
 }
 
 .main-thumbnail-wrap {
@@ -242,12 +240,12 @@
 .thumbnail {
   display: block; /*remove inline-block spaces*/
   width: 100%; /*make image streatch*/
+  margin: -21.875% 0;
 }
 
 .thumbnail {
   /*add to other styles*/
   /*add to other styles*/
-  margin: -21.875% 0;
   /*width:177.777%;!**!*/
 }
 
@@ -293,8 +291,6 @@
 }
 
 i {
-  /*font-size: 75px;*/
-  /*display: block;*/
   margin: 0 !important;
   border: black 2px;
 }
@@ -315,23 +311,40 @@ label.dv-star-rating-full-star > i {
   font-size: 17px;
 }
 
+/*34px Header*/
 .span_em_vl {
-  font-size: 2em;
+  font-size: 2.125rem;
+  word-break: normal;
 }
 
+/*28px*/
 .span_em_l {
-  font-size: 1.75em;
+  font-size: 1.75rem;
+  word-break: normal;
 }
+
+/*22px*/
 .span_em_middle {
-  font-size: 1.4em;
+  font-size: 1.375rem;
+  word-break: normal;
 }
 
+/*19px*/
 .span_em_default {
-  font-size: 1.2em;
+  font-size: 1.1875rem;
+  word-break: normal;
 }
 
+/*14*/
 .span_em_small {
-  font-size: 0.9em;
+  font-size: 0.875rem;
+  word-break: normal;
+}
+
+/*14*/
+.span_em_vsmall {
+  font-size: 0.6875rem;
+  word-break: normal;
 }
 
 .grey {
@@ -371,6 +384,12 @@ label.dv-star-rating-full-star > i {
 
 .BottomBox {
   padding-bottom: 5vh;
+  margin-top: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ToBottom {
   margin-top: auto;
   margin-left: auto;
   margin-right: auto;
@@ -432,6 +451,10 @@ label.dv-star-rating-full-star > i {
   outline: 1px dotted red;
 }
 
+.word-break {
+  word-break: normal;
+}
+
 .nes-container-card {
   padding: 3em 0 0 0 !important;
   margin: 0 !important;
@@ -440,6 +463,10 @@ label.dv-star-rating-full-star > i {
 .nes-container-normal {
   padding-left: 5px !important;
   padding-right: 5px !important;
+}
+
+.nes-container-hard {
+  padding: 10px 5px 10px 5px !important;
 }
 
 .center-center-series {
@@ -469,17 +496,6 @@ label.dv-star-rating-full-star > i {
 
 .label-input {
   margin-bottom: 0;
-  /*display: inline-block;*/
-  /*padding: 0.5em 0.75em;*/
-  /*color: #999;*/
-  /*font-size: inherit;*/
-  /*line-height: normal;*/
-  /*vertical-align: middle;*/
-  /*background-color: #fdfdfd;*/
-  /*cursor: pointer;*/
-  /*border: 1px solid #ebebeb;*/
-  /*border-bottom-color: #e2e2e2;*/
-  /*border-radius: 0.25em;*/
 }
 
 .ant-collapse-content-box {

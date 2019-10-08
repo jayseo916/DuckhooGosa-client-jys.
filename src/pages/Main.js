@@ -384,6 +384,7 @@ class Main extends React.Component {
           <div
             className="flex-fixer flex fdc margin-center"
             style={{
+
               flexWrap: "wrap"
             }}
           >
