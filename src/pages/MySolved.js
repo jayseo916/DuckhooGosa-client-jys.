@@ -3,20 +3,17 @@ import styled from "styled-components";
 import { formatRelative } from "date-fns";
 import { Popconfirm } from "antd";
 import "../shared/App.css";
+import CopyUrl from "../components/CopyUrl";
 
 let uniqid = require("uniqid");
 
 class MySolved extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   confirm(problemId) {
     this.props.history.push("/SolvingProblem/" + problemId);
   }
 
   static cancel() {
-    console.log("취소");
+    // console.log("취소");
   }
 
   //     const Box = styled.div`
@@ -39,7 +36,7 @@ class MySolved extends React.Component {
 
     const ImageBox = styled.div`
       height: 8em;
-      width: 70%;
+      width: 100%;
     `;
 
     const { solution } = this.props.history.location.state.userInfo;
@@ -58,31 +55,64 @@ class MySolved extends React.Component {
         >
           <Card
             key={el.problem_id + "_Card" + uniqid("k")}
-            className="nes-container with-title is-rounded"
+            style={{
+              marginBottom: "2em"
+            }}
+            className="nes-container nes-container-hard with-title is-rounded is-centered"
           >
-            <p className="title"> {el.title} </p>
-            <div className="flex-container-row is-rounded is-centered">
-              <div className="left-col flex-container-col">
-                <span className="nes-text is-error flex">
-                  님 정답률!{el.successRate}%
+            <p
+              className="title"
+              style={{
+                marginBottom: "0px"
+              }}
+            >
+              <span className="span_em_default">{el.title} </span>
+            </p>
+            <div
+              className="flex-container-col is-rounded is-centered"
+              style={{
+                marginBottom: "-7px"
+              }}
+            >
+              <ImageBox className="margin-center thumbnail-wrap">
+                <CopyUrl id={el.problem_id} />
+                <img className="thumbnail" src={el.img} alt="place" />
+              </ImageBox>
+              <div className="flex-container-row margin-center">
+                <span className="flex nes-text is-error span_em_small word-break">
+                  <a href="#self" className="nes-badge is-splited">
+                    <span className="is-dark">Hit</span>
+                    <span className="is-success">{el.successRate}%</span>
+                  </a>
                 </span>
-                <span className="nes-text is-primary flex">
-                  언제 풀었어? {formatRelative(new Date(el.date), new Date())}
+                <span
+                  className="nes-text is-primary span_em_small word-break margin-center center-center-series flex"
+                  style={{
+                    // display: "block"
+                    height: "fit-content"
+                  }}
+                >
+                  {" "}
+                  {formatRelative(new Date(el.date), new Date())}
                 </span>
               </div>
-              <ImageBox className="flex-fixer thumbnail-wrap">
-                <img className="thumbnail" src={el.img} alt="image place" />
-              </ImageBox>
             </div>
           </Card>
         </Popconfirm>
       );
     });
     return (
-      <div className="nes-container with-title">
-        <p className="title"> 풀었던 문제들 </p>
+      <div className="max-width nes-container-normal nes-container  with-title is-centered filling_child">
+        <p className="title">
+          <span className="font-2P span_em_default"> HISTORY </span>
+        </p>
+        <div className="top-container flex fdc">{null}</div>
+        <div className="middle-container flex fdc"  style={{ marginBottom: "45px" }}>{historyList}</div>
+        <div className="bottom-container flex fdc">{null}</div>
         <div className="top-container">{null}</div>
-        <div className="middle-container">{historyList}</div>
+        <div className="middle-container">
+          {historyList}
+        </div>
         <div className="bottom-container">{null}</div>
       </div>
     );

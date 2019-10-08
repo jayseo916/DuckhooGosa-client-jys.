@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FilePond, registerPlugin, File } from "react-filepond";
+import { FilePond, registerPlugin } from "react-filepond";
 import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import FilePondPluginMediaPreview from "filepond-plugin-media-preview";
@@ -10,14 +10,15 @@ import FilePondPluginImageEdit from "filepond-plugin-image-edit";
 import FilePondPluginImageResize from "filepond-plugin-image-resize";
 import FilePondPluginImageCrop from "filepond-plugin-image-crop";
 import FilePondPluginImageTransform from "filepond-plugin-image-transform";
-
 import Joi from "joi-browser";
 import CompleteProblem from "./CompleteProblem";
 
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import "filepond-plugin-image-edit/dist/filepond-plugin-image-edit.css";
-
+import "filepond-plugin-media-preview/dist/filepond-plugin-media-preview.css";
+import styled from "styled-components";
+import { Popover } from "antd";
 registerPlugin(
   FilePondPluginImageExifOrientation,
   FilePondPluginImagePreview,
@@ -30,6 +31,7 @@ registerPlugin(
   FilePondPluginImageCrop,
   FilePondPluginImageTransform
 );
+let isDev = process.env.REACT_APP_LOG;
 
 class CreateProblem extends Component {
   constructor(props) {
@@ -45,30 +47,59 @@ class CreateProblem extends Component {
       date: new Date(),
       Problems: [], //문제 객체의 목록
       problemText: "", //현재 문제의 지문
-      problemTextErrors: {},
+      errors: {},
       complete: false,
       choiceInitialValue: "none",
       choice: [], //문제객체 배열  => {text:,answer:} 객체 저장
       curProblem: 0, //현재 문제 번호 0~,
-      subjectAnswer: ""
+      subjectAnswer: "",
+      popVisible: false
     };
+    this.BottomButton = styled.button`
+      padding: 1px;
+    `;
   }
-  // problemTextSchema = {
-  //   Problemtext: Joi.string().required()
-  // };
 
   componentDidMount() {
-    // console.log(this.state)
+    isDev && console.log(this.props);
   }
   handleInit() {
-    // console.log("FilePond instance has initialised", this.pond);
+    isDev && console.log("FilePond instance has initialised", this.pond);
   }
+
+  state = {
+    popVisible: false
+  };
+
+  hide = () => {
+    this.setState({
+      vpopVisible: false
+    });
+  };
+
+  handleVisibleChange = popVisible => {
+    this.setState({ popVisible });
+  };
 
   handleChange = e => {
     //문제의 지문 값 온체인지
-    this.setState({
-      problemText: e.target.value
-    });
+
+    let problemText = e.target.value;
+    this.setState(
+      {
+        problemText
+      },
+      () => {
+        const errors = { ...this.state.errors };
+        const errMsg = this.validate();
+        if (errMsg) errors.problemText = errMsg.problemText;
+        else delete errors.problemText;
+        this.setState({
+          errors
+        });
+      }
+    );
+    isDev && console.log(this.state.problemText);
   };
 
   removeProblem = () => {
@@ -102,6 +133,7 @@ class CreateProblem extends Component {
     //주관식 답변 저장
     let answer = [...this.state.choice];
     answer[v].answer = e.target.value;
+    answer[v].answer = answer[v].answer.trim();
     this.setState({
       choice: answer
     });
@@ -118,15 +150,54 @@ class CreateProblem extends Component {
       });
     } else if (e.target.type === "textarea" && answer.length === 1) {
       answer[v].answer = e.target.value;
-      this.setState({
-        choice: answer,
-        subjectAnswer: e.target.value
+      let arr = answer[v].answer.split("");
+      let temp = arr.filter(v => {
+        if (v !== " ") {
+          return v;
+        }
       });
+      answer[v].answer = temp.join("");
+
+      this.setState(
+        {
+          choice: answer,
+          subjectAnswer: e.target.value
+        },
+        () => {
+          isDev && console.log("주관답", this.state.choice[0].answer);
+          isDev && console.log("프라블럼스의 답", this.state.Problems);
+          isDev && console.log(this.state.subjectAnswer);
+          const errors = { ...this.state.errors };
+          const errMsg = this.validateChoice();
+          isDev && console.log("주관식?", errMsg);
+          if (errMsg) errors[v] = errMsg[v];
+          else delete errors[v];
+
+          isDev && console.log(errors);
+          isDev && console.log("번호", v);
+          this.setState({
+            errors
+          });
+        }
+      );
     } else {
       answer[v].text = e.target.value;
-      this.setState({
-        choice: answer
-      });
+      this.setState(
+        {
+          choice: answer
+        },
+        () => {
+          const errors = { ...this.state.errors };
+          const errMsg = this.validateChoice();
+          if (errMsg) errors[v] = errMsg[v];
+          else delete errors[v];
+          isDev && console.log("choice배열", this.state.choice);
+          isDev && console.log("문제배열", this.state.Problems.choice);
+          this.setState({
+            errors
+          });
+        }
+      );
     }
   };
 
@@ -142,18 +213,19 @@ class CreateProblem extends Component {
 
     return (
       <React.Fragment>
-        <div className="form-group">
-          <label htmlFor="choiceName">
+        <div className="form-group center-parent flex fdr margin-side_03em">
+          <label htmlFor="choiceName" className="margin-center-vertical">
             {this.state.choice[1] === undefined ? "주관식정답" : label}
           </label>
-          <span>
+          <span className="flex margin-side_03em" style={{ width: "100%" }}>
             <textarea
+              // style={{ width: "60%" }}
               id="choiceName"
               onChange={e => {
                 this.handleChoiceAnswer(e, num);
               }}
               type="text"
-              className="form-control"
+              className="form-control flex"
               defaultValue={
                 this.state.choice.length === 1 &&
                 this.state.choice[0].answer !== false
@@ -161,20 +233,29 @@ class CreateProblem extends Component {
                   : this.state.choice[num].text
               }
             />
-            {"                 "}
-            {this.state.choice[1] === undefined ? null : (
-              <React.Fragment>
-                정답:
-                <input
-                  type="checkbox"
-                  defaultChecked={this.state.choice[num].answer}
-                  onChange={e => {
-                    this.handleChoiceAnswer(e, num);
-                  }}
-                />
-              </React.Fragment>
-            )}
           </span>
+          {/*{"                 "}*/}
+          {this.state.choice[1] === undefined ? null : (
+            <div className="checkBOX margin-center-vertical">
+              <span className="span_em_small"> 정답:</span>
+              <input
+                style={{
+                  MsTransform: "scale(2)",
+                  MozTransform: "scale(2)",
+                  WebkitTransform: "scale(2)",
+                  OTransform: "scale(2)",
+                  transform: "scale(2)",
+                  margin: "0.5em 1.2em 0",
+                  display: "inline-flex"
+                }}
+                type="checkbox"
+                defaultChecked={this.state.choice[num].answer}
+                onChange={e => {
+                  this.handleChoiceAnswer(e, num);
+                }}
+              />
+            </div>
+          )}
         </div>
       </React.Fragment>
     );
@@ -182,14 +263,18 @@ class CreateProblem extends Component {
 
   selectHandleChange = event => {
     //답안 타입 선택
-
+    let errors = {};
+    if (this.state.errors.problemText) {
+      errors.problemText = this.state.errors.problemText;
+    }
     let type = parseInt(event.target.value);
     let arr = [];
     for (let i = 0; i < type; i++) {
       arr.push({ text: "", answer: false });
     }
     this.setState({
-      choice: arr
+      choice: arr,
+      errors
     });
   };
 
@@ -201,6 +286,39 @@ class CreateProblem extends Component {
     }
     if (!this.state.Problems[ProblemNum]) {
       //새로운 문제를 생성하는 경우
+      if (this.state.choice.length === 0) {
+        alert("답안 유형을 선택해야 합니다");
+        return;
+      }
+      let check = 0;
+
+      for (let i = 0; i < this.state.choice.length; i++) {
+        if (this.state.choice[i].answer === true) check++;
+      }
+
+      if (this.state.choice.length !== 1 && check === 0) {
+        alert("한개 이상의 정답이 있어야 합니다");
+        return;
+      }
+
+      const errorsOne = this.validate();
+      const errorsTwo = this.validateChoice();
+      let errors = {};
+      if (errorsOne) {
+        errors = { ...errorsOne };
+      }
+      if (errorsTwo) {
+        errors = { ...errors, ...errorsTwo };
+      }
+      isDev && console.log("hi", errors, Object.keys(errors).length);
+      this.setState({ errors: errors });
+
+      if (Object.keys(errors).length !== 0) {
+        isDev && console.log(errors);
+        return;
+      }
+      /////////
+
       let newProblem = {
         fileLink1: (this.state.files && this.state.files[0]) || null,
         subjectAnswer:
@@ -208,6 +326,7 @@ class CreateProblem extends Component {
         problemText: this.state.problemText,
         choice: this.state.choice
       };
+      isDev && console.log("viewProblem 발동", newProblem);
       let Problems = [...this.state.Problems];
       Problems[this.state.curProblem] = newProblem;
 
@@ -229,7 +348,6 @@ class CreateProblem extends Component {
       if (curProblemSet.fileLink1) {
         files.push(curProblemSet.fileLink1);
       }
-
       this.setState({
         problemText: curProblemSet.problemText,
         choiceInitialValue: "none",
@@ -237,15 +355,87 @@ class CreateProblem extends Component {
         curProblem: ProblemNum,
         files: files
       });
+      isDev && console.log("viewProblem밑에꺼 발동", this.state.Problems);
     }
   };
+
+  validate = () => {
+    const errors = {};
+
+    const { problemText } = this.state;
+
+    if (problemText.trim() === "") {
+      errors.problemText = "지문을 적어야 합니다.";
+    } else if (problemText.length > process.env.REACT_APP_Q) {
+      errors.problemText = `${process.env.REACT_APP_Q}자 이하로 적어주세요`;
+    }
+
+    return Object.keys(errors).length === 0 ? null : errors;
+  };
+
+  validateChoice = () => {
+    const errors = {};
+    const { choice } = this.state;
+    if (choice.length === 1) {
+      isDev && console.log("??", choice);
+      if (choice[0].answer === false || choice[0].answer.trim() === "") {
+        errors[0] = `주관식 답변을 작성해주세요`;
+      } else if (choice[0].answer.length > process.env.REACT_APP_NARRATIVE) {
+        errors[0] = `${process.env.REACT_APP_NARRATIVE}자 이하로 적어주세요`;
+      }
+    } else {
+      for (let i = 0; i < choice.length; i++) {
+        if (choice[i].text.trim() === "") {
+          errors[i] = `${i + 1}번 보기를 채워주세요`;
+        } else if (choice[i].text.length > process.env.REACT_APP_CHOICE) {
+          errors[i] = `${process.env.REACT_APP_CHOICE}자 이하로 적어주세요`;
+        }
+      }
+    }
+
+    return Object.keys(errors).length === 0 ? null : errors;
+  };
+
   saveProblem = () => {
+    if (this.state.choice.length === 0) {
+      alert("답안 유형을 선택해야 합니다");
+      return;
+    }
+    let check = 0;
+
+    for (let i = 0; i < this.state.choice.length; i++) {
+      if (this.state.choice[i].answer === true) check++;
+    }
+
+    if (this.state.choice.length !== 1 && check === 0) {
+      alert("한개 이상의 정답이 있어야 합니다");
+      return;
+    }
+
+    const errorsOne = this.validate();
+    const errorsTwo = this.validateChoice();
+    let errors = {};
+    if (errorsOne) {
+      errors = { ...errorsOne };
+    }
+    if (errorsTwo) {
+      errors = { ...errors, ...errorsTwo };
+    }
+    isDev && console.log("hi", errors, Object.keys(errors).length);
+    this.setState({ errors: errors });
+
+    if (Object.keys(errors).length !== 0) {
+      isDev && console.log(errors);
+      return;
+    }
+    /////////
+    isDev && console.log("저장중 ^^");
     let newProblem = {
       fileLink1: (this.state.files && this.state.files[0]) || null,
       subjectAnswer:
         this.state.choice.length === 1 ? this.state.subjectAnswer : "",
       problemText: this.state.problemText,
-      choice: this.state.choice
+      choice: [...this.state.choice]
     };
     let Problems = [...this.state.Problems];
     Problems[this.state.curProblem] = newProblem;
@@ -254,9 +444,10 @@ class CreateProblem extends Component {
         Problems
       },
       () => {
-        // console.log(this.state.Problems,"현재 프로블럼 객체 상태 ")
+        isDev && console.log(this.state.Problems,"현재 프로블럼 객체 상태 ")
       }
     );
+
     alert("저장완료");
   };
 
@@ -271,7 +462,41 @@ class CreateProblem extends Component {
     });
   };
   completeFun = Problems => {
-    // console.log("hi");
+    if (this.state.curProblem !== this.state.Problems.length) {
+      isDev && console.log(this.state.curProblem, this.state.Problems);
+      if (this.state.choice.length === 0) {
+        alert("답안 유형을 선택해야 합니다");
+        return;
+      }
+      let check = 0;
+
+      for (let i = 0; i < this.state.choice.length; i++) {
+        if (this.state.choice[i].answer === true) check++;
+      }
+
+      if (this.state.choice.length !== 1 && check === 0) {
+        alert("한개 이상의 정답이 있어야 합니다");
+        return;
+      }
+
+      const errorsOne = this.validate();
+      const errorsTwo = this.validateChoice();
+      let errors = {};
+      if (errorsOne) {
+        errors = { ...errorsOne };
+      }
+      if (errorsTwo) {
+        errors = { ...errors, ...errorsTwo };
+      }
+      isDev && console.log("hi", errors, Object.keys(errors).length);
+      this.setState({ errors: errors });
+
+      if (Object.keys(errors).length !== 0) {
+        isDev && console.log(errors);
+        return;
+      }
+    }
+    ////////////////
     if (Problems.length === 0) {
       alert("제출할 문제가 없습니다");
       return;
@@ -282,15 +507,53 @@ class CreateProblem extends Component {
   };
   render() {
     return this.state.complete === false ? (
-      <div>
-        <form>
-          <label>
-            <span>
-              <div className="d-inline p-2 bg-primary text-white">
+      <div
+        className="max-width pageCSS-white"
+        style={{
+          overflow: "auto",
+          width: "100%",
+          height: "100%",
+          paddingTop: "1em",
+          paddingBottom: "5em"
+        }}
+      >
+        <form style={{ marginBottom: "45px" }}>
+          <label
+            className="flex-container-row center-parent"
+            style={{
+              marginLeft: "0.5em",
+              marginRight: "0.5em",
+              marginBottom: "0.5em"
+            }}
+          >
+            <span className="span_em_middle">
+              <div className="d-inline p-2 bg-primary text-white flex">
                 {this.state.curProblem + 1}번
               </div>
             </span>
-            문제에 사용할 파일 - 최대 2MB / jpg,jpeg,png,mp3,mp4,avi
+            <span style={{ marginLeft: "auto" }}>
+              <Popover
+                // content={<a onClick={this.hide}>Close</a>}
+                title="파일당 최대 2MB, 허용 확장자 jpg jpeg png mp3 mp4 avi"
+                trigger="click"
+                visible={this.state.popVisible}
+                onVisibleChange={this.handleVisibleChange}
+              >
+                <button
+                  type="primary"
+                  className="nes-btn padding-zero flex"
+                  style={{
+                    marginLeft: "auto",
+                    marginRight: "1em !important"
+                  }}
+                >
+                  <span role="img" alt={"?"}>
+                    {" "}
+                    ❓
+                  </span>
+                </button>
+              </Popover>
+            </span>
           </label>
           <FilePond
             ref={ref => (this.pond = ref)}
@@ -325,90 +588,129 @@ class CreateProblem extends Component {
                 )
               });
             }}
-          ></FilePond>
-          <h1>지문</h1>
+          />
+          <span className="span_em_middle"> 지문</span>
 
-          <div className="form-group">
-            <label htmlFor="" className="htmlFor"></label>
+          <div
+            className="form-group margin-zero-only"
+            style={{ padding: "0 0.3em 0 0.3em" }}
+          >
             <textarea
               onChange={this.handleChange}
               type="text"
+              placeholder="질문입력"
               className="form-control"
               defaultValue={this.state.problemText}
             />
+            {this.state.errors.problemText && (
+              <div className="alert alert-danger">
+                {this.state.errors.problemText}
+              </div>
+            )}
           </div>
-          <div>
-            <div>
-              답안 :
+          <div className="fdr flex center-parent">
+            {/*<label htmlFor="default_select">답안지 선택 </label>*/}
+            <div
+              className="nes-select flex-fixer"
+              style={{
+                maxWidth: "150px",
+                height: "2em"
+              }}
+            >
               <select
+                className="padding-zero-only"
+                required
+                id="default_select"
                 value={this.state.choiceInitialValue}
                 onChange={this.selectHandleChange}
               >
-                <option value="none">선택</option>
+                <option value="none">유형선택</option>
                 <option value="1">주관식</option>
                 <option value="2">보기 두개</option>
                 <option value="3">보기 세개</option>
                 <option value="4">보기 네개</option>
                 <option value="5">보기 다섯개</option>
               </select>
-              {this.state.choice[0] && this.formTag(0, "1번")}
-              {this.state.choice[1] && this.formTag(1, "2번")}
-              {this.state.choice[2] && this.formTag(2, "3번")}
-              {this.state.choice[3] && this.formTag(3, "4번")}
-              {this.state.choice[4] && this.formTag(4, "5번")}
             </div>
           </div>
+          <div>
+            {this.state.choice[0] && this.formTag(0, "1번")}
+            {this.state.errors[0] && (
+              <div className="alert alert-danger">{this.state.errors[0]}</div>
+            )}
+            {this.state.choice[1] && this.formTag(1, "2번")}
+            {this.state.errors[1] && (
+              <div className="alert alert-danger">{this.state.errors[1]}</div>
+            )}
+            {this.state.choice[2] && this.formTag(2, "3번")}
+            {this.state.errors[2] && (
+              <div className="alert alert-danger">{this.state.errors[2]}</div>
+            )}
+            {this.state.choice[3] && this.formTag(3, "4번")}
+            {this.state.errors[3] && (
+              <div className="alert alert-danger">{this.state.errors[3]}</div>
+            )}
+            {this.state.choice[4] && this.formTag(4, "5번")}
+            {this.state.errors[4] && (
+              <div className="alert alert-danger">{this.state.errors[4]}</div>
+            )}
+          </div>
           <div
+            style={{ overflow: "hidden", marginTop: "1em" }}
             className="btn-group btn-group-lg"
             role="group"
             aria-label="Basic example"
           >
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={() => {
-                this.completeFun(this.state.Problems);
-              }}
-            >
-              제출
-            </button>
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={this.removeProblem}
-            >
-              삭제
-            </button>
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={this.saveProblem}
-            >
-              저장
-            </button>
-            <button
-              type="reset"
-              className="btn btn-secondary"
-              onClick={() => {
-                this.viewFunction(-1);
-              }}
-            >
-              이전문제
-            </button>
-            <button
-              type="reset"
-              className="btn btn-secondary"
-              onClick={() => {
-                this.viewFunction(1);
-              }}
-            >
-              다음문제
-            </button>
+            <span className="span_em_small">
+              <this.BottomButton
+                type="button"
+                className="nes-btn is-primary"
+                onClick={() => {
+                  this.completeFun(this.state.Problems);
+                }}
+              >
+                SUBMIT
+              </this.BottomButton>
+              <this.BottomButton
+                type="button"
+                className="nes-btn is-error"
+                onClick={this.removeProblem}
+              >
+                DELETE
+              </this.BottomButton>
+              <button
+                type="button"
+                className="nes-btn is-success"
+                onClick={this.saveProblem}
+              >
+                SAVE
+              </button>
+              <this.BottomButton
+                type="reset"
+                className="nes-btn"
+                onClick={() => {
+                  this.viewFunction(-1);
+                }}
+              >
+                PREV
+              </this.BottomButton>
+              <this.BottomButton
+                type="reset"
+                className="nes-btn"
+                onClick={() => {
+                  this.viewFunction(1);
+                }}
+              >
+                NEXT
+              </this.BottomButton>
+            </span>
           </div>
         </form>
       </div>
     ) : (
       <CompleteProblem
+        history={this.props.history}
+        className="max-width"
         Problems={this.state.Problems}
         problemState={this.state}
         changeComplete={this.changeComplete}

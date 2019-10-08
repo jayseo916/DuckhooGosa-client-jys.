@@ -1,14 +1,7 @@
 import React from "react";
-import AWS from "aws-sdk";
-import { config } from "../config";
-import { Link } from "react-router-dom";
-import {
-  FilePond,
-  // File,
-  registerPlugin,
-  create
-  // setOptions
-} from "react-filepond";
+import { axiosInstance, config } from "../config";
+// import { Link } from "react-router-dom";
+import { FilePond, registerPlugin } from "react-filepond";
 import FilePondPluginFilePoster from "filepond-plugin-file-poster";
 import "filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css";
 import "filepond/dist/filepond.min.css";
@@ -17,13 +10,11 @@ import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import FilePondPluginMediaPreview from "filepond-plugin-media-preview";
 import FilePondPluginImageValidateSize from "filepond-plugin-image-validate-size";
 import FilePondPluginFileEncode from "filepond-plugin-file-encode";
-import axios from "axios";
 import { UploadToS3 } from "../client/upLoad";
 // import { nullLiteral } from "@babel/types";
 
 let uniqid = require("uniqid");
-
-let endPoint = `${process.env.REACT_APP_SERVER}/problem`;
+let isDev = process.env.REACT_APP_LOG;
 // Register the plugin
 registerPlugin(
   FilePondPluginFilePoster,
@@ -32,10 +23,6 @@ registerPlugin(
   FilePondPluginImageValidateSize,
   FilePondPluginFileEncode
 );
-
-const albumBucketName = "duckhoogosa";
-const bucketRegion = "ap-northeast-2";
-const IdentityPoolId = "ap-northeast-2:ba805140-83ec-4793-8736-0641dd7d6f71";
 
 class CompleteProblem extends React.Component {
   constructor(props) {
@@ -50,7 +37,7 @@ class CompleteProblem extends React.Component {
 
   componentDidMount() {
     let Problems = this.props.Problems;
-    console.log(Problems, "물려받은 상태 확인");
+    isDev && console.log(Problems, "물려받은 상태 확인");
 
     this.setState({
       allFiles: Problems
@@ -73,24 +60,32 @@ class CompleteProblem extends React.Component {
                 resolve(link);
               });
             } catch (ex) {
+              alert(
+                "토큰이 유효하지 않습니다. 다시 로그인 해주세요. 정말 죄송합니다!"
+              );
+              this.props.history.push("/login");
               reject(ex);
             }
           })
         );
       } else {
-        return null;
+        isDev && console.log(problem);
+        // return null;
       }
     });
-    let representImg = await new Promise((resolve, reject) => {
-      try {
-        UploadToS3(dir, this.props.repreImg, link => {
-          resolve(link);
-        });
-      } catch (ex) {
-        reject(ex);
-      }
-    });
-
+    let representImg =
+      "https://duckhoogosa.s3.ap-northeast-2.amazonaws.com/memberImageDir/image.png";
+    if (this.props.repreImg !== null) {
+      representImg = await new Promise((resolve, reject) => {
+        try {
+          UploadToS3(dir, this.props.repreImg, link => {
+            resolve(link);
+          });
+        } catch (ex) {
+          reject(ex);
+        }
+      });
+    }
     Promise.all(promise)
       .then(v => {
         let problems = this.props.Problems.map((problem, num) => {
@@ -103,7 +98,6 @@ class CompleteProblem extends React.Component {
         });
 
         const { email, tags, genre, title, date } = this.props.problemState;
-
         let obj = {
           email: email,
           tags: tags,
@@ -113,17 +107,18 @@ class CompleteProblem extends React.Component {
           representImg: representImg,
           problems: problems
         };
-        axios
+        axiosInstance
           .post(`${process.env.REACT_APP_SERVER}/problem`, obj, config)
           .then(res => {
-            // console.log(res, "업로드결과");
+            isDev && console.log(res, "업로드결과");
+            this.props.history.push("/main");
           })
           .catch(err => {
-            console.log(err);
+            isDev && console.log(err);
           });
       })
       .catch(ex => {
-        console.error(ex);
+        isDev && console.error(ex);
       });
   };
   postProblems = async () => {
@@ -176,6 +171,7 @@ class CompleteProblem extends React.Component {
             {num + 1}번 문제: {problem.problemText}
           </div>
           <div>{choices}</div>
+          <hr className="main-hr" />
         </div>
       );
     });
@@ -187,35 +183,84 @@ class CompleteProblem extends React.Component {
     const problems = this.loadProblems();
 
     return (
-      <React.Fragment>
-        {problems}
+      <div
+        className="max-width pageCSS-white"
+        style={{
+          overflow: "auto",
+          width: "100%",
+          height: "fit-content",
+          paddingTop:"0.5em",
+          paddingBottom: "4.5em"
+        }}
+      >
         <div
-          className="btn-group btn-group-lg"
-          role="group"
-          aria-label="Basic example"
+          className="nes-container nes-container-normal max-width with-title is-centered flex-container-col"
+          style={{
+            height: "100%"
+          }}
         >
-          <button
-            type="button"
-            className="btn btn-secondary"
-            onClick={() => {
-              this.modifyProblem();
+          <p className="title font-2P"> Preview </p>
+          <div
+            className="fdc flex"
+            style={{
+              height: "100%"
             }}
           >
-            수정
-          </button>
-
-          <Link
-            to="problem/main"
-            type="reset"
-            className="btn btn-primary"
-            onClick={() => {
-              this.postProblems();
-            }}
-          >
-            완료
-          </Link>
+            {problems}
+            <div
+              className="flex"
+              style={{
+                height: "auto",
+                marginTop: "auto",
+                marginBottom: "auto"
+              }}
+            />
+            <div
+              className=" flex-fixer margin-center center-parent"
+              style={{
+                width: "100%",
+                // height: "fit-content",
+                marginBottom: "1em"
+              }}
+              role="group"
+              aria-label="Basic example"
+            >
+              <button
+                style={{
+                  maxWidth: "40%",
+                  minHeight: "2em"
+                }}
+                type="button"
+                className="nes-btn is-warning flex padding-zero-only"
+                onClick={() => {
+                  this.modifyProblem();
+                }}
+              >
+                <span className="span_em_default margin-center"> 수정</span>
+              </button>
+              <button
+                style={{
+                  maxWidth: "40%",
+                  minHeight: "2em"
+                }}
+                className="nes-btn is-primary flex "
+                onClick={() => {
+                  this.postProblems();
+                }}
+              >
+                <span
+                  className="span_em_default margin-center"
+                  style={{
+                    color: "black"
+                  }}
+                >
+                  완료
+                </span>
+              </button>
+            </div>
+          </div>
         </div>
-      </React.Fragment>
+      </div>
     );
   }
 }

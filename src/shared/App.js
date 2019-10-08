@@ -9,12 +9,16 @@ import MySolved from "../pages/MySolved";
 import Loading from "../pages/Loading";
 import Login from "../pages/Login";
 import Profile from "../pages/Profile";
+import Private from "../pages/Private";
 import FooterMenubar from "../components/FooterMenubar";
-import UpLoadTest from "../client/upLoadTest";
 import SolvingProblem from "../pages/SolvingProblem";
+import Comment from "../pages/Comment";
 import NotFound from "../pages/NotFound";
+import Linked from "../pages/Linked";
+import LoadingComponent from "../components/LoadingComponent";
 import "./App.css";
 
+const isDev = process.env.REACT_APP_LOG;
 class App extends React.Component {
   constructor(prop) {
     super(prop);
@@ -28,31 +32,33 @@ class App extends React.Component {
   }
 
   emptyEmail = () => {
-    this.setState({
+    this.setState((state, props) => ({
       email: null
-    });
+    }));
   };
 
   setUserInfo = data => {
     this.setState({ email: data.email, expires_at: data.expires_at }, () => {
       let { email, expires_at } = this.state;
-      console.log(`${email}님 로그인 ${expires_at}에 토큰 만료`);
+      let time = new Date(expires_at + 3600);
+      isDev && console.log(`${email}님 로그인 ${time}에 토큰 만료`);
     });
   };
 
   setRepreImg = repreImg => {
     this.setState({ repreImg: repreImg }, () => {
-      console.log("이미지 설정 완료");
+      isDev && console.log("이미지 설정 완료");
     });
   };
 
   render() {
     const { email, expires_at } = this.state;
     return (
-      <div className="App">
+      <div style={{}} className="App">
         <Switch>
           <Route path="/" exact component={Loading} />
           <Route path="/problem/main" component={Main} />
+          <Route path="/loading" component={LoadingComponent} />
           <Route
             path="/selectGenre"
             render={props => {
@@ -65,6 +71,12 @@ class App extends React.Component {
             render={props => {
               if (!email) return <Redirect to="/login"></Redirect>;
               return <SelectTheme setRepreImg={this.setRepreImg} {...props} />;
+            }}
+          />
+          <Route
+            path="/private"
+            render={props => {
+              return <Private {...props} />;
             }}
           />
           <Route
@@ -94,7 +106,6 @@ class App extends React.Component {
               return <MyProblem {...props} />;
             }}
           />
-
           <Route
             path="/mySolved"
             render={props => {
@@ -106,19 +117,36 @@ class App extends React.Component {
             path="/profile"
             render={props => {
               if (!email) return <Redirect to="/login"></Redirect>;
-              return <Profile email={this.state.email} {...props} />;
+              return (
+                <Profile
+                  email={this.state.email}
+                  emptyEmail={this.emptyEmail}
+                  {...props}
+                />
+              );
             }}
           />
           <Route path="/not-found" component={NotFound} />
+          <Route path="/Linked" component={Linked} />
           <Route
             path="/SolvingProblem/:id"
             render={props => {
-              if (!email) return <Redirect to="/login"></Redirect>;
+              // console.log(email, "어디보자");
+              if (!email)
+                return (
+                  <Redirect
+                    to={{
+                      pathname: "/Linked",
+                      problemId: props.match.params.id,
+                      setUserInfo: this.setUserInfo
+                    }}
+                  />
+                );
               return <SolvingProblem email={this.state.email} {...props} />;
             }}
           />
-          <Route path="/UpLoadTest" component={UpLoadTest} />
           <Route path="/main" render={props => <Main {...props} />} />
+          <Route path="/comment/:id" component={Comment} />
           <Route
             path="/login"
             render={props => (

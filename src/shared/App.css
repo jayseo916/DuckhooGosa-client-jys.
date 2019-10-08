@@ -1,21 +1,72 @@
-@import '~antd/dist/antd.css';
+@import "~antd/dist/antd.css";
 /* ANTD */
 
 .App {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  text-align: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.center-parent {
+  display: flex;
+  margin: auto;
+  justify-content: center;
+}
+
+.center-item {
+  flex: 1;
+}
+
+.center-flex-container {
+  margin-bottom: auto;
+  margin-left: auto;
+  margin-right: auto;
   text-align: center;
 }
 
+.bottom-text-container {
+}
+
+.fdr {
+  flex-direction: row;
+}
+
+.fdc {
+  flex-direction: column;
+}
+
+.margin-center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.margin-center-vertical {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.load-page {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 @font-face {
-  font-family: 'DungGeunMo';
-  src: url('../font/DungGeunMo.eot') format('embedded-opentype'),
-    url('../font/DungGeunMo.woff2') format('woff2'),
-    url('../font/DungGeunMo.woff') format('woff'),
-    url('../font/DungGeunMo.ttf') format('truetype'),
-    url('../font/DungGeunMo.otf') format('otf');
+  font-family: "DungGeunMo";
+  src: url("../font/DungGeunMo.eot") format("embedded-opentype"),
+    url("../font/DungGeunMo.woff2") format("woff2"),
+    url("../font/DungGeunMo.woff") format("woff"),
+    url("../font/DungGeunMo.ttf") format("truetype"),
+    url("../font/DungGeunMo.otf") format("otf");
 }
 
 * {
-  font-family: DungGeunMo, serif !important;
+  font-family: DungGeunMo, serif, "Apple SD Gothic Neo" !important;
 }
 
 .App-logo {
@@ -25,7 +76,7 @@
 }
 
 .App-header {
-  background-color: #85471f;
+  background-color: #ff9fc9;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -39,6 +90,50 @@
   color: #61dafb;
 }
 
+.pageCSS {
+  -ms-overflow-style: none !important;
+  height: 100%;
+  background-color: hotpink;
+  flex-direction: column;
+  flex: 1;
+}
+.pageCSS-green {
+  -ms-overflow-style: none !important;
+  height: 100%;
+  background-color: #ddffad;
+  flex-direction: column;
+  flex: 1;
+}
+
+.pageCSS-white {
+  -ms-overflow-style: none !important;
+  height: 100%;
+  background-color: white;
+  flex-direction: column;
+  flex: 1;
+}
+
+.pageCSS-pink {
+  -ms-overflow-style: none !important;
+  height: 100%;
+  background-color: #ff9fc9;
+  flex-direction: column;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.pageCSS-paper {
+  -ms-overflow-style: none !important;
+  height: 100%;
+  background-image: url("../client/img/ODRAJ80.jpg");
+  flex-direction: column;
+  flex: 1;
+  image-rendering: pixelated;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -47,18 +142,21 @@
     transform: rotate(360deg);
   }
 }
-@media screen and (max-width: 767px) {
+
+@media screen and (max-width: 1px) {
   #footer-menubar1 {
     display: none;
   }
 }
-@media screen and (min-width: 768px) {
+
+@media screen and (min-width: 0px) {
+  /*@media screen and (min-width: 768px) {*/
   #footer-menubar1 ul li {
     list-style: none;
     color: white;
     background-color: #222222;
     float: left;
-    line-height: 30px;
+    line-height: 45px;
     vertical-align: middle;
     text-align: center;
     position: fixed;
@@ -69,11 +167,13 @@
     position: fixed;
     left: 0%;
     width: 20%;
+    pointer-events: none;
   }
   .menuLink2 {
     position: fixed;
     left: 20%;
     width: 20%;
+    pointer-events: none;
   }
   .menuLink3 {
     position: fixed;
@@ -95,16 +195,15 @@
     color: white;
     display: block;
     /* width: 260px; */
-    font-size: 12px;
+    font-size: 16px;
     font-weight: bold;
-    font-family: 'Trebuchet MS', Dotum, Arial;
+    font-family: "Trebuchet MS", Dotum, Arial;
   }
   #footer-menubar1 .menuLink:hover {
     color: rgb(255, 136, 0);
     background-color: #f0d4d4;
   }
 }
-
 .flex {
   display: flex;
   flex: 1;
@@ -130,19 +229,48 @@
 .thumbnail-wrap {
   width: 300px; /*container-width*/
   overflow: hidden; /*hide bounds of image */
-  margin: 0; /*reset margin of figure tag*/
+}
+
+.main-thumbnail-wrap {
+  width: 300px; /*container-width*/
+  overflow: hidden; /*hide bounds of image */
+  margin: 0 auto 0 auto; /*reset margin of figure tag*/
 }
 
 .thumbnail {
   display: block; /*remove inline-block spaces*/
   width: 100%; /*make image streatch*/
+  margin: -21.875% 0;
 }
 
-.thumbnail-wrap .thumbnail {
+.thumbnail {
   /*add to other styles*/
   /*add to other styles*/
-  margin: -21.875% 0;
   /*width:177.777%;!**!*/
+}
+
+.main-thumnail-img {
+  max-width: 100%;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.main-hr {
+  width: 85%;
+  border-color: black;
+  margin-top: 1px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hr-green {
+  width: 95%;
+  border-width: 2px;
+  border-color: #489c26;
+  margin-top: 5px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /*썸네일표현*/
@@ -156,10 +284,221 @@
 .input-comment {
   text-align: center;
 }
-i {
-  font-size: 44px;
-  display: block;
+
+.dv-star-rating-star {
+  font-size: 5em;
+  margin-left: 0;
 }
-.eval-question{
-  font-size:17px;
+
+i {
+  margin: 0 !important;
+  border: black 2px;
+}
+
+.dv-star-rating {
+  margin: -30px;
+}
+
+label.dv-star-rating-star > i {
+  margin-left: 0.3em;
+}
+
+label.dv-star-rating-full-star > i {
+  margin-left: 0.3em;
+}
+
+.eval-question {
+  font-size: 17px;
+}
+
+/*34px Header*/
+.span_em_vl {
+  font-size: 2.125rem;
+  word-break: break-all;
+}
+
+/*28px*/
+.span_em_l {
+  font-size: 1.75rem;
+  word-break: break-all;
+}
+
+/*22px*/
+.span_em_middle {
+  font-size: 1.375rem;
+  word-break: break-all;
+}
+
+/*19px*/
+.span_em_default {
+  font-size: 1.1875rem;
+  word-break: break-all;
+}
+
+/*14*/
+.span_em_small {
+  font-size: 0.875rem;
+  word-break: break-all;
+}
+
+/*14*/
+.span_em_vsmall {
+  font-size: 0.6875rem;
+  word-break: break-all;
+}
+
+.grey {
+  color: #6b6b6b;
+}
+
+.padding-zero {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.padding-zero-only {
+  padding: 0px !important;
+}
+
+.inline-flex {
+  display: inline-flex;
+}
+
+.span_v {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.text-strike_white {
+  /*color: #f00;*/
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+    1px 1px 0 #000;
+  border: 1px;
+  color: white;
+}
+
+.titleBox {
+  padding-top: 0.5em;
+  margin-bottom: auto;
+}
+
+.BottomBox {
+  padding-bottom: 5vh;
+  margin-top: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ToBottom {
+  margin-top: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.max-width {
+  max-width: 440px;
+}
+.title-hotpink {
+  background-color: #ddffad !important;
+  color: black !important;
+}
+
+.margin-zero-only {
+  margin: 0;
+}
+
+.font-2P {
+  font-family: "Press Start 2P" !important;
+}
+
+.margin-side_03em {
+  margin: 0 0.3em 0 0.3em;
+}
+
+.t-color {
+  background: unset;
+}
+
+/*기타*/
+.rootX {
+  display: flex !important;
+  flex: 1;
+  height: 100%;
+  /*width: 100vh;*/
+}
+
+.radius50 {
+  border-radius: 50px;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+}
+
+.img_border_5 {
+  border: 5px solid #000000;
+}
+
+.filling_parent {
+  height: 100%;
+  width: 100%;
+}
+
+.filling_child {
+  height: fit-content;
+  width: 100%;
+}
+
+* {
+  outline: 1px dotted red;
+}
+
+.word-break {
+  word-break: normal;
+}
+
+.nes-container-card {
+  padding: 3em 0 0 0 !important;
+  margin: 0 !important;
+}
+
+.nes-container-normal {
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+}
+
+.nes-container-hard {
+  padding: 10px 5px 10px 5px !important;
+}
+
+.center-center-series {
+  justify-content: center;
+  align-items: center;
+  vertical-align: center;
+}
+
+.myINPUT {
+  border-color: black !important;
+  border-width: 5px !important;
+}
+
+.filebox {
+  display: inline-block;
+  padding: 0.5em 0.75em;
+  color: #fbfdff;
+  font-size: inherit;
+  line-height: normal;
+  vertical-align: middle;
+  background-color: #fd62a0;
+  cursor: pointer;
+  border: 4px solid #4a4a4a;
+  border-bottom-color: #150007;
+  border-radius: 0.25em;
+}
+
+.label-input {
+  margin-bottom: 0;
+}
+
+.ant-collapse-content-box {
+  padding-left: 4px !important;
+  padding-right: 4px !important;
 }

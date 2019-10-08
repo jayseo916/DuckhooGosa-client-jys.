@@ -2,22 +2,20 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "../shared/App.css";
 
+
 class FooterMenubar extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
     return (
-      <nav id="footer-menubar1">
+      <nav id="footer-menubar1" style={{ width: "0px" }}>
         <ul>
           <li className="menuLink1">
-            <Link className="menuLink" to="/tttt3">
-              전적
+            <Link className="menuLink" to="/info">
+              미공개
             </Link>
           </li>
           <li className="menuLink2">
-            <Link className="menuLink" to="/tttt4">
-              추천
+            <Link className="menuLink" to="/info">
+              미공개
             </Link>
           </li>
           <li className="menuLink3">

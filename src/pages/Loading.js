@@ -2,45 +2,42 @@ import React from "react";
 import FadeIn from "react-fade-in";
 import Lottie from "react-lottie";
 import { Redirect } from "react-router-dom";
-import ReactLoading from "react-loading";
-import * as legoData from "../loading/fuckuman.json";
-import * as doneData from "../loading/check.json";
+import * as legoData from "../loading/8092-retro-console-run";
+import * as doneData from "../loading/5785-checkmark.json";
 import "bootstrap/dist/css/bootstrap.css";
 import "../shared/App.css";
+import { axiosInstance, config } from "../config";
 class Loading extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: true,
       done: undefined
     };
   }
 
   componentDidMount() {
+    axiosInstance
+      .get("/", {}, config)
+      .then(res => {
+        console.log(res, "Server Status GOOD");
+      })
+      .catch(err => {
+        console.log(err, "Server Status BAD");
+      });
+
     console.log("현재 클라이언트::", process.env.REACT_APP_MODE);
     setTimeout(() => {
-      fetch("https://jsonplaceholder.typicode.com/posts")
-        .then(response => response.json())
-        .then(json => {
-          this.setState({ loading: true });
-
-          setTimeout(() => {
-            this.setState({ done: true });
-          }, 1000);
-        });
-    }, 1200);
+      this.setState({ loading: false }, () => {
+        setTimeout(() => {
+          this.setState({ done: true });
+        }, 800);
+      });
+    }, 2000);
   }
 
   render() {
     const defaultOptions = {
-      loop: true,
-      autoplay: true,
-      animationData: legoData.default,
-      rendererSettings: {
-        preserveAspectRatio: "xMidYMid slice"
-      }
-    };
-
-    const defaultOptions2 = {
       loop: false,
       autoplay: true,
       animationData: doneData.default,
@@ -48,17 +45,32 @@ class Loading extends React.Component {
         preserveAspectRatio: "xMidYMid slice"
       }
     };
+
+    const defaultOptions2 = {
+      loop: true,
+      autoplay: true,
+      animationData: legoData.default,
+      rendererSettings: {
+        preserveAspectRatio: "xMidYMid slice"
+      }
+    };
     return (
-      <div className="App-header">
+      <div className="pageCSS-pink max-width center-parent">
         {!this.state.done ? (
-          <FadeIn>
-            <div className="d-flex justify-content-center align-items-center">
-              <h1>Welcome ^^</h1>
+          <FadeIn className="margin-center-vertical flex">
+            <div className="load-page flex ">
+              <p>
+                <span className="span_em_vl text-strike_white">
+                  {" "}
+                  덕후고사.app
+                </span>
+              </p>
               {!this.state.loading ? (
-                <Lottie options={defaultOptions} height={120} width={120} />
+                <Lottie options={defaultOptions} height={240} width={240} />
               ) : (
-                <Lottie options={defaultOptions2} height={120} width={120} />
+                <Lottie options={defaultOptions2} height={240} width={240} />
               )}
+              <span className="span_em_l text-strike_white">TheKOO.studio</span>
             </div>
           </FadeIn>
         ) : (
