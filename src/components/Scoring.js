@@ -192,13 +192,7 @@ export class Scoring extends Component {
             <i className="snes-jp-logo is-small" />{" "}
             <span className="span_em_middle">
               {" "}
-              <span
-                style={{
-                  fontStyle: "Italic"
-                }}
-              >
-                {nickname ? nickname : "익명의 더쿠"}
-              </span>
+              {nickname ? nickname : "익명의 더쿠"}
               님의 {title} 점수
             </span>
           </UpperDiv>
