@@ -435,6 +435,16 @@ class Profile extends Component {
                     어떤 문의사항이든 소중하게 받아들이는 The KOO되겠습니다.
                   </span>
                 </Panel>
+                <Panel
+                    header="문제가 업로드 되지 않을떄"
+                    key="3"
+                    className="nes-container padding-zero"
+                >
+                  <p>문제가 업로드 되지않을땐?</p>
+                  <span className="span_em_default">
+                    PROFILE > LOGOUT 후 다시 로그인해주세요! 현재 서비스에 문제가 있어 수정중입니다.
+                  </span>
+                </Panel>
               </Collapse>
             </div>
           </div>
