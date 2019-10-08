@@ -165,7 +165,8 @@ class CreateProblem extends Component {
           subjectAnswer: e.target.value
         },
         () => {
-          console.log("주관답", this.state.choice);
+          console.log("주관답", this.state.choice[0].answer);
+          console.log("프라블럼스의 답", this.state.Problems);
           const errors = { ...this.state.errors };
           const errMsg = this.validateChoice();
           console.log("주관식?", errMsg);
@@ -190,7 +191,8 @@ class CreateProblem extends Component {
           const errMsg = this.validateChoice();
           if (errMsg) errors[v] = errMsg[v];
           else delete errors[v];
-          console.log("번호", v);
+          console.log("choice배열", this.state.choice);
+          console.log("문제배열", this.state.Problems.choice);
           this.setState({
             errors
           });
@@ -284,6 +286,38 @@ class CreateProblem extends Component {
     }
     if (!this.state.Problems[ProblemNum]) {
       //새로운 문제를 생성하는 경우
+      if (this.state.choice.length === 0) {
+        alert("답안 유형을 선택해야 합니다");
+        return;
+      }
+      let check = 0;
+
+      for (let i = 0; i < this.state.choice.length; i++) {
+        if (this.state.choice[i].answer === true) check++;
+      }
+
+      if (this.state.choice.length !== 1 && check === 0) {
+        alert("한개 이상의 정답이 있어야 합니다");
+        return;
+      }
+
+      const errorsOne = this.validate();
+      const errorsTwo = this.validateChoice();
+      let errors = {};
+      if (errorsOne) {
+        errors = { ...errorsOne };
+      }
+      if (errorsTwo) {
+        errors = { ...errors, ...errorsTwo };
+      }
+      console.log("hi", errors, Object.keys(errors).length);
+      this.setState({ errors: errors });
+
+      if (Object.keys(errors).length !== 0) {
+        console.log(errors);
+        return;
+      }
+      /////////
 
       let newProblem = {
         fileLink1: (this.state.files && this.state.files[0]) || null,
@@ -292,6 +326,7 @@ class CreateProblem extends Component {
         problemText: this.state.problemText,
         choice: this.state.choice
       };
+      console.log("viewProblem 발동", newProblem);
       let Problems = [...this.state.Problems];
       Problems[this.state.curProblem] = newProblem;
 
@@ -313,7 +348,6 @@ class CreateProblem extends Component {
       if (curProblemSet.fileLink1) {
         files.push(curProblemSet.fileLink1);
       }
-
       this.setState({
         problemText: curProblemSet.problemText,
         choiceInitialValue: "none",
@@ -321,6 +355,7 @@ class CreateProblem extends Component {
         curProblem: ProblemNum,
         files: files
       });
+      console.log("viewProblem밑에꺼 발동", this.state.Problems);
     }
   };
 
@@ -340,10 +375,9 @@ class CreateProblem extends Component {
     const errors = {};
     const { choice } = this.state;
     if (choice.length === 1) {
-      if (choice[0].answer.trim() === "") {
-        if (choice.length === 1) {
-          errors[0] = `주관식 답변을 작성해주세요`;
-        }
+      console.log("??", choice);
+      if (choice[0].answer === false || choice[0].answer.trim() === "") {
+        errors[0] = `주관식 답변을 작성해주세요`;
       }
     } else {
       for (let i = 0; i < choice.length; i++) {
@@ -357,6 +391,21 @@ class CreateProblem extends Component {
   };
 
   saveProblem = () => {
+    if (this.state.choice.length === 0) {
+      alert("답안 유형을 선택해야 합니다");
+      return;
+    }
+    let check = 0;
+
+    for (let i = 0; i < this.state.choice.length; i++) {
+      if (this.state.choice[i].answer === true) check++;
+    }
+
+    if (this.state.choice.length !== 1 && check === 0) {
+      alert("한개 이상의 정답이 있어야 합니다");
+      return;
+    }
+
     const errorsOne = this.validate();
     const errorsTwo = this.validateChoice();
     let errors = {};
@@ -373,12 +422,14 @@ class CreateProblem extends Component {
       console.log(errors);
       return;
     }
+    /////////
+    console.log("저장중 ^^");
     let newProblem = {
       fileLink1: (this.state.files && this.state.files[0]) || null,
       subjectAnswer:
         this.state.choice.length === 1 ? this.state.subjectAnswer : "",
       problemText: this.state.problemText,
-      choice: this.state.choice
+      choice: [...this.state.choice]
     };
     let Problems = [...this.state.Problems];
     Problems[this.state.curProblem] = newProblem;
@@ -390,6 +441,7 @@ class CreateProblem extends Component {
         // console.log(this.state.Problems,"현재 프로블럼 객체 상태 ")
       }
     );
+
     alert("저장완료");
   };
 
@@ -405,6 +457,41 @@ class CreateProblem extends Component {
   };
   completeFun = Problems => {
     // console.log("hi");
+    if (this.state.curProblem !== this.state.Problems.length) {
+      console.log(this.state.curProblem, this.state.Problems);
+      if (this.state.choice.length === 0) {
+        alert("답안 유형을 선택해야 합니다");
+        return;
+      }
+      let check = 0;
+
+      for (let i = 0; i < this.state.choice.length; i++) {
+        if (this.state.choice[i].answer === true) check++;
+      }
+
+      if (this.state.choice.length !== 1 && check === 0) {
+        alert("한개 이상의 정답이 있어야 합니다");
+        return;
+      }
+
+      const errorsOne = this.validate();
+      const errorsTwo = this.validateChoice();
+      let errors = {};
+      if (errorsOne) {
+        errors = { ...errorsOne };
+      }
+      if (errorsTwo) {
+        errors = { ...errors, ...errorsTwo };
+      }
+      console.log("hi", errors, Object.keys(errors).length);
+      this.setState({ errors: errors });
+
+      if (Object.keys(errors).length !== 0) {
+        console.log(errors);
+        return;
+      }
+    }
+    ////////////////
     if (Problems.length === 0) {
       alert("제출할 문제가 없습니다");
       return;
