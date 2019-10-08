@@ -318,7 +318,7 @@ class CreateProblem extends Component {
           paddingBottom: "5em"
         }}
       >
-        <form>
+        <form style={{ marginBottom: "45px" }}>
           <label
             className="flex-container-row center-parent"
             style={{

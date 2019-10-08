@@ -304,7 +304,7 @@ export default class SolvingProblem extends Component {
       </div>
     ) : (
       <div
-        style={{ height: "100%", padding: "0.2em" }}
+        style={{ height: "100%", padding: "0.2em", marginBottom: "45px" }}
         className="max-width pageCSS-white center-parent"
       >
         {this.state.scoring === false ? (

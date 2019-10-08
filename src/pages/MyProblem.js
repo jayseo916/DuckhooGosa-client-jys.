@@ -92,7 +92,7 @@ class MyProblem extends React.Component {
             <span className="font-2P span_em_default"> MY PROBLEM </span>
           </p>
           <div className="top-container flex fdc">{null}</div>
-          <div className="middle-container flex fdc margin-center">
+          <div className="middle-container flex fdc margin-center" style={{ marginBottom: "45px" }}>
             <span className="font-2P span_em_l"> No HISTORY </span>
           </div>
           <div className="bottom-container flex fdc">{null}</div>

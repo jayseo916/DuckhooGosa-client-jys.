@@ -107,8 +107,13 @@ class MySolved extends React.Component {
           <span className="font-2P span_em_default"> HISTORY </span>
         </p>
         <div className="top-container flex fdc">{null}</div>
-        <div className="middle-container flex fdc">{historyList}</div>
+        <div className="middle-container flex fdc"  style={{ marginBottom: "45px" }}>{historyList}</div>
         <div className="bottom-container flex fdc">{null}</div>
+        <div className="top-container">{null}</div>
+        <div className="middle-container">
+          {historyList}
+        </div>
+        <div className="bottom-container">{null}</div>
       </div>
     );
   }
