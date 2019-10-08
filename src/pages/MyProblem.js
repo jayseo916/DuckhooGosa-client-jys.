@@ -6,6 +6,7 @@ import styled from "styled-components";
 import CopyUrl from "../components/CopyUrl";
 
 let uniqid = require("uniqid");
+let isDev = process.env.REACT_APP_LOG;
 
 class MyProblem extends React.Component {
   constructor(props) {
@@ -16,7 +17,7 @@ class MyProblem extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.state.problems);
+    isDev && console.log(this.state.problems);
   }
   solving(id) {
     this.props.history.push(`/SolvingProblem/${id}`);
@@ -92,7 +93,10 @@ class MyProblem extends React.Component {
             <span className="font-2P span_em_default"> MY PROBLEM </span>
           </p>
           <div className="top-container flex fdc">{null}</div>
-          <div className="middle-container flex fdc margin-center" style={{ marginBottom: "45px" }}>
+          <div
+            className="middle-container flex fdc margin-center"
+            style={{ marginBottom: "45px" }}
+          >
             <span className="font-2P span_em_l"> No HISTORY </span>
           </div>
           <div className="bottom-container flex fdc">{null}</div>

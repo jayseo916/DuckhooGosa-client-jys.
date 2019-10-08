@@ -106,7 +106,7 @@ class Main extends React.Component {
                 break;
               }
             } catch (err) {
-              console.log(err);
+              isDev && console.log(err);
             }
           }
 
@@ -153,7 +153,7 @@ class Main extends React.Component {
                 break;
               }
             } catch (err) {
-              console.log(err);
+              isDev && console.log(err);
             }
           }
           if (!this.state.MainNoData && data !== "NoData") {
@@ -197,7 +197,7 @@ class Main extends React.Component {
               break;
             }
           } catch (err) {
-            console.log(err);
+            isDev && console.log(err);
           }
         }
         if (!this.state.CurGenreNoData && data !== "NoData") {
@@ -255,7 +255,7 @@ class Main extends React.Component {
               });
             }
           } catch (err) {
-            console.log(err);
+            isDev && console.log(err);
           }
         }
       );
@@ -315,7 +315,7 @@ class Main extends React.Component {
                 break;
               }
             } catch (err) {
-              console.log(err);
+              isDev && console.log(err);
             }
           }
 
@@ -383,13 +383,12 @@ class Main extends React.Component {
         <div
           className="flex fdc max-width pageCSS-white"
           style={{
-            width: "fit-content",
+            width: "fit-content"
           }}
         >
           <div
             className="flex-fixer flex fdc margin-center"
             style={{
-
               flexWrap: "wrap"
             }}
           >

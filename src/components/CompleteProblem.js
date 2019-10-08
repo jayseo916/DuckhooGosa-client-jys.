@@ -14,7 +14,7 @@ import { UploadToS3 } from "../client/upLoad";
 // import { nullLiteral } from "@babel/types";
 
 let uniqid = require("uniqid");
-
+let isDev = process.env.REACT_APP_LOG;
 // Register the plugin
 registerPlugin(
   FilePondPluginFilePoster,
@@ -29,7 +29,7 @@ class CompleteProblem extends React.Component {
     super(props);
 
     this.state = {
-      files: [],
+      files: []
     };
   }
   //제출 = Problems 를 이용하여 쭉 출력 => 완료버튼 : POST 하고 main으로 이동
@@ -37,7 +37,7 @@ class CompleteProblem extends React.Component {
 
   componentDidMount() {
     let Problems = this.props.Problems;
-    console.log(Problems, "물려받은 상태 확인");
+    isDev && console.log(Problems, "물려받은 상태 확인");
 
     this.setState({
       allFiles: Problems
@@ -60,12 +60,16 @@ class CompleteProblem extends React.Component {
                 resolve(link);
               });
             } catch (ex) {
+              alert(
+                "토큰이 유효하지 않습니다. 다시 로그인 해주세요. 정말 죄송합니다!"
+              );
+              this.props.history.push("/login");
               reject(ex);
             }
           })
         );
       } else {
-        console.log(problem);
+        isDev && console.log(problem);
         // return null;
       }
     });
@@ -106,15 +110,15 @@ class CompleteProblem extends React.Component {
         axiosInstance
           .post(`${process.env.REACT_APP_SERVER}/problem`, obj, config)
           .then(res => {
-            // console.log(res, "업로드결과");
-            this.props.history.push('/main')
+            isDev && console.log(res, "업로드결과");
+            this.props.history.push("/main");
           })
           .catch(err => {
-            console.log(err);
+            isDev && console.log(err);
           });
       })
       .catch(ex => {
-        console.error(ex);
+        isDev && console.error(ex);
       });
   };
   postProblems = async () => {
