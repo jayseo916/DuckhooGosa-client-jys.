@@ -185,7 +185,8 @@ class Profile extends Component {
             className="nes-container nes-container-normal with-title is-centered margin-center filling_child"
             style={{
               flexWrap: "wrap",
-              paddingBottom: "3em"
+              paddingBottom: "3em",
+              marginBottom:"45px"
             }}
           >
             <p className="title font-2P">
