@@ -444,6 +444,7 @@ class Main extends React.Component {
                   value={this.state.input}
                   size="40"
                   onChange={e => this.handleInput(e)}
+                  onKeyUp={() => this.enterKey()}
                 />
               </div>
 
