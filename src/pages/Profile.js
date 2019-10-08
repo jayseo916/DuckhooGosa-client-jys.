@@ -430,7 +430,7 @@ class Profile extends Component {
                   key="2"
                   className="nes-container padding-zero"
                 >
-                  <p>문의사항: jadetypehoon@gmail.com</p>
+                  <p>문의사항: duckhoogosa@gmail.com</p>
                   <span className="span_em_default">
                     어떤 문의사항이든 소중하게 받아들이는 The KOO되겠습니다.
                   </span>

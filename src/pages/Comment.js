@@ -129,10 +129,15 @@ export default class Comment extends React.Component {
           <div className="nes-container with-title is-centered padding-zero">
             <p className="title">Comments</p>
             {commentBtn ? (
-              <div>
+              <div
+                className="trc flex"
+                style={{
+                  height: "4em"
+                }}
+              >
                 <textarea
                   cols="40%"
-                  rows="4"
+                  rows="2"
                   onChange={e => this.inputCommentHandle(e)}
                   placeholder="의견을 남겨주세요"
                 />
@@ -140,16 +145,14 @@ export default class Comment extends React.Component {
                   className="nes-btn"
                   onClick={() => this.submitComment()}
                 >
-                  댓글 쓰기
+                  UPLOAD
                 </button>
-                <button onClick={() => this.commentBtnHandle()}>
-                  댓글입력창없애기
-                </button>
+                <button onClick={() => this.commentBtnHandle()}>CANCEL</button>
               </div>
             ) : (
               <div>
                 <button onClick={() => this.commentBtnHandle()}>
-                  댓글입력모드
+                  <span className="span_em_middle font-2P"> 댓글입력 </span>
                 </button>
               </div>
             )}
