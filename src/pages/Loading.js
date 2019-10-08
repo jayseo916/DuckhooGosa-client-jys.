@@ -20,10 +20,10 @@ class Loading extends React.Component {
     axiosInstance
       .get("/", {}, config)
       .then(res => {
-        console.log(res, " is this HELLO?");
+        console.log(res, "Server Status GOOD");
       })
       .catch(err => {
-        console.log(err, "ERROR in basic setting");
+        console.log(err, "Server Status BAD");
       });
 
     console.log("현재 클라이언트::", process.env.REACT_APP_MODE);

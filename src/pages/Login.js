@@ -5,6 +5,8 @@ import "../shared/App.css";
 import { config, axiosInstance } from "../config";
 import styled from "styled-components";
 
+let isDev = process.env.REACT_APP_LOG;
+
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -35,20 +37,20 @@ class Login extends React.Component {
     axiosInstance
       .post("/login", {}, config)
       .then(res => {
-        console.log(res, "요청결과 확인");
+        isDev && console.log(res, "요청결과 확인");
         if (res.data.result) {
           this.props.history.push("/main");
         } else {
-          console.log(res.data.reason);
+          isDev && console.log(res.data.reason);
           this.props.history.push("/login");
         }
       })
       .catch(err => {
-        console.log(err, "ERROR in login SEQ");
+        isDev && console.log(err, "ERROR in login SEQ");
       });
   };
   responseFail = err => {
-    console.log(err);
+    isDev && console.log(err);
   };
 
   logout = () => {
@@ -56,15 +58,15 @@ class Login extends React.Component {
       .post("/logout", {}, config)
       .then(res => {
         if (res.data.result) {
-          console.log(res.data.result);
+          isDev && console.log(res.data.result);
         } else {
-          console.log(res.data.reason);
+          isDev && console.log(res.data.reason);
         }
       })
       .catch(err => {
-        console.log(err, "ERROR in logout SEQ");
+        isDev && console.log(err, "ERROR in logout SEQ");
       });
-    console.log("로그아웃");
+    console.log("LOGOUT");
     this.props.emptyEmail();
     localStorage.removeItem("authData");
   };

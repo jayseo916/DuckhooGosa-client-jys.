@@ -41,9 +41,10 @@ export class Scoring extends Component {
         clearInterval(this.id);
       }
     }, 100);
-    axiosInstance.get("/account/info", config)
-    .then(res => this.setState({nickname: res.data.nickname}))
-    .catch(err => console.log(err));
+    axiosInstance
+      .get("/account/info", config)
+      .then(res => this.setState({ nickname: res.data.nickname }))
+      .catch(err => isDev && console.log(err));
   }
 
   goComment = () => {
@@ -66,8 +67,8 @@ export class Scoring extends Component {
         },
         config
       )
-      .then(res => console.log(res))
-      .catch(err => console.log(err));
+      .then(res => isDev && console.log(res))
+      .catch(err => isDev && console.log(err));
   }
   cancel = e => {
     this.setState({ visible: false });
@@ -140,7 +141,7 @@ export class Scoring extends Component {
       margin: 1em 0 1em 0;
     `;
     return (
-      <div className="inline-flex" style={{ "marginTop": "1em" }}>
+      <div className="inline-flex" style={{ marginTop: "1em" }}>
         <Modal
           title="🥕FEEDBACK"
           visible={this.state.visible}
@@ -191,12 +192,14 @@ export class Scoring extends Component {
             <i className="snes-jp-logo is-small" />{" "}
             <span className="span_em_middle">
               {" "}
-              <span 
+              <span
                 style={{
                   fontStyle: "Italic"
                 }}
               >
-              {nickname ? nickname:"익명의 더쿠"}</span>님의 {title} 점수
+                {nickname ? nickname : "익명의 더쿠"}
+              </span>
+              님의 {title} 점수
             </span>
           </UpperDiv>
           <div className="padding-zero nes-container is-dark with-title is-centered">

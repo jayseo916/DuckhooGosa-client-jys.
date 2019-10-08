@@ -314,37 +314,37 @@ label.dv-star-rating-full-star > i {
 /*34px Header*/
 .span_em_vl {
   font-size: 2.125rem;
-  word-break: normal;
+  word-break: break-all;
 }
 
 /*28px*/
 .span_em_l {
   font-size: 1.75rem;
-  word-break: normal;
+  word-break: break-all;
 }
 
 /*22px*/
 .span_em_middle {
   font-size: 1.375rem;
-  word-break: normal;
+  word-break: break-all;
 }
 
 /*19px*/
 .span_em_default {
   font-size: 1.1875rem;
-  word-break: normal;
+  word-break: break-all;
 }
 
 /*14*/
 .span_em_small {
   font-size: 0.875rem;
-  word-break: normal;
+  word-break: break-all;
 }
 
 /*14*/
 .span_em_vsmall {
   font-size: 0.6875rem;
-  word-break: normal;
+  word-break: break-all;
 }
 
 .grey {

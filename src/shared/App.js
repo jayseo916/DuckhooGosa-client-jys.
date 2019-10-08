@@ -131,7 +131,7 @@ class App extends React.Component {
           <Route
             path="/SolvingProblem/:id"
             render={props => {
-              console.log(email, "어디보자");
+              // console.log(email, "어디보자");
               if (!email)
                 return (
                   <Redirect

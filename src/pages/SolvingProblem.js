@@ -4,6 +4,7 @@ import { axiosInstance, config } from "../config";
 import Scoring from "../components/Scoring";
 import "../../node_modules/nes.css/css/nes.css";
 
+
 import {
   Player,
   ControlBar,
@@ -13,6 +14,7 @@ import {
 } from "video-react";
 import "../../node_modules/video-react/dist/video-react.css";
 import LoadingComponent from "../components/LoadingComponent";
+let isDev = process.env.REACT_APP_LOG;
 
 export default class SolvingProblem extends Component {
   constructor(props) {
@@ -60,7 +62,7 @@ export default class SolvingProblem extends Component {
           return res.data;
         })
         .catch(err => {
-          console.log(err);
+          isDev && console.log(err);
         });
       this.setState(
         {
@@ -71,12 +73,12 @@ export default class SolvingProblem extends Component {
           total: data.problems.length //추후 실제데이터 시 사용
         },
         () => {
-          // console.log(this.state, "현재 받아온 데이터");
+          isDev && console.log(this.state, "현재 받아온 데이터");
           clearInterval(id);
         }
       );
     } catch (ex) {
-      console.error(ex);
+      isDev && console.error(ex);
     }
   };
 
@@ -94,11 +96,11 @@ export default class SolvingProblem extends Component {
           axiosInstance
             .post("/problem/solution", obj, config)
             .then(res => {
-              console.log("답리절트", res);
+              isDev && console.log("답리절트", res);
               return res.data;
             })
             .then(data => {
-              console.log("아이디", JSON.parse(data));
+              isDev && console.log("아이디", JSON.parse(data));
               this.setState(
                 {
                   resultData: JSON.parse(data),
@@ -106,13 +108,13 @@ export default class SolvingProblem extends Component {
                   isLoading: true
                 },
                 () => {
-                  console.log(this.state.resultData);
-                  console.log(this.state.scoring);
+                  isDev && console.log(this.state.resultData);
+                  isDev && console.log(this.state.scoring);
                 }
               );
             })
             .catch(err => {
-              console.log(err);
+              isDev && console.log(err);
             });
         }
       );
@@ -123,13 +125,13 @@ export default class SolvingProblem extends Component {
     let answer = [...this.state.answer];
     if (e.target.type !== "checkbox") {
       //주관식인경우
-      console.log("타입", e.target.type);
+      isDev && console.log("타입", e.target.type);
       answer[num] = e.target.value;
       this.setState({
         answer
       });
     } else {
-      console.log("타입", e.target.type);
+      isDev && console.log("타입", e.target.type);
       // let answer = [...this.state.answer];
       let select = [];
       if (answer[num]) {
@@ -154,16 +156,15 @@ export default class SolvingProblem extends Component {
       this.state.answer.forEach(v => {
         if (v && v.length !== 0) {
           solved++;
-          // console.log("실시간솔브드값", solved);
+          isDev && console.log("실시간솔브드값", solved);
         }
-        // console.log("v값", v);
+        isDev && console.log("v값", v);
       });
       this.setState({
         solved
       });
     }); ///////////////done
 
-    // console.log("답안지", this.state.answer);
   };
   viewProblem = () => {
     const { problems } = this.state;
@@ -226,27 +227,42 @@ export default class SolvingProblem extends Component {
           return (
             <div
               key={choiceNum}
-              style={{ minWidth: "80%", verticalAlign: "central" }}
-              className="flex"
+              style={{
+                verticalAlign: "central",
+                justifyContent: "flex-start",
+                alignItems: "center"
+              }}
+              className="flex fdr"
             >
-              <input
+              <div
+                className="flex"
                 style={{
-                  MsTransform: "scale(2)" /* IE */,
-                  MozTransform: "scale(2)" /* FF */,
-                  WebkitTransform: "scale(2)" /* Safari and Chrome */,
-                  OTransform: "scale(2)" /* Opera */,
-                  transform: "scale(2)",
-                  margin: "0.5em 1.2em 0",
-                  display: "flex"
+                  maxWidth: "1.5em"
                 }}
-                type="checkbox"
-                onChange={e => {
-                  this.handleChoice(e, num, choiceNum);
-                }}
-              />
+              >
+                <input
+                  style={{
+                    MsTransform: "scale(2)" /* IE */,
+                    MozTransform: "scale(2)" /* FF */,
+                    WebkitTransform: "scale(2)" /* Safari and Chrome */,
+                    OTransform: "scale(2)" /* Opera */,
+                    transform: "scale(2)",
+                    margin: "0px 0.3em 0px 0.5em !important",
+                    marginRight: "auto"
+                  }}
+                  className="flex-fixer"
+                  type="checkbox"
+                  onChange={e => {
+                    this.handleChoice(e, num, choiceNum);
+                  }}
+                />
+              </div>
               <span
-                className="span_em_default"
-                style={{ breadWord: "break-word" }}
+                className="span_em_default flex"
+                style={{
+                  marginRight: "auto",
+                  marginLeft: 0
+                }}
               >
                 {choiceNum + 1}번.{v.text}
               </span>
@@ -254,7 +270,7 @@ export default class SolvingProblem extends Component {
           );
         });
         viewChoice = (
-          <div className="nes-container is-rounded" style={{ minWidth: "90%" }}>
+          <div className="nes-container nes-container-hard is-rounded fdc flex filling_parent">
             {viewChoice}
           </div>
         );
@@ -263,10 +279,10 @@ export default class SolvingProblem extends Component {
       return (
         <div
           className="problem-container flex"
-          style={{ width: "100%", display: "inline-flex" }}
+          style={{ width: "100%", display: "inline-flex", padding: "0.2em" }}
         >
           <div
-            className="problem-main"
+            className="problem-main filling_parent"
             key={num}
             style={{
               display: "flex",
@@ -281,8 +297,8 @@ export default class SolvingProblem extends Component {
             <h3>{num + 1}번 </h3>
             {fileTag}
             <span
-              className="span_em_middle"
-              style={{ padding: "0.5em 0 0 0", wordBreak: "break-word" }}
+              className="span_em_middle flex"
+              style={{ padding: "0.5em 0 0 0" }}
             >
               문제:{problem.problemText}
             </span>
@@ -305,7 +321,7 @@ export default class SolvingProblem extends Component {
     ) : (
       <div
         style={{ height: "100%", padding: "0.2em", marginBottom: "45px" }}
-        className="max-width pageCSS-white center-parent"
+        className="max-width pageCSS-white"
       >
         {this.state.scoring === false ? (
           // 문제집 감싸개.
