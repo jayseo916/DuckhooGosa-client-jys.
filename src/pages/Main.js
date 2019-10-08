@@ -339,6 +339,11 @@ class Main extends React.Component {
     isDev && console.log(`/SolvingProblem/${id}`, "으로 보내줌");
     this.props.history.push(`/SolvingProblem/${id}`);
   }
+  enterKey() {
+    if(window.event.keyCode === 13){
+      this.search();
+    }
+  }
   render() {
     // const { img, title, problem_id } = this.state.problems;
     isDev && console.log(this.state.genreOn);
@@ -439,6 +444,7 @@ class Main extends React.Component {
                   value={this.state.input}
                   size="40"
                   onChange={e => this.handleInput(e)}
+                  onKeyUp={() => this.enterKey()}
                 />
               </div>
 
