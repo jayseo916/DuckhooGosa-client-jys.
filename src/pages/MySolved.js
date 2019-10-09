@@ -85,7 +85,7 @@ class MySolved extends React.Component {
                       style={{
                         marginLeft: "0.3em"
                       }}
-                      onClick={() => this.problemInfo(el.problem._id)}
+                      onClick={() => this.problemInfo(el.problem_id)}
                     >
                       <sapn className="span_em_small">Read more..</sapn>
                     </button>

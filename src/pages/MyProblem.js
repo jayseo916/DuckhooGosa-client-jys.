@@ -26,6 +26,10 @@ class MyProblem extends React.Component {
   problemInfo(id) {
     this.props.history.push(`/comment/${id}`);
   }
+
+  cancel() {
+    console.log("캔슬드 ");
+  }
   render() {
     const ImageBox = styled.div`
       width: 100%;
@@ -39,6 +43,7 @@ class MyProblem extends React.Component {
           key={items.problem_id + "_Popconfirm" + uniqid("k")}
           title="다시 풀어 볼래요?"
           onConfirm={() => {
+            console.log(items._id);
             this.solving(items._id);
           }}
           onCancel={this.cancel}
@@ -88,7 +93,10 @@ class MyProblem extends React.Component {
                   <button
                     className="nes-btn  padding-zero-only"
                     style={{ marginLeft: "0.3em" }}
-                    onClick={() => this.problemInfo(items._id)}
+                    onClick={() => {
+                      console.log(items._id);
+                      this.problemInfo(items._id);
+                    }}
                   >
                     Read more..
                   </button>
