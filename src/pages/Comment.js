@@ -143,17 +143,15 @@ export default class Comment extends React.Component {
               paddingBottom: "1em"
             }}
           >
-            <p>
-              <span className="span_em_small">
-                {!data.nick ? " 익명의 더쿠" : data.nick}:{" "}
-              </span>
-              {data.comment}
-              <br />
-              <span className="span_em_small grey">
-                {/*{data.day}*/}
-                {formatRelative(new Date(data.day), new Date())}
-              </span>
-            </p>
+            <span className="span_em_small">
+              {!data.nick ? " 익명의 더쿠" : data.nick}:{" "}
+            </span>
+            <span className="span_em_small">{data.comment} </span>
+            <br />
+            <span className="span_em_small grey">
+              {/*{data.day}*/}
+              {formatRelative(new Date(data.day), new Date())}
+            </span>
           </div>
         </section>
       ));
@@ -172,12 +170,14 @@ export default class Comment extends React.Component {
           <div className="nes-container nes-container-hard with-title is-centered padding-zero flex fdc">
             <p className="title font-2P">Comments</p>
             <div className="flex fdc">
-             <span className="span_em_default">
+              <span className="span_em_default">
                 {nick}가 만든 {title}
-             </span>
-              <span className="span_em_default">이 문제는 현재 {solvedUsers}명이 풀었습니다</span>
+              </span>
+              <span className="span_em_default">
+                이 문제는 현재 {solvedUsers}명이 풀었습니다
+              </span>
               {this.state.count === 0 ? (
-                  <span className="span_em_default">아직 평점이 없어요!</span>
+                <span className="span_em_default">아직 평점이 없어요!</span>
               ) : (
                 <div className="flex fdc">
                   <span className="span_em_default">
@@ -195,6 +195,8 @@ export default class Comment extends React.Component {
                 style={{}}
               >
                 <textarea
+                  className="flex"
+                  style={{ width: "inherit" }}
                   rows="2"
                   onChange={e => this.inputCommentHandle(e)}
                   placeholder="의견을 남겨주세요"
