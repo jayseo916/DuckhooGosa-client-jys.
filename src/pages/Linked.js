@@ -27,6 +27,9 @@ class Linked extends Component {
     } catch (err) {
       console.log(err);
     }
+    if (!this.props.location.problemId) {
+      this.props.history.push("/main");
+    }
   };
 
   render() {
