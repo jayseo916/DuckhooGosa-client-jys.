@@ -64,7 +64,7 @@ export default class Comment extends React.Component {
       evalD: null,
       comments: this.state.inputComment
     };
-    isDev && console.log(obj,"보내는 데이터 검증");
+    isDev && console.log(obj, "보내는 데이터 검증");
     axiosInstance
       .post("/problem/evaluation", obj, config)
       .then(res => console.log(res))
@@ -171,46 +171,56 @@ export default class Comment extends React.Component {
         >
           <div className="nes-container nes-container-hard with-title is-centered padding-zero">
             <p className="title">Comments</p>
-            <div>
-              <p>
+            <div className="flex fdc">
+             <span className="span_em_default">
                 {nick}가 만든 {title}
-              </p>
-              <p>이 문제는 현재 {solvedUsers}명이 풀었습니다</p>
+             </span>
+              <span className="span_em_default">이 문제는 현재 {solvedUsers}명이 풀었습니다</span>
               {this.state.count === 0 ? (
-                <p>아직 평점이 없어요!</p>
+                  <span className="span_em_default">아직 평점이 없어요!</span>
               ) : (
-                <div>
-                  <p>퀄리티 평점: {(totalq / count).toFixed(2)} / 5</p>
-                  <p>난이도 평점: {(totald / count).toFixed(2)} / 5</p>
+                <div className="flex fdc">
+                  <span className="span_em_default">
+                    퀄리티 평점: {(totalq / count).toFixed(2)} / 5
+                  </span>
+                  <span className="span_em_default">
+                    난이도 평점: {(totald / count).toFixed(2)} / 5
+                  </span>
                 </div>
               )}
             </div>
             {commentBtn ? (
               <div
-                className="trc flex"
-                style={{
-                  height: "4em"
-                }}
+                className="trc flex filling_parent center-center-series"
+                style={{}}
               >
                 <textarea
-                  cols="40%"
                   rows="2"
                   onChange={e => this.inputCommentHandle(e)}
                   placeholder="의견을 남겨주세요"
                 />
                 <button
-                  className="nes-btn"
+                  className="nes-btn is-primary"
                   onClick={() => this.submitComment()}
                 >
                   UPLOAD
                 </button>
-                <button onClick={() => this.commentBtnHandle()}>CANCEL</button>
+                <button
+                  className="nes-btn is-error"
+                  onClick={() => this.commentBtnHandle()}
+                >
+                  CANCEL
+                </button>
               </div>
             ) : (
               <div>
-                <button onClick={() => this.commentBtnHandle()}>
-                  <span className="span_em_middle font-2P"> 댓글입력 </span>
+                <button
+                  className="nes-btn"
+                  onClick={() => this.commentBtnHandle()}
+                >
+                  <span className="span_em_middle"> 댓글입력 </span>
                 </button>
+                <hr className="hr-green" />
               </div>
             )}
             {list ? list : <div>아직 해당문제에 대한 의견이 없습니다.</div>}
