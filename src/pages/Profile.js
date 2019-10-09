@@ -80,6 +80,9 @@ class Profile extends Component {
       alert("확장자가 jpg, gif, png, jpeg, bmp인 이미지 파일만 올려주세요.");
       e.target.value = "";
       return false;
+    } else if (e.target.files && e.target.files[0].size > (5 * 1024 * 1024)) {
+      alert("업로드할 파일의 용량이 5mb가 넘습니다.")
+      e.target.value = "";
     } else {
       this.setState({
         curImg: e.target.files[0]
