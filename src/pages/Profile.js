@@ -63,7 +63,7 @@ class Profile extends Component {
       });
     isDev && console.log("로그아웃");
     this.props.emptyEmail();
-    localStorage.removeItem("authData");
+    localStorage.clear();
   };
 
   uploadImage1() {
@@ -200,7 +200,7 @@ class Profile extends Component {
             style={{
               flexWrap: "wrap",
               paddingBottom: "3em",
-              marginBottom:"45px"
+              marginBottom: "45px"
             }}
           >
             <p className="title font-2P">
@@ -439,13 +439,14 @@ class Profile extends Component {
                   </span>
                 </Panel>
                 <Panel
-                    header="문제가 업로드 되지 않을떄"
-                    key="3"
-                    className="nes-container padding-zero"
+                  header="문제가 업로드 되지 않을떄"
+                  key="3"
+                  className="nes-container padding-zero"
                 >
                   <p>문제가 업로드 되지않을땐?</p>
                   <span className="span_em_default">
-                    PROFILE > LOGOUT 후 다시 로그인해주세요! 현재 서비스에 문제가 있어 수정중입니다.
+                    PROFILE > LOGOUT 후 다시 로그인해주세요! 현재 서비스에
+                    문제가 있어 수정중입니다.
                   </span>
                 </Panel>
               </Collapse>

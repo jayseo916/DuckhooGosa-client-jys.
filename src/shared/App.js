@@ -17,18 +17,39 @@ import NotFound from "../pages/NotFound";
 import Linked from "../pages/Linked";
 import LoadingComponent from "../components/LoadingComponent";
 import "./App.css";
+import Axios from "axios";
 
 const isDev = process.env.REACT_APP_LOG;
 class App extends React.Component {
   constructor(prop) {
     super(prop);
     this.state = {
-      email: localStorage.getItem("authData")
-        ? JSON.parse(localStorage.getItem("authData")).profileObj.email
-        : null,
+      email: null,
       expires_at: null,
       repreImg: null
     };
+  }
+
+  componentDidMount() {
+    if (
+      localStorage.access_token &&
+      localStorage.email &&
+      localStorage.expires_in
+    ) {
+      let key = localStorage.getItem("access_token");
+      console.log(key, "토큰검사");
+      Axios.get(
+        "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=" + key
+      ).then(res => {
+        console.log(res.data, "검증 1회");
+        if (res.data["expires_in"] === undefined) {
+          localStorage.clear();
+          this.props.history.push("/login");
+        } else {
+          isDev && console.log("@@ 토큰 안전함 @@");
+        }
+      });
+    }
   }
 
   emptyEmail = () => {
