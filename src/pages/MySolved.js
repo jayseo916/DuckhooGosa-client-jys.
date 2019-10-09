@@ -62,47 +62,47 @@ class MySolved extends React.Component {
               className="nes-container nes-container-hard with-title is-rounded is-centered"
             >
               <span className="span_em_default">{el.title} </span>
-            </p>
-            <div
-              className="flex-container-col is-rounded is-centered"
-              style={{
-                marginBottom: "-7px"
-              }}
-            >
-              <ImageBox className="margin-center thumbnail-wrap">
-                <CopyUrl id={el.problem_id} />
-                <img className="thumbnail" src={el.img} alt="place" />
-              </ImageBox>
-              <div className="flex-container-row margin-center">
-                <span className="flex nes-text is-error span_em_small word-break">
-                  <a href="#self" className="nes-badge is-splited">
-                    <span className="is-dark">Hit</span>
-                    <span className="is-success">{el.successRate}%</span>
-                  </a>
-                </span>
-                <div>
-                  <button
-                    className="nes-btn padding-zero-only"
-                    style={{
-                      marginLeft: "0.3em"
-                    }}
-                    onClick={() => this.problemInfo(el.problem._id)}
-                  >
-                    <sapn className="span_em_small">Read more..</sapn>
-                  </button>
+              <div
+                className="flex-container-col is-rounded is-centered"
+                style={{
+                  marginBottom: "-7px"
+                }}
+              >
+                <ImageBox className="margin-center thumbnail-wrap">
+                  <CopyUrl id={el.problem_id} />
+                  <img className="thumbnail" src={el.img} alt="place" />
+                </ImageBox>
+                <div className="flex-container-row margin-center">
+                  <span className="flex nes-text is-error span_em_small word-break">
+                    <a href="#self" className="nes-badge is-splited">
+                      <span className="is-dark">Hit</span>
+                      <span className="is-success">{el.successRate}%</span>
+                    </a>
+                  </span>
+                  <div>
+                    <button
+                      className="nes-btn padding-zero-only"
+                      style={{
+                        marginLeft: "0.3em"
+                      }}
+                      onClick={() => this.problemInfo(el.problem._id)}
+                    >
+                      <sapn className="span_em_small">Read more..</sapn>
+                    </button>
+                  </div>
                 </div>
-              </div>
-              <div className="flex-container-row margin-center">
-                <span
-                  className="nes-text is-primary span_em_small word-break margin-center center-center-series flex"
-                  style={{
-                    // display: "block"
-                    height: "fit-content"
-                  }}
-                >
-                  {" "}
-                  {formatRelative(new Date(el.date), new Date())}
-                </span>
+                <div className="flex-container-row margin-center">
+                  <span
+                    className="nes-text is-primary span_em_small word-break margin-center center-center-series flex"
+                    style={{
+                      // display: "block"
+                      height: "fit-content"
+                    }}
+                  >
+                    {" "}
+                    {formatRelative(new Date(el.date), new Date())}
+                  </span>
+                </div>
               </div>
             </Card>
           </Popconfirm>
