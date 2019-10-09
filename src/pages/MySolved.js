@@ -87,7 +87,7 @@ class MySolved extends React.Component {
                       }}
                       onClick={() => this.problemInfo(el.problem_id)}
                     >
-                      <sapn className="span_em_small">Read more..</sapn>
+                      <span className="span_em_small">Read more..</span>
                     </button>
                   </div>
                 </div>
