@@ -20,9 +20,28 @@ export default class Comment extends React.Component {
     axiosInstance
       .get(`/comment/${this.state.problem_id}`, config)
       .then(res => {
-        this.setState({ comments: JSON.parse(res.data) });
+        console.log("처음", JSON.parse(res.data).result);
+        const { totalq, totald, count, solvedUsers, nick, title } = JSON.parse(
+          res.data
+        );
+        this.setState({
+          comments: JSON.parse(res.data).result,
+          totalq,
+          totald,
+          count,
+          solvedUsers,
+          nick,
+          title
+        });
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.log(err);
+        console.log("무엇;;");
+      });
+  };
+
+  getInfo = () => {
+    axiosInstance.post(`problem/${this.state.problem_id}`);
   };
 
   componentDidMount() {
@@ -50,7 +69,20 @@ export default class Comment extends React.Component {
     await axiosInstance
       .get(`/comment/${this.state.problem_id}`, config)
       .then(res => {
-        this.setState({ comments: JSON.parse(res.data) });
+        console.log("두번째거", JSON.parse(res.data).result);
+        const { totalq, totald, count, solvedUsers, nick, title } = JSON.parse(
+          res.data
+        );
+
+        this.setState({
+          comments: JSON.parse(res.data).result,
+          totalq,
+          totald,
+          count,
+          solvedUsers,
+          nick,
+          title
+        });
       })
       .catch(err => console.log(err));
     await this.setState({
@@ -61,7 +93,15 @@ export default class Comment extends React.Component {
   };
   render() {
     let list;
-    const { comments } = this.state;
+    const {
+      comments,
+      nick,
+      title,
+      totalq,
+      totald,
+      count,
+      solvedUsers
+    } = this.state;
     const commentBtn = this.state.commentBtn;
     // console.log(comments);
     if (comments) {
@@ -128,6 +168,20 @@ export default class Comment extends React.Component {
         >
           <div className="nes-container with-title is-centered padding-zero">
             <p className="title">Comments</p>
+            <div>
+              <p>
+                {nick}가 만든 {title}
+              </p>
+              <p>이 문제는 현재 {solvedUsers}명이 풀었습니다</p>
+              {this.state.count === 0 ? (
+                <p>아직 평점이 없어요!</p>
+              ) : (
+                <div>
+                  <p>퀄리티 평점: {(totalq / count).toFixed(2)} / 5</p>
+                  <p>난이도 평점: {(totald / count).toFixed(2)} / 5</p>
+                </div>
+              )}
+            </div>
             {commentBtn ? (
               <div
                 className="trc flex"
