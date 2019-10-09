@@ -11,7 +11,9 @@ class MySolved extends React.Component {
   confirm(problemId) {
     this.props.history.push("/SolvingProblem/" + problemId);
   }
-
+  problemInfo(id) {
+    this.props.history.push("/comment/" + id);
+  }
   static cancel() {
     // console.log("취소");
   }
@@ -95,6 +97,14 @@ class MySolved extends React.Component {
                   {" "}
                   {formatRelative(new Date(el.date), new Date())}
                 </span>
+                <div>
+                  <button
+                    className="nes-btn is-primary"
+                    onClick={() => this.problemInfo(el.problems._id)}
+                  >
+                    문제 상세정보
+                  </button>
+                </div>
               </div>
             </div>
           </Card>
@@ -107,12 +117,15 @@ class MySolved extends React.Component {
           <span className="font-2P span_em_default"> HISTORY </span>
         </p>
         <div className="top-container flex fdc">{null}</div>
-        <div className="middle-container flex fdc"  style={{ marginBottom: "45px" }}>{historyList}</div>
-        <div className="bottom-container flex fdc">{null}</div>
-        <div className="top-container">{null}</div>
-        <div className="middle-container">
+        <div
+          className="middle-container flex fdc"
+          style={{ marginBottom: "45px" }}
+        >
           {historyList}
         </div>
+        <div className="bottom-container flex fdc">{null}</div>
+        <div className="top-container">{null}</div>
+        <div className="middle-container">{historyList}</div>
         <div className="bottom-container">{null}</div>
       </div>
     );

@@ -17,10 +17,14 @@ class MyProblem extends React.Component {
   }
 
   componentDidMount() {
+    console.log(this.props);
     isDev && console.log(this.state.problems);
   }
   solving(id) {
     this.props.history.push(`/SolvingProblem/${id}`);
+  }
+  problemInfo(id) {
+    this.props.history.push(`/comment/${id}`);
   }
   render() {
     const ImageBox = styled.div`
@@ -79,6 +83,14 @@ class MyProblem extends React.Component {
                   {" "}
                   {formatRelative(new Date(items.date), new Date())}
                 </span>
+                <div>
+                  <button
+                    className="nes-btn is-primary"
+                    onClick={() => this.problemInfo(items._id)}
+                  >
+                    문제 상세정보
+                  </button>
+                </div>
               </div>
             </div>
           </div>

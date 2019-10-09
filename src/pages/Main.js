@@ -339,6 +339,9 @@ class Main extends React.Component {
     isDev && console.log(`/SolvingProblem/${id}`, "으로 보내줌");
     this.props.history.push(`/SolvingProblem/${id}`);
   }
+  problemInfo(id) {
+    this.props.history.push("/comment/" + id);
+  }
   enterKey() {
     if(window.event.keyCode === 13){
       this.search();
@@ -493,6 +496,14 @@ class Main extends React.Component {
                         >
                           <h4>{item.title}</h4>
                         </a>
+                        <div>
+                          <button
+                            className="nes-btn is-primary"
+                            onClick={() => this.problemInfo(item._id)}
+                          >
+                            문제 상세정보
+                          </button>
+                        </div>
                       </div>
                       <hr className="main-hr" />
                     </div>
@@ -524,6 +535,14 @@ class Main extends React.Component {
                         >
                           <h4>{item.title}</h4>
                         </a>
+                        <div>
+                          <button
+                            className="nes-btn is-primary"
+                            onClick={() => this.problemInfo(item._id)}
+                          >
+                            문제 상세정보
+                          </button>
+                        </div>
                       </div>
                       <hr className="main-hr" />
                     </div>
