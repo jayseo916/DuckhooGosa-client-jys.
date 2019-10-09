@@ -100,7 +100,7 @@ class MySolved extends React.Component {
                 <div>
                   <button
                     className="nes-btn is-primary"
-                    onClick={() => this.problemInfo(el.problems._id)}
+                    onClick={() => this.problemInfo(el.problem._id)}
                   >
                     문제 상세정보
                   </button>
