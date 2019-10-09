@@ -35,6 +35,15 @@ class MyProblem extends React.Component {
     const problems = this.state.problems;
     let cards = problems.map(items => (
       <div key={items._id + uniqid("key")}>
+        <hr></hr>
+        <div>
+          <button
+            className="nes-btn is-primary"
+            onClick={() => this.problemInfo(items._id)}
+          >
+            문제 상세정보
+          </button>
+        </div>
         <Popconfirm
           key={items.problem_id + "_Popconfirm" + uniqid("k")}
           title="다시 풀어 볼래요?"
@@ -83,14 +92,6 @@ class MyProblem extends React.Component {
                   {" "}
                   {formatRelative(new Date(items.date), new Date())}
                 </span>
-                <div>
-                  <button
-                    className="nes-btn is-primary"
-                    onClick={() => this.problemInfo(items._id)}
-                  >
-                    문제 상세정보
-                  </button>
-                </div>
               </div>
             </div>
           </div>

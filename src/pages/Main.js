@@ -519,7 +519,6 @@ class Main extends React.Component {
                             />
                           </ImageBox>
                         </a>
-
                         <a
                           href="/#"
                           onClick={e => this.solvedProblem(e, item._id)}
