@@ -31,6 +31,7 @@ registerPlugin(
   FilePondPluginImageCrop,
   FilePondPluginImageTransform
 );
+let isDev = process.env.REACT_APP_LOG;
 
 class CreateProblem extends Component {
   constructor(props) {
@@ -60,10 +61,10 @@ class CreateProblem extends Component {
   }
 
   componentDidMount() {
-    // console.log(this.props);
+    isDev && console.log(this.props);
   }
   handleInit() {
-    // console.log("FilePond instance has initialised", this.pond);
+    isDev && console.log("FilePond instance has initialised", this.pond);
   }
 
   state = {
@@ -98,7 +99,7 @@ class CreateProblem extends Component {
         });
       }
     );
-    console.log(this.state.problemText);
+    isDev && console.log(this.state.problemText);
   };
 
   removeProblem = () => {
@@ -136,7 +137,6 @@ class CreateProblem extends Component {
     this.setState({
       choice: answer
     });
-    console.log("왓더", this.state.choice);
   };
 
   handleChoiceAnswer = (e, v) => {
@@ -164,17 +164,17 @@ class CreateProblem extends Component {
           subjectAnswer: e.target.value
         },
         () => {
-          console.log("주관답", this.state.choice[0].answer);
-          console.log("프라블럼스의 답", this.state.Problems);
-          console.log(this.state.subjectAnswer);
+          isDev && console.log("주관답", this.state.choice[0].answer);
+          isDev && console.log("프라블럼스의 답", this.state.Problems);
+          isDev && console.log(this.state.subjectAnswer);
           const errors = { ...this.state.errors };
           const errMsg = this.validateChoice();
-          console.log("주관식?", errMsg);
+          isDev && console.log("주관식?", errMsg);
           if (errMsg) errors[v] = errMsg[v];
           else delete errors[v];
 
-          console.log(errors);
-          console.log("번호", v);
+          isDev && console.log(errors);
+          isDev && console.log("번호", v);
           this.setState({
             errors
           });
@@ -191,8 +191,8 @@ class CreateProblem extends Component {
           const errMsg = this.validateChoice();
           if (errMsg) errors[v] = errMsg[v];
           else delete errors[v];
-          console.log("choice배열", this.state.choice);
-          console.log("문제배열", this.state.Problems.choice);
+          isDev && console.log("choice배열", this.state.choice);
+          isDev && console.log("문제배열", this.state.Problems.choice);
           this.setState({
             errors
           });
@@ -269,8 +269,30 @@ class CreateProblem extends Component {
     }
     let type = parseInt(event.target.value);
     let arr = [];
-    for (let i = 0; i < type; i++) {
-      arr.push({ text: "", answer: false });
+    console.log("타입", type);
+    if (type === 1) {
+      if (this.state.choice[0]) {
+        arr[0] = { text: "", answer: this.state.choice[0].text };
+        console.log("주관", arr[0]);
+      } else {
+        arr[0] = { text: "", answer: false };
+      }
+    } else {
+      for (let i = 0; i < type; i++) {
+        // arr.push({ text: "", answer: false });
+
+        if (this.state.choice[i]) {
+          if (this.state.choice.length === 1) {
+            console.log("이전에 주관식이었슴 ㅋ", this.state.choice);
+            arr[i] = { text: this.state.choice[0].answer, answer: false };
+          } else {
+            arr[i] = { ...this.state.choice[i] };
+          }
+        } else {
+          arr[i] = { text: "", answer: false };
+        }
+      }
+      console.log("함볼까", arr);
     }
     this.setState({
       choice: arr,
@@ -310,11 +332,11 @@ class CreateProblem extends Component {
       if (errorsTwo) {
         errors = { ...errors, ...errorsTwo };
       }
-      console.log("hi", errors, Object.keys(errors).length);
+      isDev && console.log("hi", errors, Object.keys(errors).length);
       this.setState({ errors: errors });
 
       if (Object.keys(errors).length !== 0) {
-        console.log(errors);
+        isDev && console.log(errors);
         return;
       }
       /////////
@@ -326,7 +348,7 @@ class CreateProblem extends Component {
         problemText: this.state.problemText,
         choice: this.state.choice
       };
-      console.log("viewProblem 발동", newProblem);
+      isDev && console.log("viewProblem 발동", newProblem);
       let Problems = [...this.state.Problems];
       Problems[this.state.curProblem] = newProblem;
 
@@ -355,7 +377,7 @@ class CreateProblem extends Component {
         curProblem: ProblemNum,
         files: files
       });
-      console.log("viewProblem밑에꺼 발동", this.state.Problems);
+      isDev && console.log("viewProblem밑에꺼 발동", this.state.Problems);
     }
   };
 
@@ -377,7 +399,7 @@ class CreateProblem extends Component {
     const errors = {};
     const { choice } = this.state;
     if (choice.length === 1) {
-      console.log("??", choice);
+      isDev && console.log("??", choice);
       if (choice[0].answer === false || choice[0].answer.trim() === "") {
         errors[0] = `주관식 답변을 작성해주세요`;
       } else if (choice[0].answer.length > process.env.REACT_APP_NARRATIVE) {
@@ -421,15 +443,15 @@ class CreateProblem extends Component {
     if (errorsTwo) {
       errors = { ...errors, ...errorsTwo };
     }
-    console.log("hi", errors, Object.keys(errors).length);
+    isDev && console.log("hi", errors, Object.keys(errors).length);
     this.setState({ errors: errors });
 
     if (Object.keys(errors).length !== 0) {
-      console.log(errors);
+      isDev && console.log(errors);
       return;
     }
     /////////
-    console.log("저장중 ^^");
+    isDev && console.log("저장중 ^^");
     let newProblem = {
       fileLink1: (this.state.files && this.state.files[0]) || null,
       subjectAnswer:
@@ -444,7 +466,7 @@ class CreateProblem extends Component {
         Problems
       },
       () => {
-        // console.log(this.state.Problems,"현재 프로블럼 객체 상태 ")
+        isDev && console.log(this.state.Problems,"현재 프로블럼 객체 상태 ")
       }
     );
 
@@ -462,9 +484,8 @@ class CreateProblem extends Component {
     });
   };
   completeFun = Problems => {
-    // console.log("hi");
     if (this.state.curProblem !== this.state.Problems.length) {
-      console.log(this.state.curProblem, this.state.Problems);
+      isDev && console.log(this.state.curProblem, this.state.Problems);
       if (this.state.choice.length === 0) {
         alert("답안 유형을 선택해야 합니다");
         return;
@@ -489,11 +510,11 @@ class CreateProblem extends Component {
       if (errorsTwo) {
         errors = { ...errors, ...errorsTwo };
       }
-      console.log("hi", errors, Object.keys(errors).length);
+      isDev && console.log("hi", errors, Object.keys(errors).length);
       this.setState({ errors: errors });
 
       if (Object.keys(errors).length !== 0) {
-        console.log(errors);
+        isDev && console.log(errors);
         return;
       }
     }
@@ -710,7 +731,7 @@ class CreateProblem extends Component {
       </div>
     ) : (
       <CompleteProblem
-          history={this.props.history}
+        history={this.props.history}
         className="max-width"
         Problems={this.state.Problems}
         problemState={this.state}

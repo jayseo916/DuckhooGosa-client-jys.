@@ -448,7 +448,7 @@ label.dv-star-rating-full-star > i {
 }
 
 * {
-  outline: 1px dotted red;
+  /*outline: 1px dotted red;*/
 }
 
 .word-break {

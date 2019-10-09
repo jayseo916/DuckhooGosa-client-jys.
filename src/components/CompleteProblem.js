@@ -188,20 +188,18 @@ class CompleteProblem extends React.Component {
         style={{
           overflow: "auto",
           width: "100%",
-          height: "100%",
-          paddingTop: "2em",
-          paddingLeft: "0.5em",
-          paddingRight: "0.5em",
-          paddingBottom: "3em"
+          height: "fit-content",
+          paddingTop:"0.5em",
+          paddingBottom: "4.5em"
         }}
       >
         <div
-          className="nes-container max-width nes-container-normal with-title is-centered flex-container-col"
+          className="nes-container nes-container-normal max-width with-title is-centered flex-container-col"
           style={{
             height: "100%"
           }}
         >
-          <p className="title title-hotpink font-2P"> Preview </p>
+          <p className="title font-2P"> Preview </p>
           <div
             className="fdc flex"
             style={{
