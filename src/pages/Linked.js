@@ -5,6 +5,7 @@ import Img from "react-image";
 import "bootstrap/dist/css/bootstrap.css";
 import "../shared/App.css";
 
+let isDev = process.env.REACT_APP_LOG;
 class Linked extends Component {
   constructor(props) {
     super(props);
@@ -82,6 +83,29 @@ class Login extends React.Component {
   componentDidMount() {}
 
   responseGoogle = async res => {
+    isDev && console.log(res, "? 유적객체");
+    localStorage["tokenId"] = res.profileObj.tokenId;
+    localStorage["email"] = res.profileObj.email;
+    localStorage["access_token"] = res.Zi.access_token;
+    localStorage["expires_in"] =
+      res.tokenObj.expires_at + res.tokenObj.expires_in;
+
+    setInterval(() => {
+      console.log("갱신검사");
+      if (
+        new Date(Number(localStorage.getItem("expires_in")) + 1000 * 60 * 10) >
+        new Date()
+      ) {
+        res.reloadAuthResponse().then(authResponse => {
+          console.log("_____________갱신중_____________");
+          localStorage["access_token"] = authResponse.access_token;
+          localStorage["expires_in"] = authResponse.access_token;
+        });
+      } else {
+        console.log("아직 시간 안지남");
+      }
+    }, 1000 * 5);
+
     let data = {
       email: res.profileObj.email,
       expires_at: res.tokenObj.expires_at + res.tokenObj.expires_in
@@ -132,7 +156,7 @@ class Login extends React.Component {
       });
     console.log("로그아웃");
     this.props.emptyEmail();
-    localStorage.removeItem("authData");
+    localStorage.clear();
   };
 
   render() {
