@@ -87,6 +87,19 @@ class MySolved extends React.Component {
                     <span className="is-success">{el.successRate}%</span>
                   </a>
                 </span>
+                <div>
+                  <button
+                    className="nes-btn padding-zero-only"
+                    style={{
+                      marginLeft: "0.3em"
+                    }}
+                    onClick={() => this.problemInfo(el.problem._id)}
+                  >
+                    <sapn className="span_em_small">Read more..</sapn>
+                  </button>
+                </div>
+              </div>
+              <div className="flex-container-row margin-center">
                 <span
                   className="nes-text is-primary span_em_small word-break margin-center center-center-series flex"
                   style={{
@@ -97,14 +110,6 @@ class MySolved extends React.Component {
                   {" "}
                   {formatRelative(new Date(el.date), new Date())}
                 </span>
-                <div>
-                  <button
-                    className="nes-btn is-primary"
-                    onClick={() => this.problemInfo(el.problem._id)}
-                  >
-                    문제 상세정보
-                  </button>
-                </div>
               </div>
             </div>
           </Card>

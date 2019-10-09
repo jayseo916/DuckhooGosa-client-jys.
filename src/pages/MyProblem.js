@@ -85,10 +85,11 @@ class MyProblem extends React.Component {
                 </span>
                 <div>
                   <button
-                    className="nes-btn is-primary"
+                    className="nes-btn  padding-zero-only"
+                    style={{ marginLeft: "0.3em" }}
                     onClick={() => this.problemInfo(items._id)}
                   >
-                    문제 상세정보
+                    Read more..
                   </button>
                 </div>
               </div>

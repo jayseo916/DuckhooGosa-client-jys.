@@ -165,12 +165,12 @@ export default class Comment extends React.Component {
         <section
           className="message-list"
           style={{
-            marginTop: "2em",
+            marginTop: "1em",
             paddingBottom: "3em"
           }}
         >
-          <div className="nes-container nes-container-hard with-title is-centered padding-zero">
-            <p className="title">Comments</p>
+          <div className="nes-container nes-container-hard with-title is-centered padding-zero flex fdc">
+            <p className="title font-2P">Comments</p>
             <div className="flex fdc">
              <span className="span_em_default">
                 {nick}가 만든 {title}
