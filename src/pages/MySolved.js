@@ -40,33 +40,26 @@ class MySolved extends React.Component {
       height: 8em;
       width: 100%;
     `;
-
     const { solution } = this.props.history.location.state.userInfo;
     const historyList = solution.map(el => {
       return (
-        <Popconfirm
-          key={el.problem_id + "_Popconfirm" + uniqid("k")}
-          title="다시 풀어 볼래요?"
-          onConfirm={() => {
-            this.confirm(el.problem_id);
-          }}
-          onCancel={this.cancel}
-          okText="Yes"
-          cancelText="No"
-          placement="top"
-        >
-          <Card
-            key={el.problem_id + "_Card" + uniqid("k")}
-            style={{
-              marginBottom: "2em"
+        <div key={el.problem_id + "_Popconfirm" + uniqid("k")}>
+          <Popconfirm
+            title="다시 풀어 볼래요?"
+            onConfirm={() => {
+              this.confirm(el.problem_id);
             }}
-            className="nes-container nes-container-hard with-title is-rounded is-centered"
+            onCancel={this.cancel}
+            okText="Yes"
+            cancelText="No"
+            placement="top"
           >
-            <p
-              className="title"
+            <Card
+              key={el.problem_id + "_Card" + uniqid("k")}
               style={{
-                marginBottom: "0px"
+                marginBottom: "2em"
               }}
+              className="nes-container nes-container-hard with-title is-rounded is-centered"
             >
               <span className="span_em_default">{el.title} </span>
             </p>
@@ -111,9 +104,9 @@ class MySolved extends React.Component {
                   {formatRelative(new Date(el.date), new Date())}
                 </span>
               </div>
-            </div>
-          </Card>
-        </Popconfirm>
+            </Card>
+          </Popconfirm>
+        </div>
       );
     });
     return (
@@ -129,7 +122,7 @@ class MySolved extends React.Component {
           {historyList}
         </div>
         <div className="bottom-container flex fdc">{null}</div>
-        <div className="top-container">{null}</div>
+        <div className="top-container"></div>
         <div className="middle-container">{historyList}</div>
         <div className="bottom-container">{null}</div>
       </div>
