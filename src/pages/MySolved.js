@@ -40,75 +40,76 @@ class MySolved extends React.Component {
       height: 8em;
       width: 100%;
     `;
-
     const { solution } = this.props.history.location.state.userInfo;
     const historyList = solution.map(el => {
       return (
-        <Popconfirm
-          key={el.problem_id + "_Popconfirm" + uniqid("k")}
-          title="다시 풀어 볼래요?"
-          onConfirm={() => {
-            this.confirm(el.problem_id);
-          }}
-          onCancel={this.cancel}
-          okText="Yes"
-          cancelText="No"
-          placement="top"
-        >
-          <Card
-            key={el.problem_id + "_Card" + uniqid("k")}
-            style={{
-              marginBottom: "2em"
+        <div key={el.problem_id + "_Popconfirm" + uniqid("k")}>
+          <hr></hr>
+          <div>
+            <button
+              className="nes-btn is-primary"
+              onClick={() => this.problemInfo(el.problem_id)}
+            >
+              문제 상세정보
+            </button>
+          </div>
+          <Popconfirm
+            title="다시 풀어 볼래요?"
+            onConfirm={() => {
+              this.confirm(el.problem_id);
             }}
-            className="nes-container nes-container-hard with-title is-rounded is-centered"
+            onCancel={this.cancel}
+            okText="Yes"
+            cancelText="No"
+            placement="top"
           >
-            <p
-              className="title"
+            <Card
+              key={el.problem_id + "_Card" + uniqid("k")}
               style={{
-                marginBottom: "0px"
+                marginBottom: "2em"
               }}
+              className="nes-container nes-container-hard with-title is-rounded is-centered"
             >
-              <span className="span_em_default">{el.title} </span>
-            </p>
-            <div
-              className="flex-container-col is-rounded is-centered"
-              style={{
-                marginBottom: "-7px"
-              }}
-            >
-              <ImageBox className="margin-center thumbnail-wrap">
-                <CopyUrl id={el.problem_id} />
-                <img className="thumbnail" src={el.img} alt="place" />
-              </ImageBox>
-              <div className="flex-container-row margin-center">
-                <span className="flex nes-text is-error span_em_small word-break">
-                  <a href="#self" className="nes-badge is-splited">
-                    <span className="is-dark">Hit</span>
-                    <span className="is-success">{el.successRate}%</span>
-                  </a>
-                </span>
-                <span
-                  className="nes-text is-primary span_em_small word-break margin-center center-center-series flex"
-                  style={{
-                    // display: "block"
-                    height: "fit-content"
-                  }}
-                >
-                  {" "}
-                  {formatRelative(new Date(el.date), new Date())}
-                </span>
-                <div>
-                  <button
-                    className="nes-btn is-primary"
-                    onClick={() => this.problemInfo(el.problem._id)}
+              <p
+                className="title"
+                style={{
+                  marginBottom: "0px"
+                }}
+              >
+                <span className="span_em_default">{el.title} </span>
+              </p>
+              <div
+                className="flex-container-col is-rounded is-centered"
+                style={{
+                  marginBottom: "-7px"
+                }}
+              >
+                <ImageBox className="margin-center thumbnail-wrap">
+                  <CopyUrl id={el.problem_id} />
+                  <img className="thumbnail" src={el.img} alt="place" />
+                </ImageBox>
+                <div className="flex-container-row margin-center">
+                  <span className="flex nes-text is-error span_em_small word-break">
+                    <a href="#self" className="nes-badge is-splited">
+                      <span className="is-dark">Hit</span>
+                      <span className="is-success">{el.successRate}%</span>
+                    </a>
+                  </span>
+                  <span
+                    className="nes-text is-primary span_em_small word-break margin-center center-center-series flex"
+                    style={{
+                      // display: "block"
+                      height: "fit-content"
+                    }}
                   >
-                    문제 상세정보
-                  </button>
+                    {" "}
+                    {formatRelative(new Date(el.date), new Date())}
+                  </span>
                 </div>
               </div>
-            </div>
-          </Card>
-        </Popconfirm>
+            </Card>
+          </Popconfirm>
+        </div>
       );
     });
     return (
@@ -124,7 +125,7 @@ class MySolved extends React.Component {
           {historyList}
         </div>
         <div className="bottom-container flex fdc">{null}</div>
-        <div className="top-container">{null}</div>
+        <div className="top-container"></div>
         <div className="middle-container">{historyList}</div>
         <div className="bottom-container">{null}</div>
       </div>
