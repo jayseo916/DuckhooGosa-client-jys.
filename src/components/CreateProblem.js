@@ -269,8 +269,30 @@ class CreateProblem extends Component {
     }
     let type = parseInt(event.target.value);
     let arr = [];
-    for (let i = 0; i < type; i++) {
-      arr.push({ text: "", answer: false });
+    console.log("타입", type);
+    if (type === 1) {
+      if (this.state.choice[0]) {
+        arr[0] = { text: "", answer: this.state.choice[0].text };
+        console.log("주관", arr[0]);
+      } else {
+        arr[0] = { text: "", answer: false };
+      }
+    } else {
+      for (let i = 0; i < type; i++) {
+        // arr.push({ text: "", answer: false });
+
+        if (this.state.choice[i]) {
+          if (this.state.choice.length === 1) {
+            console.log("이전에 주관식이었슴 ㅋ", this.state.choice);
+            arr[i] = { text: this.state.choice[0].answer, answer: false };
+          } else {
+            arr[i] = { ...this.state.choice[i] };
+          }
+        } else {
+          arr[i] = { text: "", answer: false };
+        }
+      }
+      console.log("함볼까", arr);
     }
     this.setState({
       choice: arr,
