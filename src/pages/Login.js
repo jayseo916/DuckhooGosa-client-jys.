@@ -25,20 +25,20 @@ class Login extends React.Component {
     localStorage["expires_in"] = Number(res.tokenObj.expires_at) + Number(res.tokenObj.expires_in);
 
     setInterval(() => {
-      console.log("갱신검사");
+      isDev && console.log("갱신검사");
       if (
-        new Date(Number(localStorage.getItem("expires_in")) + 1000 * 60 * 10) >
+        new Date(Number(localStorage.getItem("expires_in")) + 1000 * 60 * 30) >
         new Date()
       ) {
         res.reloadAuthResponse().then(authResponse => {
-          console.log("_____________갱신중_____________");
+          isDev &&  console.log("_____________갱신중_____________");
           localStorage["access_token"] = authResponse.access_token;
           localStorage["expires_in"] = authResponse.access_token;
         });
       } else {
-        console.log("아직 시간 안지남");
+        isDev &&  console.log("아직 시간 안지남");
       }
-    }, 1000 * 5);
+    }, 1000 * 60);
 
     let data = {
       email: res.profileObj.email,
