@@ -87,27 +87,26 @@ class Login extends React.Component {
 
   responseGoogle = async res => {
     isDev && console.log(res, "? 유적객체");
-    localStorage["tokenId"] = res.profileObj.tokenId;
+    localStorage["tokenId"] = res.tokenId;
     localStorage["email"] = res.profileObj.email;
     localStorage["access_token"] = res.Zi.access_token;
-    localStorage["expires_in"] =
-      res.tokenObj.expires_at + res.tokenObj.expires_in;
+    localStorage["expires_in"] = Number(res.tokenObj.expires_at) + Number(res.tokenObj.expires_in);
 
     setInterval(() => {
-      console.log("갱신검사");
+      isDev && console.log("갱신검사");
       if (
-        new Date(Number(localStorage.getItem("expires_in")) + 1000 * 60 * 10) >
-        new Date()
+          new Date(Number(localStorage.getItem("expires_in")) + 1000 * 60 * 30) >
+          new Date()
       ) {
         res.reloadAuthResponse().then(authResponse => {
-          console.log("_____________갱신중_____________");
+          isDev &&  console.log("_____________갱신중_____________");
           localStorage["access_token"] = authResponse.access_token;
           localStorage["expires_in"] = authResponse.access_token;
         });
       } else {
-        console.log("아직 시간 안지남");
+        isDev &&  console.log("아직 시간 안지남");
       }
-    }, 1000 * 5);
+    }, 1000 * 60);
 
     let data = {
       email: res.profileObj.email,
@@ -118,8 +117,8 @@ class Login extends React.Component {
     const config = {
       headers: {
         access_token: localStorage["authData"]
-          ? JSON.parse(localStorage["authData"]).Zi.access_token
-          : null,
+            ? JSON.parse(localStorage["authData"]).Zi.access_token
+            : null,
         "Access-Control-Allow-Origin": "*"
       },
       withCredentials: true
@@ -171,6 +170,7 @@ class Login extends React.Component {
           buttonText="문제풀러가기"
           onSuccess={this.responseGoogle}
           onFailure={this.responseFail}
+          prompt=" consent"
         />
       </div>
     );
