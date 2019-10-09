@@ -92,6 +92,16 @@ class MyProblem extends React.Component {
                   {" "}
                   {formatRelative(new Date(items.date), new Date())}
                 </span>
+
+                <div>
+                  <button
+                    className="nes-btn  padding-zero-only"
+                    style={{ marginLeft: "0.3em" }}
+                    onClick={() => this.problemInfo(items._id)}
+                  >
+                    Read more..
+                  </button>
+                </div>
               </div>
             </div>
           </div>

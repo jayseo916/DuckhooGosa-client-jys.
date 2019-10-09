@@ -167,7 +167,20 @@ class App extends React.Component {
             }}
           />
           <Route path="/main" render={props => <Main {...props} />} />
-          <Route path="/comment/:id" render={props => <Comment email={this.state.email} {...props}/>}  />
+          <Route
+            path="/comment/:id"
+            render={props => {
+              if (!email)
+                return (
+                  <Redirect
+                    to={{
+                      pathname: "/Login"
+                    }}
+                  />
+                );
+              return <Comment email={this.state.email} {...props} />;
+            }}
+          />
           <Route
             path="/login"
             render={props => (

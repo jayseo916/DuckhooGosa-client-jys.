@@ -44,15 +44,6 @@ class MySolved extends React.Component {
     const historyList = solution.map(el => {
       return (
         <div key={el.problem_id + "_Popconfirm" + uniqid("k")}>
-          <hr></hr>
-          <div>
-            <button
-              className="nes-btn is-primary"
-              onClick={() => this.problemInfo(el.problem_id)}
-            >
-              문제 상세정보
-            </button>
-          </div>
           <Popconfirm
             title="다시 풀어 볼래요?"
             onConfirm={() => {
@@ -70,42 +61,48 @@ class MySolved extends React.Component {
               }}
               className="nes-container nes-container-hard with-title is-rounded is-centered"
             >
-              <p
-                className="title"
-                style={{
-                  marginBottom: "0px"
-                }}
-              >
-                <span className="span_em_default">{el.title} </span>
-              </p>
-              <div
-                className="flex-container-col is-rounded is-centered"
-                style={{
-                  marginBottom: "-7px"
-                }}
-              >
-                <ImageBox className="margin-center thumbnail-wrap">
-                  <CopyUrl id={el.problem_id} />
-                  <img className="thumbnail" src={el.img} alt="place" />
-                </ImageBox>
-                <div className="flex-container-row margin-center">
-                  <span className="flex nes-text is-error span_em_small word-break">
-                    <a href="#self" className="nes-badge is-splited">
-                      <span className="is-dark">Hit</span>
-                      <span className="is-success">{el.successRate}%</span>
-                    </a>
-                  </span>
-                  <span
-                    className="nes-text is-primary span_em_small word-break margin-center center-center-series flex"
+              <span className="span_em_default">{el.title} </span>
+            </p>
+            <div
+              className="flex-container-col is-rounded is-centered"
+              style={{
+                marginBottom: "-7px"
+              }}
+            >
+              <ImageBox className="margin-center thumbnail-wrap">
+                <CopyUrl id={el.problem_id} />
+                <img className="thumbnail" src={el.img} alt="place" />
+              </ImageBox>
+              <div className="flex-container-row margin-center">
+                <span className="flex nes-text is-error span_em_small word-break">
+                  <a href="#self" className="nes-badge is-splited">
+                    <span className="is-dark">Hit</span>
+                    <span className="is-success">{el.successRate}%</span>
+                  </a>
+                </span>
+                <div>
+                  <button
+                    className="nes-btn padding-zero-only"
                     style={{
-                      // display: "block"
-                      height: "fit-content"
+                      marginLeft: "0.3em"
                     }}
+                    onClick={() => this.problemInfo(el.problem._id)}
                   >
-                    {" "}
-                    {formatRelative(new Date(el.date), new Date())}
-                  </span>
+                    <sapn className="span_em_small">Read more..</sapn>
+                  </button>
                 </div>
+              </div>
+              <div className="flex-container-row margin-center">
+                <span
+                  className="nes-text is-primary span_em_small word-break margin-center center-center-series flex"
+                  style={{
+                    // display: "block"
+                    height: "fit-content"
+                  }}
+                >
+                  {" "}
+                  {formatRelative(new Date(el.date), new Date())}
+                </span>
               </div>
             </Card>
           </Popconfirm>
