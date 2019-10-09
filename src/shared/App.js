@@ -37,11 +37,11 @@ class App extends React.Component {
       localStorage.expires_in
     ) {
       let key = localStorage.getItem("access_token");
-      console.log(key, "토큰검사");
+      isDev && console.log(key, "토큰검사");
       Axios.get(
         "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=" + key
       ).then(res => {
-        console.log(res.data, "검증 1회");
+        isDev && console.log(res.data, "검증 1회");
         if (res.data["expires_in"] === undefined) {
           localStorage.clear();
           this.props.history.push("/login");

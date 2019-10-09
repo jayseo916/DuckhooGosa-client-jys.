@@ -4,6 +4,8 @@ import { axiosInstance, config } from "../config";
 import "../shared/App.css";
 import cats100 from "../client/img/pixel-icon-creator-24.jpg";
 import { formatRelative } from "date-fns";
+
+let isDev = process.env.REACT_APP_LOG;
 export default class Comment extends React.Component {
   constructor(props) {
     super(props);
@@ -62,6 +64,7 @@ export default class Comment extends React.Component {
       evalD: null,
       comments: this.state.inputComment
     };
+    isDev && console.log(obj,"보내는 데이터 검증");
     axiosInstance
       .post("/problem/evaluation", obj, config)
       .then(res => console.log(res))
@@ -166,7 +169,7 @@ export default class Comment extends React.Component {
             paddingBottom: "3em"
           }}
         >
-          <div className="nes-container with-title is-centered padding-zero">
+          <div className="nes-container nes-container-hard with-title is-centered padding-zero">
             <p className="title">Comments</p>
             <div>
               <p>
