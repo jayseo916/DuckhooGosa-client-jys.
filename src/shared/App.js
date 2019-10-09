@@ -146,7 +146,7 @@ class App extends React.Component {
             }}
           />
           <Route path="/main" render={props => <Main {...props} />} />
-          <Route path="/comment/:id" component={Comment} />
+          <Route path="/comment/:id" email={this.state.email} component={Comment} />
           <Route
             path="/login"
             render={props => (

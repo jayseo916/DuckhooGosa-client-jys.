@@ -11,7 +11,7 @@ export default class Comment extends React.Component {
       commentBtn: false,
       inputComment: "",
       problem_id: this.props.match.params.id,
-      email: this.props.history.location.state.email,
+      email: this.props.email,
       comments: []
     };
   }
