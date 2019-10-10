@@ -53,7 +53,11 @@ class App extends React.Component {
         } else {
           isDev && console.log("@@ 토큰 안전함 @@");
           if (this.state.isRefreshing === true) {
+            isDev &&
+              console.log("@@ 리프레시 상태 굳 이메일넣고 로그인 모드로");
             this.setState({ email: res.data.email });
+          } else {
+            isDev && console.log("토큰은 좋지만 리프레시 상태가 아님.")
           }
         }
       });
