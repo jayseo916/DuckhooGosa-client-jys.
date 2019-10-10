@@ -5,8 +5,10 @@ import { axiosInstance, config } from "../config";
 import StarRatingComponent from "react-star-rating-component";
 import "../shared/App.css";
 import styled from "styled-components";
-const isDev = process.env.REACT_APP_LOG;
-
+let isDev = null;
+if (process.env.REACT_APP_LOG === "TRUE") {
+  isDev = true;
+}
 export class Scoring extends Component {
   constructor(props) {
     super(props);

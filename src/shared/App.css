@@ -128,7 +128,7 @@
 .pageCSS-paper {
   -ms-overflow-style: none !important;
   height: 100%;
-  background-image: url("../client/img/ODRAJ80.jpg");
+  /*background-image: url("../client/img/ODRAJ80.jpg");*/
   flex-direction: column;
   flex: 1;
   image-rendering: pixelated;

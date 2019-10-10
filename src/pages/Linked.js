@@ -5,7 +5,10 @@ import Img from "react-image";
 import "bootstrap/dist/css/bootstrap.css";
 import "../shared/App.css";
 
-let isDev = process.env.REACT_APP_LOG;
+let isDev = null
+if ( process.env.REACT_APP_LOG === "TRUE"){
+  isDev = true
+}
 class Linked extends Component {
   constructor(props) {
     super(props);
