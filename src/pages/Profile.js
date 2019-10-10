@@ -10,7 +10,10 @@ import "../shared/App.css";
 import styled from "styled-components";
 
 const { Panel } = Collapse;
-let isDev = process.env.REACT_APP_LOG;
+let isDev = null;
+if (process.env.REACT_APP_LOG === "TRUE") {
+  isDev = true;
+}
 
 function callback(key) {
   isDev && console.log(key);

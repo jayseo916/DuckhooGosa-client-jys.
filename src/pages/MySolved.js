@@ -6,6 +6,10 @@ import "../shared/App.css";
 import CopyUrl from "../components/CopyUrl";
 
 let uniqid = require("uniqid");
+let isDev = null;
+if (process.env.REACT_APP_LOG === "TRUE") {
+  isDev = true;
+}
 
 class MySolved extends React.Component {
   confirm(problemId) {

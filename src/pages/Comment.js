@@ -5,7 +5,10 @@ import "../shared/App.css";
 import cats100 from "../client/img/pixel-icon-creator-24.jpg";
 import { formatRelative } from "date-fns";
 
-let isDev = process.env.REACT_APP_LOG;
+let isDev = null
+if ( process.env.REACT_APP_LOG === "TRUE"){
+  isDev = true
+}
 export default class Comment extends React.Component {
   constructor(props) {
     super(props);
@@ -22,7 +25,7 @@ export default class Comment extends React.Component {
     axiosInstance
       .get(`/comment/${this.state.problem_id}`, config)
       .then(res => {
-        console.log("처음", JSON.parse(res.data).result);
+        isDev && console.log("처음", JSON.parse(res.data).result);
         const { totalq, totald, count, solvedUsers, nick, title } = JSON.parse(
           res.data
         );
@@ -37,8 +40,8 @@ export default class Comment extends React.Component {
         });
       })
       .catch(err => {
-        console.log(err);
-        console.log("무엇;;");
+        isDev && console.log(err);
+        isDev && console.log("무엇;;");
       });
   };
 
@@ -67,12 +70,12 @@ export default class Comment extends React.Component {
     isDev && console.log(obj, "보내는 데이터 검증");
     axiosInstance
       .post("/problem/evaluation", obj, config)
-      .then(res => console.log(res))
-      .catch(err => console.log(err));
+      .then(res => isDev && console.log(res))
+      .catch(err => isDev && console.log(err));
     await axiosInstance
       .get(`/comment/${this.state.problem_id}`, config)
       .then(res => {
-        console.log("두번째거", JSON.parse(res.data).result);
+        isDev && console.log("두번째거", JSON.parse(res.data).result);
         const { totalq, totald, count, solvedUsers, nick, title } = JSON.parse(
           res.data
         );
@@ -87,7 +90,7 @@ export default class Comment extends React.Component {
           title
         });
       })
-      .catch(err => console.log(err));
+      .catch(err => isDev && console.log(err));
     await this.setState({
       commentBtn: false,
       inputComment: ""
