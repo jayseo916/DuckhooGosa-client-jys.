@@ -26,7 +26,8 @@ class App extends React.Component {
     this.state = {
       email: null,
       expires_at: null,
-      repreImg: null
+      repreImg: null,
+      isRefreshing: false
     };
   }
 
@@ -43,14 +44,24 @@ class App extends React.Component {
       ).then(res => {
         isDev && console.log(res.data, "검증 1회");
         if (res.data["expires_in"] === undefined) {
+          isDev && console.log('잘못된 토큰 검증 집으로');
           localStorage.clear();
           this.props.history.push("/login");
         } else {
           isDev && console.log("@@ 토큰 안전함 @@");
+          if (this.state.isRefreshing === true) {
+            this.setState({ email: res.data.email });
+          }
         }
       });
     }
   }
+
+  refreshStart = () => {
+    this.setState({ isRefreshing: true }, () => {
+      console.log("리프레시 스타트~~");
+    });
+  };
 
   emptyEmail = () => {
     this.setState((state, props) => ({
@@ -148,7 +159,11 @@ class App extends React.Component {
             }}
           />
           <Route path="/not-found" component={NotFound} />
-          <Route path="/Linked" component={Linked} />
+          <Route
+            path="/Linked"
+            refreshStart={this.refreshStart}
+            component={Linked}
+          />
           <Route
             path="/SolvingProblem/:id"
             render={props => {
@@ -185,6 +200,7 @@ class App extends React.Component {
             path="/login"
             render={props => (
               <Login
+                refreshStart={this.refreshStart}
                 setUserInfo={this.setUserInfo}
                 emptyEmail={this.emptyEmail}
                 {...props}

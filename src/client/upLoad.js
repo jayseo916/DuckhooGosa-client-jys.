@@ -28,6 +28,7 @@ export function UploadToS3(problemTitle, file, callback) {
     }
   });
   let fileName = file.name;
+  console.log(file,"이거 나와야함__________________________")
   let ProblemDirKey = encodeURIComponent(problemTitle) + "/";
   let photoKey = ProblemDirKey + fileName;
   return s3.upload(
