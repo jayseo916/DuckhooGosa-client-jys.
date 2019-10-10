@@ -28,7 +28,6 @@ registerPlugin(
   FilePondPluginFileEncode
 );
 
-
 class CompleteProblem extends React.Component {
   constructor(props) {
     super(props);
@@ -75,7 +74,11 @@ class CompleteProblem extends React.Component {
         );
       } else {
         isDev && console.log(problem);
-        // return null;
+        promise.push(
+          new Promise((resolve, reject) => {
+            resolve(null);
+          })
+        );
       }
     });
     let representImg =
