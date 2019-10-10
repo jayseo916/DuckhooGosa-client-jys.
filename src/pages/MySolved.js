@@ -126,9 +126,6 @@ class MySolved extends React.Component {
           {historyList}
         </div>
         <div className="bottom-container flex fdc">{null}</div>
-        <div className="top-container"></div>
-        <div className="middle-container">{historyList}</div>
-        <div className="bottom-container">{null}</div>
       </div>
     );
   }
