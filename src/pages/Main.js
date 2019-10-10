@@ -7,9 +7,9 @@ import LoadingComponent from "../components/LoadingComponent";
 let mainApi = "/problem/main";
 let searchApi = "/problem/search";
 let genreApi = "/problem/genre";
-let isDev = null
-if ( process.env.REACT_APP_LOG === "TRUE"){
-  isDev = true
+let isDev = null;
+if (process.env.REACT_APP_LOG === "TRUE") {
+  isDev = true;
 }
 
 class Main extends React.Component {
@@ -232,7 +232,7 @@ class Main extends React.Component {
         async () => {
           try {
             let { data } = await axiosInstance.post(genreApi, {
-              next_problem: 4,
+              next_problem: 0,
               genre: this.state.currentOption
             });
 
