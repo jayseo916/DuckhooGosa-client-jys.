@@ -528,14 +528,6 @@ class Main extends React.Component {
                         >
                           <h4>{item.title}</h4>
                         </a>
-                        <div>
-                          <button
-                            className="nes-btn is-primary"
-                            onClick={() => this.problemInfo(item._id)}
-                          >
-                            문제 상세정보
-                          </button>
-                        </div>
                       </div>
                       <hr className="main-hr" />
                     </div>
