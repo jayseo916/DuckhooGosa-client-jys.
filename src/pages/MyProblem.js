@@ -6,8 +6,10 @@ import styled from "styled-components";
 import CopyUrl from "../components/CopyUrl";
 
 let uniqid = require("uniqid");
-let isDev = process.env.REACT_APP_LOG;
-
+let isDev = null;
+if (process.env.REACT_APP_LOG === "TRUE") {
+  isDev = true;
+}
 class MyProblem extends React.Component {
   constructor(props) {
     super(props);
@@ -17,7 +19,7 @@ class MyProblem extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
+    isDev && console.log(this.props);
     isDev && console.log(this.state.problems);
   }
   solving(id) {
@@ -28,7 +30,7 @@ class MyProblem extends React.Component {
   }
 
   cancel() {
-    console.log("캔슬드 ");
+    isDev && console.log("캔슬드 ");
   }
   render() {
     const ImageBox = styled.div`
@@ -43,7 +45,7 @@ class MyProblem extends React.Component {
           key={items.problem_id + "_Popconfirm" + uniqid("k")}
           title="다시 풀어 볼래요?"
           onConfirm={() => {
-            console.log(items._id);
+            isDev && console.log(items._id);
             this.solving(items._id);
           }}
           onCancel={this.cancel}
@@ -94,7 +96,7 @@ class MyProblem extends React.Component {
                     className="nes-btn  padding-zero-only"
                     style={{ marginLeft: "0.3em" }}
                     onClick={() => {
-                      console.log(items._id);
+                      isDev && console.log(items._id);
                       this.problemInfo(items._id);
                     }}
                   >

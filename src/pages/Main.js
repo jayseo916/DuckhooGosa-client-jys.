@@ -7,7 +7,10 @@ import LoadingComponent from "../components/LoadingComponent";
 let mainApi = "/problem/main";
 let searchApi = "/problem/search";
 let genreApi = "/problem/genre";
-let isDev = process.env.REACT_APP_LOG;
+let isDev = null
+if ( process.env.REACT_APP_LOG === "TRUE"){
+  isDev = true
+}
 
 class Main extends React.Component {
   constructor(props) {
@@ -36,7 +39,7 @@ class Main extends React.Component {
     this.state.search
       ? (countLoading = this.state.countSearchLoading)
       : (countLoading = this.state.countLoading);
-
+    isDev && console.log(isDev, process.env.REACT_APP_LOG);
     isDev && console.log("카운트로딩", countLoading);
     if (countLoading === 0 && this.state.search === false) {
       isDev && console.log("초기검색어", this.state.input);

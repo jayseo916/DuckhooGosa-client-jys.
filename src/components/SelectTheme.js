@@ -36,7 +36,6 @@ class SelectTheme extends React.Component {
       setRepreImg(e.target.files[0]);
     }
     // let fileEl = document.getElementById("inputFile1");
-    // console.log(fileEl);
   }
   clickHandler() {
     if (this.state.title === "") {

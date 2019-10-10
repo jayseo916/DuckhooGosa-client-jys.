@@ -13,7 +13,11 @@ import {
 } from "video-react";
 import "../../node_modules/video-react/dist/video-react.css";
 import LoadingComponent from "../components/LoadingComponent";
-let isDev = process.env.REACT_APP_LOG;
+let isDev = null;
+if (process.env.REACT_APP_LOG === "TRUE") {
+  isDev = true;
+}
+
 
 export default class SolvingProblem extends Component {
   constructor(props) {

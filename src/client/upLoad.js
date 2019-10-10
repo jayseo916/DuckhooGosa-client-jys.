@@ -3,12 +3,16 @@ import AWS from "aws-sdk";
 const albumBucketName = "duckhoogosa";
 const bucketRegion = "ap-northeast-2";
 const IdentityPoolId = "ap-northeast-2:ba805140-83ec-4793-8736-0641dd7d6f71";
+let isDev = null;
+if (process.env.REACT_APP_LOG === "TRUE") {
+  isDev = true;
+}
 
 export function UploadToS3(problemTitle, file, callback) {
   let tokenId;
   if (localStorage["tokenId"] !== undefined) {
     tokenId = localStorage.getItem("tokenId");
-    console.log(tokenId, "필요해");
+    isDev && console.log(tokenId, "필요해");
   } else {
     throw Error("로그인 필요함");
   }
@@ -28,7 +32,6 @@ export function UploadToS3(problemTitle, file, callback) {
     }
   });
   let fileName = file.name;
-  console.log(file,"이거 나와야함__________________________")
   let ProblemDirKey = encodeURIComponent(problemTitle) + "/";
   let photoKey = ProblemDirKey + fileName;
   return s3.upload(
@@ -39,10 +42,10 @@ export function UploadToS3(problemTitle, file, callback) {
     },
     (err, data) => {
       if (err) {
-        console.error(err);
-        return alert("There was an error uploading your photo: ", err.message);
+        isDev && console.error(err);
+        return alert("There was an error uploading your file: please login again. Sorry!", err.message);
       }
-      console.log("Successfully uploaded photo.");
+      isDev && console.log("Successfully uploaded photo.");
       if (callback) {
         callback(data.Location);
       }

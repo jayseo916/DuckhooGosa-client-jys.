@@ -31,7 +31,10 @@ registerPlugin(
   FilePondPluginImageCrop,
   FilePondPluginImageTransform
 );
-let isDev = process.env.REACT_APP_LOG;
+let isDev = null;
+if (process.env.REACT_APP_LOG === "TRUE") {
+  isDev = true;
+}
 
 class CreateProblem extends Component {
   constructor(props) {
@@ -269,11 +272,11 @@ class CreateProblem extends Component {
     }
     let type = parseInt(event.target.value);
     let arr = [];
-    console.log("타입", type);
+    isDev && console.log("타입", type);
     if (type === 1) {
       if (this.state.choice[0]) {
         arr[0] = { text: "", answer: this.state.choice[0].text };
-        console.log("주관", arr[0]);
+        isDev && console.log("주관", arr[0]);
       } else {
         arr[0] = { text: "", answer: false };
       }
@@ -283,7 +286,7 @@ class CreateProblem extends Component {
 
         if (this.state.choice[i]) {
           if (this.state.choice.length === 1) {
-            console.log("이전에 주관식이었슴 ㅋ", this.state.choice);
+            isDev && console.log("이전에 주관식이었슴 ㅋ", this.state.choice);
             arr[i] = { text: this.state.choice[0].answer, answer: false };
           } else {
             arr[i] = { ...this.state.choice[i] };
@@ -292,7 +295,7 @@ class CreateProblem extends Component {
           arr[i] = { text: "", answer: false };
         }
       }
-      console.log("함볼까", arr);
+      isDev && console.log("함볼까", arr);
     }
     this.setState({
       choice: arr,
@@ -466,7 +469,7 @@ class CreateProblem extends Component {
         Problems
       },
       () => {
-        isDev && console.log(this.state.Problems,"현재 프로블럼 객체 상태 ")
+        isDev && console.log(this.state.Problems, "현재 프로블럼 객체 상태 ");
       }
     );
 
@@ -737,6 +740,7 @@ class CreateProblem extends Component {
         problemState={this.state}
         changeComplete={this.changeComplete}
         repreImg={this.props.repreImg}
+        setRepreImg={this.props.setRepreImg}
       />
     );
   }

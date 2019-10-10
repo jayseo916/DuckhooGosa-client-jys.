@@ -5,8 +5,10 @@ import "../shared/App.css";
 import { config, axiosInstance } from "../config";
 import styled from "styled-components";
 
-let isDev = process.env.REACT_APP_LOG;
-
+let isDev = null
+if ( process.env.REACT_APP_LOG === "TRUE"){
+  isDev = true
+}
 class Login extends React.Component {
   constructor(props) {
     super(props);
