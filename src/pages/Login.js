@@ -22,23 +22,26 @@ class Login extends React.Component {
     localStorage["tokenId"] = res.tokenId;
     localStorage["email"] = res.profileObj.email;
     localStorage["access_token"] = res.Zi.access_token;
-    localStorage["expires_in"] = Number(res.tokenObj.expires_at) + Number(res.tokenObj.expires_in);
+    localStorage["expires_in"] =
+      Number(res.tokenObj.expires_at) + Number(res.tokenObj.expires_in);
 
     setInterval(() => {
       isDev && console.log("갱신검사");
+      this.props.refreshStart();
       if (
-        new Date(Number(localStorage.getItem("expires_in")) + 1000 * 60 * 30) >
+        new Date(Number(localStorage.getItem("expires_in")) +(3600-60*30)*1000) >
         new Date()
       ) {
         res.reloadAuthResponse().then(authResponse => {
-          isDev &&  console.log("_____________갱신중_____________");
+
+          isDev && console.log("_____________갱신성공_____________");
           localStorage["access_token"] = authResponse.access_token;
           localStorage["expires_in"] = authResponse.access_token;
         });
       } else {
-        isDev &&  console.log("아직 시간 안지남");
+        isDev && console.log("아직 시간 안지남");
       }
-    }, 1000 * 60);
+    }, 1000 * 60* 1);
 
     let data = {
       email: res.profileObj.email,
