@@ -63,7 +63,7 @@ class Profile extends Component {
       });
     isDev && console.log("로그아웃");
     this.props.emptyEmail();
-    localStorage.removeItem("authData");
+    localStorage.clear();
   };
 
   uploadImage1() {
@@ -80,6 +80,9 @@ class Profile extends Component {
       alert("확장자가 jpg, gif, png, jpeg, bmp인 이미지 파일만 올려주세요.");
       e.target.value = "";
       return false;
+    } else if (e.target.files && e.target.files[0].size > (5 * 1024 * 1024)) {
+      alert("업로드할 파일의 용량이 5mb가 넘습니다.")
+      e.target.value = "";
     } else {
       this.setState({
         curImg: e.target.files[0]
@@ -197,7 +200,7 @@ class Profile extends Component {
             style={{
               flexWrap: "wrap",
               paddingBottom: "3em",
-              marginBottom:"45px"
+              marginBottom: "45px"
             }}
           >
             <p className="title font-2P">
@@ -436,13 +439,14 @@ class Profile extends Component {
                   </span>
                 </Panel>
                 <Panel
-                    header="문제가 업로드 되지 않을떄"
-                    key="3"
-                    className="nes-container padding-zero"
+                  header="문제가 업로드 되지 않을떄"
+                  key="3"
+                  className="nes-container padding-zero"
                 >
                   <p>문제가 업로드 되지않을땐?</p>
                   <span className="span_em_default">
-                    PROFILE > LOGOUT 후 다시 로그인해주세요! 현재 서비스에 문제가 있어 수정중입니다.
+                    PROFILE > LOGOUT 후 다시 로그인해주세요! 현재 서비스에
+                    문제가 있어 수정중입니다.
                   </span>
                 </Panel>
               </Collapse>

@@ -1,3 +1,6 @@
+import { GoogleLogin } from "react-google-login";
+import React from "react";
+
 let axios = require("axios");
 let isDev = process.env.REACT_APP_LOG;
 
@@ -16,3 +19,7 @@ export const axiosInstance = axios.create({
   baseURL: process.env.REACT_APP_SERVER
   /* other custom settings */
 });
+
+export const checkAuth = () => {
+
+};

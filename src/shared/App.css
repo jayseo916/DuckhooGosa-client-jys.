@@ -502,3 +502,7 @@ label.dv-star-rating-full-star > i {
   padding-left: 4px !important;
   padding-right: 4px !important;
 }
+
+.justify-content-center {
+  justify-content: center;
+}

@@ -4,6 +4,8 @@ import { axiosInstance, config } from "../config";
 import "../shared/App.css";
 import cats100 from "../client/img/pixel-icon-creator-24.jpg";
 import { formatRelative } from "date-fns";
+
+let isDev = process.env.REACT_APP_LOG;
 export default class Comment extends React.Component {
   constructor(props) {
     super(props);
@@ -11,7 +13,7 @@ export default class Comment extends React.Component {
       commentBtn: false,
       inputComment: "",
       problem_id: this.props.match.params.id,
-      email: this.props.history.location.state.email,
+      email: this.props.email,
       comments: []
     };
   }
@@ -20,9 +22,28 @@ export default class Comment extends React.Component {
     axiosInstance
       .get(`/comment/${this.state.problem_id}`, config)
       .then(res => {
-        this.setState({ comments: JSON.parse(res.data) });
+        console.log("처음", JSON.parse(res.data).result);
+        const { totalq, totald, count, solvedUsers, nick, title } = JSON.parse(
+          res.data
+        );
+        this.setState({
+          comments: JSON.parse(res.data).result,
+          totalq,
+          totald,
+          count,
+          solvedUsers,
+          nick,
+          title
+        });
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.log(err);
+        console.log("무엇;;");
+      });
+  };
+
+  getInfo = () => {
+    axiosInstance.post(`problem/${this.state.problem_id}`);
   };
 
   componentDidMount() {
@@ -43,6 +64,7 @@ export default class Comment extends React.Component {
       evalD: null,
       comments: this.state.inputComment
     };
+    isDev && console.log(obj, "보내는 데이터 검증");
     axiosInstance
       .post("/problem/evaluation", obj, config)
       .then(res => console.log(res))
@@ -50,7 +72,20 @@ export default class Comment extends React.Component {
     await axiosInstance
       .get(`/comment/${this.state.problem_id}`, config)
       .then(res => {
-        this.setState({ comments: JSON.parse(res.data) });
+        console.log("두번째거", JSON.parse(res.data).result);
+        const { totalq, totald, count, solvedUsers, nick, title } = JSON.parse(
+          res.data
+        );
+
+        this.setState({
+          comments: JSON.parse(res.data).result,
+          totalq,
+          totald,
+          count,
+          solvedUsers,
+          nick,
+          title
+        });
       })
       .catch(err => console.log(err));
     await this.setState({
@@ -61,7 +96,15 @@ export default class Comment extends React.Component {
   };
   render() {
     let list;
-    const { comments } = this.state;
+    const {
+      comments,
+      nick,
+      title,
+      totalq,
+      totald,
+      count,
+      solvedUsers
+    } = this.state;
     const commentBtn = this.state.commentBtn;
     // console.log(comments);
     if (comments) {
@@ -100,17 +143,15 @@ export default class Comment extends React.Component {
               paddingBottom: "1em"
             }}
           >
-            <p>
-              <span className="span_em_small">
-                {!data.nick ? " 익명의 더쿠" : data.nick}:{" "}
-              </span>
-              {data.comment}
-              <br />
-              <span className="span_em_small grey">
-                {/*{data.day}*/}
-                {formatRelative(new Date(data.day), new Date())}
-              </span>
-            </p>
+            <span className="span_em_small">
+              {!data.nick ? " 익명의 더쿠" : data.nick}:{" "}
+            </span>
+            <span className="span_em_small">{data.comment} </span>
+            <br />
+            <span className="span_em_small grey">
+              {/*{data.day}*/}
+              {formatRelative(new Date(data.day), new Date())}
+            </span>
           </div>
         </section>
       ));
@@ -122,38 +163,66 @@ export default class Comment extends React.Component {
         <section
           className="message-list"
           style={{
-            marginTop: "2em",
+            marginTop: "1em",
             paddingBottom: "3em"
           }}
         >
-          <div className="nes-container with-title is-centered padding-zero">
-            <p className="title">Comments</p>
+          <div className="nes-container nes-container-hard with-title is-centered padding-zero flex fdc">
+            <p className="title font-2P">Comments</p>
+            <div className="flex fdc">
+              <span className="span_em_default">
+                {nick}가 만든 {title}
+              </span>
+              <span className="span_em_default">
+                이 문제는 현재 {solvedUsers}명이 풀었습니다
+              </span>
+              {this.state.count === 0 ? (
+                <span className="span_em_default">아직 평점이 없어요!</span>
+              ) : (
+                <div className="flex fdc">
+                  <span className="span_em_default">
+                    퀄리티 평점: {(totalq / count).toFixed(2)} / 5
+                  </span>
+                  <span className="span_em_default">
+                    난이도 평점: {(totald / count).toFixed(2)} / 5
+                  </span>
+                </div>
+              )}
+            </div>
             {commentBtn ? (
               <div
-                className="trc flex"
-                style={{
-                  height: "4em"
-                }}
+                className="trc flex filling_parent center-center-series"
+                style={{}}
               >
                 <textarea
-                  cols="40%"
+                  className="flex"
+                  style={{ width: "inherit" }}
                   rows="2"
                   onChange={e => this.inputCommentHandle(e)}
                   placeholder="의견을 남겨주세요"
                 />
                 <button
-                  className="nes-btn"
+                  className="nes-btn is-primary"
                   onClick={() => this.submitComment()}
                 >
                   UPLOAD
                 </button>
-                <button onClick={() => this.commentBtnHandle()}>CANCEL</button>
+                <button
+                  className="nes-btn is-error"
+                  onClick={() => this.commentBtnHandle()}
+                >
+                  CANCEL
+                </button>
               </div>
             ) : (
               <div>
-                <button onClick={() => this.commentBtnHandle()}>
-                  <span className="span_em_middle font-2P"> 댓글입력 </span>
+                <button
+                  className="nes-btn"
+                  onClick={() => this.commentBtnHandle()}
+                >
+                  <span className="span_em_middle"> 댓글입력 </span>
                 </button>
+                <hr className="hr-green" />
               </div>
             )}
             {list ? list : <div>아직 해당문제에 대한 의견이 없습니다.</div>}

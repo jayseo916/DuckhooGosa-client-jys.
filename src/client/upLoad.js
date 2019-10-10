@@ -5,9 +5,10 @@ const bucketRegion = "ap-northeast-2";
 const IdentityPoolId = "ap-northeast-2:ba805140-83ec-4793-8736-0641dd7d6f71";
 
 export function UploadToS3(problemTitle, file, callback) {
-  let authData;
-  if (localStorage["authData"] !== undefined) {
-    authData = JSON.parse(localStorage.getItem("authData"));
+  let tokenId;
+  if (localStorage["tokenId"] !== undefined) {
+    tokenId = localStorage.getItem("tokenId");
+    console.log(tokenId, "필요해");
   } else {
     throw Error("로그인 필요함");
   }
@@ -16,7 +17,7 @@ export function UploadToS3(problemTitle, file, callback) {
     region: bucketRegion,
     credentials: new AWS.CognitoIdentityCredentials({
       IdentityPoolId: IdentityPoolId,
-      Logins: { "accounts.google.com": authData.tokenId }
+      Logins: { "accounts.google.com": tokenId }
     })
   });
 
@@ -27,6 +28,7 @@ export function UploadToS3(problemTitle, file, callback) {
     }
   });
   let fileName = file.name;
+  console.log(file,"이거 나와야함__________________________")
   let ProblemDirKey = encodeURIComponent(problemTitle) + "/";
   let photoKey = ProblemDirKey + fileName;
   return s3.upload(

@@ -17,19 +17,51 @@ import NotFound from "../pages/NotFound";
 import Linked from "../pages/Linked";
 import LoadingComponent from "../components/LoadingComponent";
 import "./App.css";
+import Axios from "axios";
 
 const isDev = process.env.REACT_APP_LOG;
 class App extends React.Component {
   constructor(prop) {
     super(prop);
     this.state = {
-      email: localStorage.getItem("authData")
-        ? JSON.parse(localStorage.getItem("authData")).profileObj.email
-        : null,
+      email: null,
       expires_at: null,
-      repreImg: null
+      repreImg: null,
+      isRefreshing: false
     };
   }
+
+  componentDidMount() {
+    if (
+      localStorage.access_token &&
+      localStorage.email &&
+      localStorage.expires_in
+    ) {
+      let key = localStorage.getItem("access_token");
+      isDev && console.log(key, "토큰검사");
+      Axios.get(
+        "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=" + key
+      ).then(res => {
+        isDev && console.log(res.data, "검증 1회");
+        if (res.data["expires_in"] === undefined) {
+          isDev && console.log('잘못된 토큰 검증 집으로');
+          localStorage.clear();
+          this.props.history.push("/login");
+        } else {
+          isDev && console.log("@@ 토큰 안전함 @@");
+          if (this.state.isRefreshing === true) {
+            this.setState({ email: res.data.email });
+          }
+        }
+      });
+    }
+  }
+
+  refreshStart = () => {
+    this.setState({ isRefreshing: true }, () => {
+      console.log("리프레시 스타트~~");
+    });
+  };
 
   emptyEmail = () => {
     this.setState((state, props) => ({
@@ -127,7 +159,11 @@ class App extends React.Component {
             }}
           />
           <Route path="/not-found" component={NotFound} />
-          <Route path="/Linked" component={Linked} />
+          <Route
+            path="/Linked"
+            refreshStart={this.refreshStart}
+            component={Linked}
+          />
           <Route
             path="/SolvingProblem/:id"
             render={props => {
@@ -146,11 +182,25 @@ class App extends React.Component {
             }}
           />
           <Route path="/main" render={props => <Main {...props} />} />
-          <Route path="/comment/:id" component={Comment} />
+          <Route
+            path="/comment/:id"
+            render={props => {
+              if (!email)
+                return (
+                  <Redirect
+                    to={{
+                      pathname: "/Login"
+                    }}
+                  />
+                );
+              return <Comment email={this.state.email} {...props} />;
+            }}
+          />
           <Route
             path="/login"
             render={props => (
               <Login
+                refreshStart={this.refreshStart}
                 setUserInfo={this.setUserInfo}
                 emptyEmail={this.emptyEmail}
                 {...props}

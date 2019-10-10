@@ -18,6 +18,31 @@ class Login extends React.Component {
   componentDidMount() {}
 
   responseGoogle = async res => {
+    isDev && console.log(res, "? 유적객체");
+    localStorage["tokenId"] = res.tokenId;
+    localStorage["email"] = res.profileObj.email;
+    localStorage["access_token"] = res.Zi.access_token;
+    localStorage["expires_in"] =
+      Number(res.tokenObj.expires_at) + Number(res.tokenObj.expires_in);
+
+    setInterval(() => {
+      isDev && console.log("갱신검사");
+      this.props.refreshStart();
+      if (
+        new Date(Number(localStorage.getItem("expires_in")) +(3600-60*30)*1000) >
+        new Date()
+      ) {
+        res.reloadAuthResponse().then(authResponse => {
+
+          isDev && console.log("_____________갱신성공_____________");
+          localStorage["access_token"] = authResponse.access_token;
+          localStorage["expires_in"] = authResponse.access_token;
+        });
+      } else {
+        isDev && console.log("아직 시간 안지남");
+      }
+    }, 1000 * 60* 1);
+
     let data = {
       email: res.profileObj.email,
       expires_at: res.tokenObj.expires_at + res.tokenObj.expires_in
@@ -68,7 +93,7 @@ class Login extends React.Component {
       });
     console.log("LOGOUT");
     this.props.emptyEmail();
-    localStorage.removeItem("authData");
+    localStorage.clear();
   };
 
   render() {
@@ -90,13 +115,14 @@ class Login extends React.Component {
           <GoogleLogin
             clientId={process.env.REACT_APP_Google}
             buttonText="Login"
+            prompt=" consent"
             onSuccess={this.responseGoogle}
             onFailure={this.responseFail}
           />
           <span>{"  "}</span>
           <GoogleLogout
             clientId={process.env.REACT_APP_Google}
-            buttonText="Logout"
+            buttonText=" Logout"
             onLogoutSuccess={this.logout}
           />
         </div>
