@@ -5,9 +5,9 @@ import Img from "react-image";
 import "bootstrap/dist/css/bootstrap.css";
 import "../shared/App.css";
 
-let isDev = null
-if ( process.env.REACT_APP_LOG === "TRUE"){
-  isDev = true
+let isDev = null;
+if (process.env.REACT_APP_LOG === "TRUE") {
+  isDev = true;
 }
 class Linked extends Component {
   constructor(props) {
@@ -89,29 +89,35 @@ class Login extends React.Component {
   componentDidMount() {}
 
   responseGoogle = async res => {
-    isDev && console.log(res, "? 유적객체");
+    console.log(res, "? 유적객체");
     localStorage["tokenId"] = res.tokenId;
     localStorage["email"] = res.profileObj.email;
     localStorage["access_token"] = res.Zi.access_token;
-    localStorage["expires_in"] = Number(res.tokenObj.expires_at) + Number(res.tokenObj.expires_in);
+    localStorage["expires_in"] =
+      Number(res.tokenObj.expires_at) + Number(res.tokenObj.expires_in);
 
     setInterval(() => {
-      isDev && console.log("갱신검사");
+      console.log("갱신검사", this.props);
       this.props.refreshStart();
+      console.log(Number(localStorage.getItem("expires_in")),"언제 파탄?");
+      console.log(
+        Number(localStorage.getItem("expires_in")) - 60 * 30 * 1000,
+        "<-갱신 시점: 내시간 ->",
+        new Date()
+      );
       if (
-          new Date(Number(localStorage.getItem("expires_in")) + (3600-60*30)*1000) >
-          new Date()
+        new Date(Number(localStorage.getItem("expires_in")) - 60 * 30 * 1000) >
+        new Date()
       ) {
         res.reloadAuthResponse().then(authResponse => {
-
-          isDev && console.log("_____________갱신성공_____________");
+          console.log("_____________갱신성공_____________");
           localStorage["access_token"] = authResponse.access_token;
           localStorage["expires_in"] = authResponse.access_token;
         });
       } else {
-        isDev && console.log("아직 시간 안지남");
+        console.log("아직 시간 안지남");
       }
-    }, 1000 * 60* 1);
+    }, 1000 * 60 * 15);
 
     let data = {
       email: res.profileObj.email,
@@ -122,8 +128,8 @@ class Login extends React.Component {
     const config = {
       headers: {
         access_token: localStorage["authData"]
-            ? JSON.parse(localStorage["authData"]).Zi.access_token
-            : null,
+          ? JSON.parse(localStorage["authData"]).Zi.access_token
+          : null,
         "Access-Control-Allow-Origin": "*"
       },
       withCredentials: true
