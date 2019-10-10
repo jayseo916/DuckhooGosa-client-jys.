@@ -47,7 +47,7 @@ class App extends React.Component {
       ).then(res => {
         isDev && console.log(res.data, "검증 1회");
         if (res.data["expires_in"] === undefined) {
-          isDev && console.log("잘못된 토큰 검증 집으로");
+          isDev && console.log("잘못된 토큰  검증 집으로");
           localStorage.clear();
           this.props.history.push("/login");
         } else {
