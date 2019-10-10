@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import ReactSVG from "react-svg";
-const clientURL = "localhost:3000";
+const clientURL = process.env.REACT_APP_CLIENT;
 const chainImg = require("../client/img/link-1271843.svg");
 
 class CopyUrl extends Component {
