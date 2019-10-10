@@ -7,7 +7,7 @@ let isDev = process.env.REACT_APP_LOG;
 export const config = {
   headers: {
     access_token: localStorage.getItem("access_token")
-  g    ? localStorage.getItem("access_token")
+      ? localStorage.getItem("access_token")
       : null,
     "Access-Control-Allow-Origin": "*"
   },
